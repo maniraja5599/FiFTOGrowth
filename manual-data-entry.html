@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual P&L Data Entry - FiFTO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0d4f3c;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #0d4f3c;
+        }
+        button {
+            background: #0d4f3c;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #0a3d2e;
+        }
+        .entry-list {
+            margin-top: 30px;
+        }
+        .entry-item {
+            background: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .entry-item span {
+            color: #333;
+        }
+        .entry-item .positive {
+            color: #2d9d7a;
+            font-weight: 600;
+        }
+        .entry-item .negative {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        .delete-btn {
+            background: #dc2626;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .instructions {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0d4f3c;
+        }
+        .instructions h3 {
+            color: #0d4f3c;
+            margin-bottom: 10px;
+        }
+        .instructions ol {
+            margin-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 5px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manual P&L Data Entry</h1>
+        <p class="subtitle">Enter daily P&L data manually for testing</p>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Enter today's date, P&L amount, and percentage</li>
+                <li>Click "Add Entry" to save</li>
+                <li>Data will be saved to localStorage</li>
+                <li>Go back to your main page and refresh to see the data</li>
+            </ol>
+        </div>
+        
+        <form id="pnl-form">
+            <div class="form-group">
+                <label for="date">Date *</label>
+                <input type="date" id="date" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="pnl">Daily P&L (₹) *</label>
+                <input type="number" id="pnl" step="0.01" placeholder="e.g., 50000" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="percent">Daily Return (%) *</label>
+                <input type="number" id="percent" step="0.01" placeholder="e.g., 0.5" required>
+            </div>
+            
+            <button type="submit">Add Entry</button>
+            <button type="button" onclick="clearAll()">Clear All Data</button>
+            <button type="button" onclick="exportData()">Export Data</button>
+            <button type="button" onclick="importData()">Import Data</button>
+        </form>
+        
+        <div class="entry-list">
+            <h3>Saved Entries</h3>
+            <div id="entries-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'fifto_pnl_data';
+        
+        // Set today's date as default
+        document.getElementById('date').valueAsDate = new Date();
+        
+        // Load and display entries
+        function loadEntries() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            const entriesList = document.getElementById('entries-list');
+            
+            if (!stored) {
+                entriesList.innerHTML = '<p style="color: #666; padding: 20px; text-align: center;">No entries yet. Add your first entry above.</p>';
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(stored);
+                if (data.daily && data.daily.length > 0) {
+                    const sorted = [...data.daily].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    entriesList.innerHTML = sorted.map((entry, idx) => {
+                        const date = new Date(entry.date);
+                        const pnlClass = entry.pnl >= 0 ? 'positive' : 'negative';
+                        return `
+                            <div class="entry-item">
+                                <div>
+                                    <span><strong>${date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</strong></span>
+                                    <span class="${pnlClass}"> | ₹${entry.pnl.toLocaleString('en-IN')}</span>
+                                    <span class="${pnlClass}"> | ${entry.percent >= 0 ? '+' : ''}${entry.percent.toFixed(2)}%</span>
+                                </div>
+                                <button class="delete-btn" onclick="deleteEntry(${idx})">Delete</button>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    entriesList.innerHTML = '<p style="color: #666; padding: 20px; text-align: center;">No entries yet.</p>';
+                }
+            } catch (e) {
+                entriesList.innerHTML = '<p style="color: #dc2626; padding: 20px;">Error loading data</p>';
+            }
+        }
+        
+        // Add entry
+        document.getElementById('pnl-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const date = document.getElementById('date').value;
+            const pnl = parseFloat(document.getElementById('pnl').value);
+            const percent = parseFloat(document.getElementById('percent').value);
+            
+            if (!date || isNaN(pnl) || isNaN(percent)) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            // Load existing data
+            let data = {
+                daily: [],
+                summary: { today: { pnl: 0, percent: 0 }, mtd: { pnl: 0, percent: 0 }, total: { pnl: 0, percent: 0 } },
+                capital: 10000000
+            };
+            
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    data = JSON.parse(stored);
+                } catch (e) {
+                    console.error('Error parsing stored data:', e);
+                }
+            }
+            
+            // Check if date already exists
+            const dateStr = new Date(date).toISOString();
+            const existingIndex = data.daily.findIndex(d => d.date === dateStr);
+            
+            if (existingIndex >= 0) {
+                if (!confirm('Entry for this date already exists. Replace it?')) {
+                    return;
+                }
+                data.daily[existingIndex] = { date: dateStr, pnl: pnl, percent: percent };
+            } else {
+                data.daily.push({ date: dateStr, pnl: pnl, percent: percent });
+            }
+            
+            // Sort by date
+            data.daily.sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            // Recalculate summary
+            if (data.daily.length > 0) {
+                const today = data.daily[data.daily.length - 1];
+                data.summary.today = { pnl: today.pnl, percent: today.percent };
+                
+                const currentMonth = new Date().getMonth();
+                const currentYear = new Date().getFullYear();
+                const mtdDays = data.daily.filter(d => {
+                    const dDate = new Date(d.date);
+                    return dDate.getMonth() === currentMonth && dDate.getFullYear() === currentYear;
+                });
+                data.summary.mtd = {
+                    pnl: mtdDays.reduce((sum, d) => sum + d.pnl, 0),
+                    percent: mtdDays.reduce((sum, d) => sum + d.percent, 0)
+                };
+                
+                data.summary.total = {
+                    pnl: data.daily.reduce((sum, d) => sum + d.pnl, 0),
+                    percent: data.daily.reduce((sum, d) => sum + d.percent, 0)
+                };
+            }
+            
+            // Save
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            localStorage.setItem('fifto_last_update', new Date().toISOString());
+            
+            // Reset form
+            document.getElementById('pnl-form').reset();
+            document.getElementById('date').valueAsDate = new Date();
+            
+            // Reload entries
+            loadEntries();
+            
+            alert('Entry saved successfully!');
+        });
+        
+        // Delete entry
+        function deleteEntry(index) {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return;
+            
+            try {
+                const data = JSON.parse(stored);
+                const sorted = [...data.daily].sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                if (confirm('Delete this entry?')) {
+                    const toDelete = sorted[index];
+                    data.daily = data.daily.filter(d => d.date !== toDelete.date);
+                    
+                    // Recalculate summary
+                    if (data.daily.length > 0) {
+                        const today = data.daily[data.daily.length - 1];
+                        data.summary.today = { pnl: today.pnl, percent: today.percent };
+                        
+                        const currentMonth = new Date().getMonth();
+                        const currentYear = new Date().getFullYear();
+                        const mtdDays = data.daily.filter(d => {
+                            const dDate = new Date(d.date);
+                            return dDate.getMonth() === currentMonth && dDate.getFullYear() === currentYear;
+                        });
+                        data.summary.mtd = {
+                            pnl: mtdDays.reduce((sum, d) => sum + d.pnl, 0),
+                            percent: mtdDays.reduce((sum, d) => sum + d.percent, 0)
+                        };
+                        
+                        data.summary.total = {
+                            pnl: data.daily.reduce((sum, d) => sum + d.pnl, 0),
+                            percent: data.daily.reduce((sum, d) => sum + d.percent, 0)
+                        };
+                    } else {
+                        data.summary = { today: { pnl: 0, percent: 0 }, mtd: { pnl: 0, percent: 0 }, total: { pnl: 0, percent: 0 } };
+                    }
+                    
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    loadEntries();
+                }
+            } catch (e) {
+                alert('Error deleting entry');
+            }
+        }
+        
+        // Clear all
+        function clearAll() {
+            if (confirm('Are you sure you want to delete ALL P&L data? This cannot be undone.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem('fifto_last_update');
+                loadEntries();
+                alert('All data cleared');
+            }
+        }
+        
+        // Export data
+        function exportData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) {
+                alert('No data to export');
+                return;
+            }
+            
+            const blob = new Blob([stored], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fifto-pnl-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Import data
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (data.daily && Array.isArray(data.daily)) {
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                            localStorage.setItem('fifto_last_update', new Date().toISOString());
+                            loadEntries();
+                            alert('Data imported successfully!');
+                        } else {
+                            alert('Invalid data format');
+                        }
+                    } catch (err) {
+                        alert('Error importing data: ' + err.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // Load on page load
+        loadEntries();
+    </script>
+</body>
+</html>
+
