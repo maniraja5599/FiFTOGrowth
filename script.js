@@ -1,50 +1,54 @@
-// Form Submission Handler
-document.getElementById('consultation-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form data
-    const formData = {
-        name: document.getElementById('name').value,
-        whatsapp: document.getElementById('whatsapp').value,
-        email: document.getElementById('email').value,
-        capital: document.getElementById('capital').value,
-        experience: document.getElementById('experience').value,
-        callTime: document.getElementById('call-time').value
-    };
-    
-    // Here you would typically send this data to your backend
-    // For now, we'll show an alert and log to console
-    console.log('Form submitted:', formData);
-    
-    // Show success message
-    alert('Thank you for your interest! We will contact you shortly at ' + formData.whatsapp + ' or ' + formData.email);
-    
-    // Reset form
-    this.reset();
-    
-    // In production, you would send this to your server:
-    // fetch('/api/contact', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData)
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     alert('Thank you! We will contact you shortly.');
-    //     form.reset();
-    // })
-    // .catch(error => {
-    //     alert('There was an error. Please try again.');
-    // });
-});
+// Form Submission Handler (guarded – form was removed from UI)
+const consultationForm = document.getElementById('consultation-form');
+if (consultationForm) {
+    consultationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = {
+            name: document.getElementById('name').value,
+            whatsapp: document.getElementById('whatsapp').value,
+            email: document.getElementById('email').value,
+            capital: document.getElementById('capital').value,
+            experience: document.getElementById('experience').value,
+            callTime: document.getElementById('call-time').value
+        };
+        
+        console.log('Form submitted:', formData);
+        alert('Thank you for your interest! We will contact you shortly at ' + formData.whatsapp + ' or ' + formData.email);
+        this.reset();
+    });
+}
 
-// Smooth scroll for anchor links
+// Smooth scroll for anchor links and active state management
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        
+        // Handle home link (scroll to top)
+        if (href === '#' || href === '#top') {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            
+            // Update active state for left nav panel
+            const navLinksLeft = document.querySelectorAll('.nav-link-left');
+            navLinksLeft.forEach(link => link.classList.remove('active'));
+            if (this.classList.contains('nav-link-left')) {
+                this.classList.add('active');
+            }
+            
+            // Close mobile menu if open
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) {
+                navLinks.classList.remove('active');
+            }
+            return;
+        }
+        
+        const target = document.querySelector(href);
         if (target) {
             const offset = 80; // Account for sticky navbar
             const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
@@ -52,6 +56,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 top: targetPosition,
                 behavior: 'smooth'
             });
+            
+            // Update active state for left nav panel
+            const navLinksLeft = document.querySelectorAll('.nav-link-left');
+            navLinksLeft.forEach(link => link.classList.remove('active'));
+            if (this.classList.contains('nav-link-left')) {
+                this.classList.add('active');
+            }
             
             // Close mobile menu if open
             const navLinks = document.querySelector('.nav-links');
@@ -61,6 +72,47 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Update active nav link based on scroll position
+function updateActiveNavLink() {
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav-link-left');
+    const scrollPos = window.scrollY + 150;
+    const homeLink = document.querySelector('.nav-link-left[href="#"]');
+
+    // If at the top of the page, activate home link
+    if (window.scrollY < 200) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        if (homeLink) {
+            homeLink.classList.add('active');
+        }
+        return;
+    }
+
+    // Otherwise, find the active section
+    let activeSection = null;
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+
+        if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+            activeSection = sectionId;
+        }
+    });
+
+    // Update active states
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (activeSection && link.getAttribute('href') === `#${activeSection}`) {
+            link.classList.add('active');
+        }
+    });
+}
+
+// Update active nav on scroll
+window.addEventListener('scroll', updateActiveNavLink);
+window.addEventListener('load', updateActiveNavLink);
 
 // Update quick stats bar with all clients' combined data
 function updateQuickStats() {
@@ -186,18 +238,16 @@ const observer = new IntersectionObserver(function(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
         }
     });
 }, observerOptions);
 
-// Observe all sections and cards
+// Observe all sections and cards - minimal animation
 document.addEventListener('DOMContentLoaded', function() {
     const elements = document.querySelectorAll('.perf-card, .client-card, .workflow-step, .testimonial-card');
     elements.forEach(el => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        el.style.transition = 'opacity 0.3s ease';
         observer.observe(el);
     });
 });
@@ -238,6 +288,304 @@ document.addEventListener('DOMContentLoaded', function() {
             logoText.style.display = 'flex';
         }
     }
+});
+
+// Chart Zoom Functionality
+let zoomChartInstance = null;
+
+function openChartZoom(chartType) {
+    const modal = document.getElementById('chart-zoom-modal');
+    const titleEl = document.getElementById('chart-zoom-title');
+    const canvasEl = document.getElementById('chart-zoom-canvas');
+    const closeBtn = document.getElementById('chart-zoom-close');
+    
+    if (!modal || !canvasEl) return;
+    
+    // Set title
+    if (titleEl) {
+        titleEl.textContent = chartType === 'daily' 
+            ? 'Daily Cumulative P&L Performance' 
+            : 'Monthly Performance Chart';
+    }
+    
+    // Get original chart - check global scope
+    const originalChart = (typeof dailyPnlChart !== 'undefined' && chartType === 'daily') 
+        ? dailyPnlChart 
+        : (typeof monthlyPnlChart !== 'undefined' && chartType === 'monthly')
+        ? monthlyPnlChart
+        : null;
+    
+    if (!originalChart) {
+        alert('Chart data not available yet. Please wait for charts to load.');
+        return;
+    }
+    
+    // Show modal
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Destroy previous zoom chart if exists
+    if (zoomChartInstance) {
+        zoomChartInstance.destroy();
+        zoomChartInstance = null;
+    }
+    
+    // Wait for modal to fully render and get dimensions
+    setTimeout(() => {
+        // Get canvas and set proper dimensions
+        const modalBody = canvasEl.parentElement;
+        
+        // Calculate proper dimensions
+        const padding = 48; // Total padding (24px * 2)
+        const headerHeight = 80; // Approximate header height
+        const availableHeight = window.innerHeight - headerHeight - padding - 40; // Extra margin
+        const availableWidth = Math.min(modalBody.clientWidth - padding, 1300);
+        
+        // Set canvas size explicitly - use aspect ratio for better display
+        const aspectRatio = chartType === 'daily' ? 2 : 1.8;
+        const containerWidth = availableWidth;
+        const containerHeight = Math.min(availableHeight, containerWidth / aspectRatio);
+        
+        // Set canvas dimensions
+        canvasEl.width = containerWidth;
+        canvasEl.height = containerHeight;
+        canvasEl.style.width = containerWidth + 'px';
+        canvasEl.style.height = containerHeight + 'px';
+        
+        const ctx = canvasEl.getContext('2d');
+        const originalData = originalChart.data;
+        const originalConfig = originalChart.config;
+        
+        // Deep clone the options
+        const zoomOptions = JSON.parse(JSON.stringify(originalChart.options));
+        
+        // Configure for zoom view
+        zoomOptions.responsive = false; // We're setting explicit size
+        zoomOptions.maintainAspectRatio = false;
+        zoomOptions.plugins = zoomOptions.plugins || {};
+        
+        // Enhanced legend
+        zoomOptions.plugins.legend = {
+            display: true,
+            position: 'top',
+            labels: {
+                font: { size: 14, weight: 'bold' },
+                padding: 15,
+                usePointStyle: true
+            }
+        };
+        
+        // Enhanced title if exists
+        if (zoomOptions.plugins.title) {
+            zoomOptions.plugins.title.font = {
+                size: 18,
+                weight: 'bold'
+            };
+            zoomOptions.plugins.title.padding = {
+                top: 15,
+                bottom: 25
+            };
+        }
+        
+        // Enhanced tooltip
+        if (zoomOptions.plugins.tooltip) {
+            zoomOptions.plugins.tooltip = {
+                ...zoomOptions.plugins.tooltip,
+                titleFont: { size: 14, weight: 'bold' },
+                bodyFont: { size: 13 },
+                padding: 12,
+                displayColors: true
+            };
+        }
+        
+        // Enhanced scales
+        if (zoomOptions.scales) {
+            if (zoomOptions.scales.x) {
+                zoomOptions.scales.x.ticks = {
+                    ...zoomOptions.scales.x.ticks,
+                    font: { size: 12 },
+                    maxRotation: 45,
+                    minRotation: 45
+                };
+            }
+            if (zoomOptions.scales.y) {
+                zoomOptions.scales.y.ticks = {
+                    ...zoomOptions.scales.y.ticks,
+                    font: { size: 12 }
+                };
+            }
+        }
+        
+        // Create enhanced datasets with better visibility
+        const enhancedDatasets = originalData.datasets.map((dataset, index) => {
+            const enhanced = JSON.parse(JSON.stringify(dataset));
+            
+            // Check if this is a mixed chart (bar + line)
+            const isMixedChart = originalData.datasets.some(d => d.type && d.type !== originalConfig.type);
+            const datasetType = enhanced.type || originalConfig.type;
+            
+            // For line charts, enhance points
+            if (datasetType === 'line') {
+                enhanced.pointRadius = 5;
+                enhanced.pointHoverRadius = 8;
+                enhanced.borderWidth = 3;
+                enhanced.pointBorderWidth = 2;
+                if (!enhanced.pointBackgroundColor) {
+                    enhanced.pointBackgroundColor = enhanced.borderColor || 'rgba(13, 79, 60, 1)';
+                }
+            }
+            
+            // For bar charts, enhance bars
+            if (datasetType === 'bar') {
+                enhanced.borderWidth = 2;
+                enhanced.borderRadius = 6;
+            }
+            
+            return enhanced;
+        });
+        
+        // Create new chart instance
+        try {
+            // For mixed charts, we need to handle each dataset type
+            const chartConfig = {
+                type: originalConfig.type,
+                data: {
+                    labels: originalData.labels,
+                    datasets: enhancedDatasets
+                },
+                options: zoomOptions
+            };
+            
+            zoomChartInstance = new Chart(ctx, chartConfig);
+            
+            // Force resize after creation to ensure proper rendering
+            setTimeout(() => {
+                if (zoomChartInstance) {
+                    zoomChartInstance.resize();
+                    // Update again after a short delay to ensure all elements render
+                    setTimeout(() => {
+                        if (zoomChartInstance) {
+                            zoomChartInstance.update('none');
+                        }
+                    }, 100);
+                }
+            }, 100);
+        } catch (error) {
+            console.error('Error creating zoom chart:', error);
+            alert('Error displaying chart. Please try again.');
+            closeChartZoom();
+        }
+    }, 200);
+    
+    // Close handlers
+    if (closeBtn) {
+        closeBtn.onclick = () => closeChartZoom();
+    }
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closeChartZoom();
+        }
+    };
+    
+    // ESC key to close
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            closeChartZoom();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+    
+    // Handle window resize
+    const resizeHandler = () => {
+        if (zoomChartInstance && modal.classList.contains('active')) {
+            const modalBody = canvasEl.parentElement;
+            const containerWidth = modalBody.clientWidth - 48;
+            const containerHeight = Math.min(600, window.innerHeight * 0.6);
+            
+            canvasEl.width = containerWidth;
+            canvasEl.height = containerHeight;
+            canvasEl.style.width = containerWidth + 'px';
+            canvasEl.style.height = containerHeight + 'px';
+            
+            setTimeout(() => {
+                if (zoomChartInstance) {
+                    zoomChartInstance.resize();
+                }
+            }, 100);
+        }
+    };
+    
+    window.addEventListener('resize', resizeHandler);
+    modal._resizeHandler = resizeHandler;
+}
+
+function closeChartZoom() {
+    const modal = document.getElementById('chart-zoom-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Remove resize handler
+        if (modal._resizeHandler) {
+            window.removeEventListener('resize', modal._resizeHandler);
+            modal._resizeHandler = null;
+        }
+    }
+    
+    if (zoomChartInstance) {
+        zoomChartInstance.destroy();
+        zoomChartInstance = null;
+    }
+}
+
+// Initialize chart zoom on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers to chart containers
+    function attachChartZoomHandlers() {
+        const chartContainers = document.querySelectorAll('.chart-zoomable');
+        chartContainers.forEach(container => {
+            // Remove existing handler if any
+            const newHandler = function() {
+                const chartType = this.getAttribute('data-chart');
+                if (chartType && (typeof dailyPnlChart !== 'undefined' || typeof monthlyPnlChart !== 'undefined')) {
+                    openChartZoom(chartType);
+                }
+            };
+            container.removeEventListener('click', container._zoomHandler);
+            container._zoomHandler = newHandler;
+            container.addEventListener('click', container._zoomHandler);
+        });
+    }
+    
+    // Initial attachment
+    attachChartZoomHandlers();
+    
+    // Re-attach after charts are updated (polling approach)
+    let checkInterval = setInterval(() => {
+        const chartContainers = document.querySelectorAll('.chart-zoomable');
+        let needsAttach = false;
+        chartContainers.forEach(container => {
+            if (!container._zoomHandler) {
+                needsAttach = true;
+            }
+        });
+        if (needsAttach) {
+            attachChartZoomHandlers();
+        }
+        // Stop checking after charts are loaded
+        if (typeof dailyPnlChart !== 'undefined' && typeof monthlyPnlChart !== 'undefined') {
+            if (dailyPnlChart && monthlyPnlChart) {
+                clearInterval(checkInterval);
+            }
+        }
+    }, 1000);
+    
+    // Also attach when window loads
+    window.addEventListener('load', () => {
+        setTimeout(attachChartZoomHandlers, 500);
+    });
 });
 
 // Format phone number input
@@ -324,4 +672,120 @@ if (mobileMenuToggle && navLinks) {
         }
     });
 }
+
+// ============================================
+// INTERACTIVE ACTIONS & ANIMATIONS
+// ============================================
+
+// Scroll Animation Observer - Minimal
+const scrollObserverOptions = {
+    threshold: 0.05,
+    rootMargin: '0px 0px -20px 0px'
+};
+
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            entry.target.style.opacity = '1';
+        }
+    });
+}, scrollObserverOptions);
+
+// Add interactive actions on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Observe all cards for scroll animations - minimal
+    const cards = document.querySelectorAll('.overview-card, .perf-card, .workflow-step, .p-l-stat-card');
+    cards.forEach((card) => {
+        scrollObserver.observe(card);
+    });
+    
+    // Removed random animations for cleaner experience
+    
+    // Scroll spy for navigation
+    const sections = document.querySelectorAll('section[id]');
+    const navLinksAll = document.querySelectorAll('.nav-link');
+    
+    function updateActiveNav() {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (window.pageYOffset >= sectionTop - 200) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinksAll.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', updateActiveNav);
+    updateActiveNav();
+    
+    // Enhanced navbar scroll effect
+    let lastScroll = 0;
+    const navbar = document.querySelector('.navbar');
+    
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Simplified navbar scroll - no transform animations
+            
+            lastScroll = currentScroll;
+        });
+    }
+    
+    // Removed random background pattern and card shuffle animations for cleaner experience
+    
+    // Initialize AOS (Animate On Scroll)
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 300,
+            easing: 'ease-out',
+            once: true,
+            offset: 50,
+            delay: 0,
+            disable: 'mobile' // Disable on mobile for better performance
+        });
+    }
+    
+    // Initialize GSAP ScrollTrigger - Reduced animations
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Minimal animations - just fade in
+        gsap.from('.hero-headline', {
+            duration: 0.3,
+            opacity: 0,
+            ease: 'power1.out'
+        });
+        
+        gsap.from('.hero-description', {
+            duration: 0.3,
+            opacity: 0,
+            delay: 0.1,
+            ease: 'power1.out'
+        });
+        
+        gsap.from('.hero-cta', {
+            duration: 0.3,
+            opacity: 0,
+            delay: 0.2,
+            ease: 'power1.out'
+        });
+        
+        // Disable parallax and card animations for cleaner look
+    }
+});
 

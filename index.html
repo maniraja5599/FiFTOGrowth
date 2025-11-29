@@ -9,142 +9,110 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <img src="logo.png" alt="FiFTO Logo" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-text">
-                    <div class="logo-container">
-                        <span class="fifto-logo-header">F<span class="i-letter"><span class="i-stem">i</span></span>FT<span class="red-letter">O</span></span>
-                        <div class="logo-slogan-wrapper">
-                            <span class="logo-slogan">Your trusted partner in <span class="slogan-highlight">financial</span> growth</span>
-                            <div class="logo-lines">
-                                <div class="logo-line logo-line-green"></div>
-                                <div class="logo-line logo-line-red"></div>
-                            </div>
-                        </div>
+    <!-- Top Navigation Panel -->
+    <nav class="left-nav-panel">
+        <div class="nav-brand-left">
+            <div class="logo-container-left">
+                <span class="fifto-logo-left">
+                    <span class="logo-letter green-letter">F</span>
+                    <span class="logo-letter green-letter i-container">
+                        <span class="i-dot red-dot">●</span>
+                        <span class="i-stem">i</span>
+                    </span>
+                    <span class="logo-letter green-letter">F</span>
+                    <span class="logo-letter green-letter">T</span>
+                    <span class="logo-letter red-letter">O</span>
+                </span>
+                <div class="logo-slogan-container">
+                    <span class="logo-slogan-left">
+                        <span class="slogan-green">Your trusted partner in</span>
+                        <span class="slogan-red"> financial growth</span>
+                    </span>
+                    <div class="slogan-lines">
+                        <span class="slogan-line-green"></span>
+                        <span class="slogan-line-red"></span>
                     </div>
                 </div>
             </div>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="nav-links">
-                <a href="#overview" class="nav-link">Overview</a>
-                <a href="#performance" class="nav-link">Performance</a>
-                <a href="#p-l" class="nav-link">Live P&L</a>
-                <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </div>
+        </div>
+        <div class="nav-links-left">
+            <a href="#" class="nav-link-left">
+                <i class="fas fa-home nav-icon"></i>
+                <span class="nav-text">Home</span>
+            </a>
+            <a href="#overview" class="nav-link-left">
+                <i class="fas fa-chart-pie nav-icon"></i>
+                <span class="nav-text">Overview</span>
+            </a>
+            <a href="#performance" class="nav-link-left">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-text">Performance</span>
+            </a>
+            <a href="#p-l" class="nav-link-left">
+                <i class="fas fa-dollar-sign nav-icon"></i>
+                <span class="nav-text">Live P&L</span>
+            </a>
+            <a href="#how-it-works" class="nav-link-left">
+                <i class="fas fa-cogs nav-icon"></i>
+                <span class="nav-text">How It Works</span>
+            </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-background"></div>
+        <div class="hero-background">
+            <div class="hero-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
         <div class="container">
             <div class="hero-content">
                 <div class="hero-main">
-                    <div class="hero-badge">
-                        <span class="badge-icon">🏆</span>
-                        <span>Verified Performance • Live P&L Tracking</span>
-                    </div>
                     <h1 class="hero-headline">
-                        Institutional-Grade<br>
-                        <span class="hero-highlight">Portfolio Management</span><br>
-                        for High Net Worth Individuals
+                        <span class="hero-text-small">Institutional-Grade</span>
+                        <span class="hero-highlight-main">Portfolio Management</span>
+                        <span class="hero-text-small">for High Net Worth Individuals</span>
                     </h1>
-                    <p class="hero-description">
-                        Automated intraday trading strategies with complete transparency. 
-                        Zero overnight risk. Verified end-of-day P&L. 
-                        <strong>Track your portfolio performance in real-time.</strong>
+                    <p class="hero-tagline-new">
+                        Experience the quiet confidence of aggressive growth with zero overnight exposure.
                     </p>
-                    <div class="hero-cta">
-                        <a href="#p-l" class="btn btn-primary btn-large">
-                            <span>View Live P&L</span>
-                            <span class="btn-arrow">→</span>
-                        </a>
-                        <a href="#performance" class="btn btn-secondary btn-large">Performance Metrics</a>
-                    </div>
                 </div>
-                <div class="hero-stats">
-                    <div class="hero-stat-card">
-                        <div class="stat-icon">💰</div>
-                        <div class="stat-content">
-                            <div class="stat-value" id="hero-aum">₹3.7Cr</div>
-                            <div class="stat-label">Assets Under Management</div>
+                <div class="hero-features-new">
+                    <a href="#p-l" class="feature-item-new">
+                        <div class="feature-icon">✓</div>
+                        <span>Verified P&L</span>
+                    </a>
+                    <div class="feature-item-new">
+                        <div class="feature-icon">✓</div>
+                        <span>Zero Overnight Risk</span>
+                    </div>
+                    <a href="https://www.youtube.com/@OfficialFiFTO/streams" target="_blank" rel="noopener" class="feature-item-new">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-content">
+                            <span>Real-Time Tracking</span>
+                            <span class="youtube-logo-btn">
+                                <svg width="80" height="18" viewBox="0 0 90 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 0 13.285 0 13.285 0C13.285 0 3.35042 0 1.12323 0.597366C-0.106779 0.926623 -1.07338 1.89323 -1.40263 3.12324C-2 5.35042 -2 10 -2 10C-2 10 -2 14.6496 -1.40263 16.8768C-1.07338 18.1068 -0.106779 19.0734 1.12323 19.4026C3.35042 20 13.285 20 13.285 20C13.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5701 5.35042 27.9727 3.12324Z" fill="#FF0000"/>
+                                    <path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"/>
+                                </svg>
+                            </span>
                         </div>
-                    </div>
-                    <div class="hero-stat-card">
-                        <div class="stat-icon">📈</div>
-                        <div class="stat-content">
-                            <div class="stat-value" id="hero-return">+126%</div>
-                            <div class="stat-label">Total Return</div>
-                        </div>
-                    </div>
-                    <div class="hero-stat-card">
-                        <div class="stat-icon">👥</div>
-                        <div class="stat-content">
-                            <div class="stat-value" id="hero-clients">3</div>
-                            <div class="stat-label">Active Clients</div>
-                        </div>
-                    </div>
-                    <div class="hero-stat-card">
-                        <div class="stat-icon">✅</div>
-                        <div class="stat-content">
-                            <div class="stat-value">100%</div>
-                            <div class="stat-label">Verified Performance</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
-            </div>
-            <div class="hero-features-bar">
-                <div class="hero-feature">
-                    <div class="feature-check">✓</div>
-                    <span>Verified EOD P&L</span>
-                </div>
-                <div class="hero-feature">
-                    <div class="feature-check">✓</div>
-                    <span>Zero Overnight Risk</span>
-                </div>
-                <div class="hero-feature">
-                    <div class="feature-check">✓</div>
-                    <span>Real-Time Tracking</span>
-                </div>
-                <div class="hero-feature">
-                    <div class="feature-check">✓</div>
-                    <span>Transparent Reporting</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Stats Bar -->
-    <section class="quick-stats-bar">
-        <div class="container">
-            <div class="quick-stats">
-                <div class="quick-stat">
-                    <div class="quick-stat-value" id="quick-capital">₹3.7Cr</div>
-                    <div class="quick-stat-label">Assets Under Management</div>
-                </div>
-                <div class="quick-stat">
-                    <div class="quick-stat-value" id="quick-return">-</div>
-                    <div class="quick-stat-label">Total Return</div>
-                </div>
-                <div class="quick-stat">
-                    <div class="quick-stat-value" id="quick-clients">3</div>
-                    <div class="quick-stat-label">Active Clients</div>
-                </div>
-                <div class="quick-stat">
-                    <div class="quick-stat-value">100%</div>
-                    <div class="quick-stat-label">Verified Performance</div>
+                <div class="hero-disclaimer">
+                    <p>Disclaimer: We are not SEBI registered analysts or investment advisors. All trading decisions are at your own risk.</p>
                 </div>
             </div>
         </div>
@@ -153,27 +121,27 @@
     <!-- Overview Section -->
     <section id="overview" class="overview-section">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header" data-aos="fade-up">
                 <h2 class="section-title">Why Choose FiFTO</h2>
                 <p class="section-subtitle">Institutional-grade portfolio management tailored for high-net-worth individuals</p>
             </div>
             <div class="overview-grid">
-                <div class="overview-card">
+                <div class="overview-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="overview-icon">🎯</div>
                     <h3>Systematic Approach</h3>
                     <p>Rule-based, emotion-free trading strategies powered by automated execution systems. No human bias, consistent performance.</p>
                 </div>
-                <div class="overview-card">
+                <div class="overview-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="overview-icon">🛡️</div>
                     <h3>Risk Management</h3>
                     <p>Intraday-only trading eliminates overnight exposure. Fixed per-trade risk limits and automated stop-loss protection.</p>
                 </div>
-                <div class="overview-card">
+                <div class="overview-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="overview-icon">📊</div>
                     <h3>Complete Transparency</h3>
                     <p>Daily EOD P&L updates with verified Flattrade links. Real-time performance tracking and comprehensive reporting.</p>
                 </div>
-                <div class="overview-card">
+                <div class="overview-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="overview-icon">💰</div>
                     <h3>Performance-Based Fees</h3>
                     <p>No profit, no fees. Transparent profit-sharing model ensures alignment with client success.</p>
@@ -185,27 +153,27 @@
     <!-- Performance Summary -->
     <section id="performance" class="performance-summary">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header" data-aos="fade-up">
                 <h2 class="section-title">Performance Metrics</h2>
                 <p class="section-subtitle">Real-time performance indicators and risk metrics</p>
             </div>
             <div class="performance-cards">
-                <div class="perf-card">
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="100">
                     <div class="perf-icon">💰</div>
                     <h3>Capital Under Management</h3>
                     <p class="perf-value" id="capital-display">₹1 Crore</p>
                 </div>
-                <div class="perf-card">
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="200">
                     <div class="perf-icon">📈</div>
                     <h3>Total Return</h3>
                     <p class="perf-value" id="total-return-display">-</p>
                 </div>
-                <div class="perf-card">
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="300">
                     <div class="perf-icon">📊</div>
                     <h3>Max Drawdown</h3>
                     <p class="perf-value" id="max-drawdown">-</p>
                 </div>
-                <div class="perf-card">
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="400">
                     <div class="perf-icon">💰</div>
                     <h3>Max Profit</h3>
                     <p class="perf-value" id="max-profit">-</p>
@@ -219,12 +187,13 @@
         <div class="container">
             <div class="p-l-header-main">
                 <div>
-                    <h2 class="section-title" id="client-name">Live Performance Dashboard</h2>
+                    <h2 class="section-title" id="client-name">SUNKULA PUSHPAVATHI</h2>
                     <p class="p-l-subtitle" id="client-info">Real-time P&L tracking and analytics</p>
                 </div>
                 <div class="p-l-header-actions">
                     <div class="p-l-source">
                         <p><strong>Data Source:</strong> <a href="#" id="verified-source-link" target="_blank" rel="noopener">Flattrade Verified P&L</a></p>
+                        <p><strong>Daily P&L Videos:</strong> <a href="https://www.youtube.com/@OfficialFiFTO/streams" target="_blank" rel="noopener" class="youtube-link">📺 Watch Live Tracking Videos</a></p>
                         <p class="last-update">Last Updated: <span id="last-update-time">Loading...</span></p>
                     </div>
                     <div class="p-l-actions-buttons">
@@ -234,20 +203,30 @@
                 </div>
             </div>
             <div class="client-selector-container">
-                <div class="client-selector">
-                    <label><strong>Select Client(s):</strong></label>
-                    <div class="client-checkboxes">
-                        <label class="client-checkbox-label">
-                            <input type="checkbox" id="select-all-clients" value="all">
-                            <span><strong>All Clients (Combined)</strong></span>
-                        </label>
-                        <div id="client-checkboxes-list">
-                            <!-- Client checkboxes will be added here -->
-                        </div>
+                <div class="client-selector-header">
+                    <div class="selector-title">
+                        <span class="selector-icon">👥</span>
+                        <h3>Select Client(s) to View</h3>
                     </div>
-                    <div class="client-selector-info">
-                        <span id="selected-clients-count">0 clients selected</span>
-                        <button id="clear-selection" class="btn-link">Clear</button>
+                    <div class="selector-actions">
+                        <button id="select-all-clients" class="btn-select-all" title="Select all clients">
+                            <span>✓</span> Select All
+                        </button>
+                        <button id="clear-selection" class="btn-clear-selection" title="Clear selection">
+                            <span>✕</span> Clear
+                        </button>
+                    </div>
+                </div>
+                <div class="client-selector-grid" id="client-selector-grid">
+                    <!-- Client selection cards will be added here -->
+                </div>
+                <div class="client-selector-footer">
+                    <div class="selection-info">
+                        <span class="info-icon">ℹ️</span>
+                        <span id="selected-clients-count">No clients selected</span>
+                    </div>
+                    <div class="selection-hint">
+                        Click on client cards to select/deselect. Multiple selections will show combined data.
                     </div>
                 </div>
             </div>
@@ -266,11 +245,6 @@
                     <h4>Total P&L</h4>
                     <p class="stat-value" id="total-pnl">₹0</p>
                     <p class="stat-percent" id="total-percent">0%</p>
-                </div>
-                <div class="p-l-stat-card">
-                    <h4>Period</h4>
-                    <p class="stat-value" id="period-range">-</p>
-                    <p class="stat-percent" id="total-days">0 days</p>
                 </div>
                 <div class="p-l-stat-card">
                     <h4>Max Drawdown</h4>
@@ -297,28 +271,77 @@
                     <p class="stat-value" id="max-loss-day">₹0</p>
                     <p class="stat-percent" id="max-loss-date">-</p>
                 </div>
+                <div class="p-l-stat-card">
+                    <h4>Total Win Days</h4>
+                    <p class="stat-value" id="total-win-days">-</p>
+                    <p class="stat-percent">Profitable days</p>
+                </div>
+                <div class="p-l-stat-card">
+                    <h4>Total Loss Days</h4>
+                    <p class="stat-value" id="total-loss-days">-</p>
+                    <p class="stat-percent">Loss days</p>
+                </div>
+                <div class="p-l-stat-card">
+                    <h4>Winning Percentage</h4>
+                    <p class="stat-value" id="winning-percentage">-</p>
+                    <p class="stat-percent">Win rate</p>
+                </div>
+                <div class="p-l-stat-card">
+                    <h4>Avg Profit Per Day</h4>
+                    <p class="stat-value" id="avg-profit-per-day">-</p>
+                    <p class="stat-percent">On winning days</p>
+                </div>
+                <div class="p-l-stat-card">
+                    <h4>Avg Loss Per Day</h4>
+                    <p class="stat-value" id="avg-loss-per-day">-</p>
+                    <p class="stat-percent">On losing days</p>
+                </div>
             </div>
-            <div class="p-l-chart-container-main">
-                <h3>Cumulative P&L Performance</h3>
-                <canvas id="dailyPnlChart"></canvas>
+            <div class="p-l-charts-grid">
+                <div class="p-l-chart-container-main chart-zoomable" data-chart="daily">
+                    <h3>Daily Cumulative P&L Performance</h3>
+                    <canvas id="dailyPnlChart"></canvas>
+                    <div class="chart-zoom-hint">Click to zoom</div>
+                </div>
+                <div class="p-l-chart-container-main chart-zoomable" data-chart="monthly">
+                    <h3>Monthly Performance Chart</h3>
+                    <canvas id="monthlyPnlChart"></canvas>
+                    <div class="chart-zoom-hint">Click to zoom</div>
+                </div>
+            </div>
+            
+            <!-- Chart Zoom Modal -->
+            <div id="chart-zoom-modal" class="chart-zoom-modal">
+                <div class="chart-zoom-modal-content">
+                    <div class="chart-zoom-modal-header">
+                        <h3 id="chart-zoom-title">Chart</h3>
+                        <button class="chart-zoom-close" id="chart-zoom-close">&times;</button>
+                    </div>
+                    <div class="chart-zoom-modal-body">
+                        <canvas id="chart-zoom-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
             </div>
             <div class="p-l-table-container">
-                <table class="p-l-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Daily P&L</th>
-                            <th>Daily %</th>
-                            <th>Cumulative P&L</th>
-                            <th>Cumulative %</th>
-                        </tr>
-                    </thead>
-                    <tbody id="p-l-table-body">
-                        <tr>
-                            <td colspan="5" class="loading-text">Loading P&L data...</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="p-l-table-wrapper">
+                    <table class="p-l-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Daily P&L</th>
+                                <th>Daily %</th>
+                                <th>Cumulative P&L</th>
+                                <th>Cumulative %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p-l-table-body">
+                            <tr>
+                                <td colspan="5" class="loading-text">Loading P&L data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
@@ -366,27 +389,73 @@
                 <p class="section-subtitle">Performance-based fee structure aligned with your success</p>
             </div>
             <div class="profit-content">
-                <div class="profit-features">
-                    <div class="profit-feature">
-                        <span class="feature-icon">✓</span>
-                        <p><strong>No profit → No fees</strong></p>
+                <div class="profit-fee-structure">
+                    <div class="fee-section">
+                        <h3>Monthly Fixed Charges</h3>
+                        <div class="fee-items">
+                            <div class="fee-item">
+                                <div>
+                                    <span class="fee-label">Portfolio Management Fee</span>
+                                    <span class="fee-value">₹5,000 per account/month</span>
+                                </div>
+                                <span class="fee-date">(Payment due: 1st of every month)</span>
+                            </div>
+                            <div class="fee-item">
+                                <div>
+                                    <span class="fee-label">Trading Platform Fee</span>
+                                    <span class="fee-value">₹5,000 per account/month</span>
+                                </div>
+                                <span class="fee-date">(Payment due: 1st of every month)</span>
+                            </div>
+                        </div>
+                        <div class="brokerage-info">
+                            <h4>Brokerage & Trading Platform</h4>
+                            <p>Our intraday trading strategy involves frequent trades. We recommend using brokers with <strong>free brokerage</strong> to maximize your returns.</p>
+                            <div class="brokerage-links">
+                                <div class="brokerage-link-item">
+                                    <span class="broker-label">Recommended Broker (FREE):</span>
+                                    <a href="https://openaccount.flattrade.in/O_FT003862" target="_blank" rel="noopener" class="broker-link">Flattrade - Open Account</a>
+                                </div>
+                                <div class="brokerage-link-item">
+                                    <span class="broker-label">Free Brokerage - Kotak:</span>
+                                    <a href="https://kneo.onelink.me/MRGO/t9ztv1vr?s=rne_profile" target="_blank" rel="noopener" class="broker-link">Kotak Neo - Open Account</a>
+                                </div>
+                                <div class="brokerage-link-item">
+                                    <span class="broker-label">Alternative Broker:</span>
+                                    <a href="https://www.finvasia.com" target="_blank" rel="noopener" class="broker-link">Finvasia - Open Account</a>
+                                </div>
+                                <div class="brokerage-link-item">
+                                    <span class="broker-label">Trading Platform:</span>
+                                    <a href="https://www.tradetron.tech?ref=maniraja" target="_blank" rel="noopener" class="broker-link">Tradetron - Automated Trading</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="profit-feature">
-                        <span class="feature-icon">✓</span>
-                        <p><strong>Performance-based compensation</strong></p>
+                    <div class="fee-section">
+                        <h3>Profit Sharing (on Net Profit after Tax & Brokerage)</h3>
+                        <div class="profit-sharing-tiers">
+                            <div class="profit-tier">
+                                <span class="tier-range">Up to ₹1 Crore</span>
+                                <span class="tier-percentage">20%</span>
+                            </div>
+                            <div class="profit-tier">
+                                <span class="tier-range">₹1 Crore - ₹5 Crore</span>
+                                <span class="tier-percentage">18%</span>
+                            </div>
+                            <div class="profit-tier">
+                                <span class="tier-range">₹5 Crore - ₹10 Crore</span>
+                                <span class="tier-percentage">15%</span>
+                            </div>
+                            <div class="profit-tier">
+                                <span class="tier-range">Above ₹10 Crore</span>
+                                <span class="tier-percentage">10%</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="profit-feature">
-                        <span class="feature-icon">✓</span>
-                        <p><strong>Transparent fee structure</strong></p>
+                    <div class="profit-note">
+                        <p><strong>Note:</strong> Profit sharing is calculated only on net profit (after deducting taxes and brokerage charges). No profit, no profit-sharing fees.</p>
+                        <p><strong>Payment Date:</strong> Profit sharing payments are made before the 5th of every month.</p>
                     </div>
-                    <div class="profit-feature">
-                        <span class="feature-icon">✓</span>
-                        <p><strong>Aligned interests</strong></p>
-                    </div>
-                </div>
-                <div class="profit-example">
-                    <h3>Example</h3>
-                    <p>If your portfolio generates ₹10 Lakhs profit in a month, fees are calculated as a percentage of profits only. No hidden charges, no upfront costs.</p>
                 </div>
             </div>
         </div>
@@ -399,82 +468,44 @@
                 <h2 class="section-title">Future Roadmap</h2>
                 <p class="section-subtitle">Continuous innovation and service expansion</p>
             </div>
-            <div class="roadmap-content">
-                <p><strong>Positional NFO Strategies (Optional):</strong> FiFTO will soon introduce optional positional NFO strategies for clients who want overnight exposure with strict risk limits. This is 100% optional and will be clearly communicated.</p>
+            <div class="roadmap-grid">
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">📊</div>
+                    <h3>Positional NFO Strategies</h3>
+                    <p>Optional positional NFO strategies for clients who want overnight exposure with strict risk limits. This is 100% optional and will be clearly communicated.</p>
+                    <span class="roadmap-status">Coming Soon</span>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">📱</div>
+                    <h3>Mobile App</h3>
+                    <p>Dedicated mobile application for iOS and Android to track your portfolio performance, view P&L reports, and receive real-time updates on the go.</p>
+                    <span class="roadmap-status">In Development</span>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🔔</div>
+                    <h3>Real-Time Notifications</h3>
+                    <p>Push notifications for daily P&L updates, trade alerts, and important portfolio milestones. Stay informed instantly.</p>
+                    <span class="roadmap-status">Planned</span>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">📈</div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Enhanced analytics dashboard with detailed performance metrics, risk analysis, and predictive insights for better decision-making.</p>
+                    <span class="roadmap-status">Planned</span>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🤝</div>
+                    <h3>Multi-Broker Support</h3>
+                    <p>Expand support for multiple broker platforms beyond Flattrade, giving clients more flexibility in their trading accounts.</p>
+                    <span class="roadmap-status">Planned</span>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🔐</div>
+                    <h3>Enhanced Security</h3>
+                    <p>Two-factor authentication, encrypted data transmission, and advanced security protocols to protect client information and portfolios.</p>
+                    <span class="roadmap-status">In Development</span>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Why Choose FiFTO</h2>
-                <p class="section-subtitle">Trusted by high-net-worth individuals</p>
-            </div>
-            <div class="testimonial-cards">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"FiFTO provides peace of mind with consistent intraday performance and complete transparency."</p>
-                    <p class="testimonial-author">— Verified Performance</p>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Automation removes emotional trading and improves returns through systematic execution."</p>
-                    <p class="testimonial-author">— Rule-Based Strategy</p>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Transparent P&L tracking and professional portfolio management for HNI clients."</p>
-                    <p class="testimonial-author">— Daily EOD Updates</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Form -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Schedule a Consultation</h2>
-                <p class="section-subtitle">Get in touch to discuss your portfolio management needs</p>
-            </div>
-            <form id="consultation-form" class="contact-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="name">Name *</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="whatsapp">WhatsApp *</label>
-                        <input type="tel" id="whatsapp" name="whatsapp" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="capital">Capital Amount *</label>
-                        <input type="text" id="capital" name="capital" placeholder="e.g., ₹1 Crore" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="experience">Experience Level *</label>
-                        <select id="experience" name="experience" required>
-                            <option value="">Select experience level</option>
-                            <option value="beginner">Beginner</option>
-                            <option value="intermediate">Intermediate</option>
-                            <option value="advanced">Advanced</option>
-                            <option value="professional">Professional</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="call-time">Preferred Call Time *</label>
-                        <input type="text" id="call-time" name="call-time" placeholder="e.g., Weekdays 10 AM - 2 PM" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-submit">Request Consultation</button>
-            </form>
         </div>
     </section>
 
@@ -484,7 +515,16 @@
             <div class="footer-content">
                 <div class="footer-main">
                     <div class="footer-brand">
-                        <div class="footer-logo">F<span class="i-letter"><span class="i-stem">i</span></span>FT<span class="red-letter">O</span></div>
+                        <div class="footer-logo">
+                            <span class="logo-letter green-letter">F</span>
+                            <span class="logo-letter green-letter i-container">
+                                <span class="i-dot red-dot">●</span>
+                                <span class="i-stem">i</span>
+                            </span>
+                            <span class="logo-letter green-letter">F</span>
+                            <span class="logo-letter green-letter">T</span>
+                            <span class="logo-letter red-letter">O</span>
+                        </div>
                         <p class="footer-tagline">Premium Portfolio Management Services</p>
                     </div>
                     <div class="footer-links-section">
@@ -497,15 +537,23 @@
                         </div>
                         <div class="footer-links-group">
                             <h4>Resources</h4>
-                            <a href="#contact">Contact Us</a>
                             <a href="#privacy">Privacy Policy</a>
                             <a href="#terms">Terms of Service</a>
                             <a href="#disclaimer">Disclaimer</a>
                         </div>
                         <div class="footer-links-group">
                             <h4>Contact</h4>
-                            <p>Email: info@fifto.in</p>
-                            <p>Phone: +91-XXXXX-XXXXX</p>
+                            <p>Email: <a href="mailto:official.fifto@gmail.com" style="color: inherit; text-decoration: none;">official.fifto@gmail.com</a></p>
+                            <p class="footer-socials">
+                                <a href="https://www.youtube.com/@OfficialFiFTO/streams" target="_blank" rel="noopener" class="footer-social-link footer-social-youtube">
+                                    <i class="fab fa-youtube footer-social-icon"></i>
+                                    <span>YouTube</span>
+                                </a>
+                                <a href="https://www.instagram.com/fifto.official/?hl=en" target="_blank" rel="noopener" class="footer-social-link footer-social-instagram">
+                                    <i class="fab fa-instagram footer-social-icon"></i>
+                                    <span>Instagram</span>
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -519,59 +567,128 @@
 
     <!-- Client Management Modal -->
     <div id="client-management-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content client-management-modal">
             <div class="modal-header">
-                <h2>Manage Clients</h2>
-                <button class="modal-close" id="close-modal">&times;</button>
+                <div class="modal-header-content">
+                    <h2>📊 Client Management</h2>
+                    <p class="modal-subtitle">Add, edit, and manage your client accounts</p>
+                </div>
+                <button class="modal-close" id="close-modal" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="add-client-form">
-                    <h3>Add New Client</h3>
-                    <form id="add-client-form">
-                        <div class="form-group">
-                            <label for="client-name-input">Client Name:</label>
-                            <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
-                                <input type="text" id="client-name-input" placeholder="Enter client name or fetch from URL" required style="flex: 1;">
-                                <button type="button" id="fetch-name-btn" class="btn btn-secondary" style="white-space: nowrap; padding: 0.75rem 1rem;">Fetch Name</button>
-                            </div>
-                            <small style="color: #666; font-size: 0.85rem; margin-top: 0.25rem; display: block;">Enter P&L URL below and click "Fetch Name" to auto-populate</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="client-url-input">Flattrade P&L URL:</label>
-                            <input type="url" id="client-url-input" placeholder="https://wall.flattrade.in/pnl/..." required>
-                        </div>
-                        <div class="form-group">
-                            <label for="client-capital-input">Capital (₹):</label>
-                            <input type="number" id="client-capital-input" placeholder="10000000" value="10000000" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add Client</button>
-                    </form>
+                <!-- Tabs -->
+                <div class="client-tabs">
+                    <button class="tab-btn active" data-tab="add">➕ Add Client</button>
+                    <button class="tab-btn" data-tab="list">👥 Clients List</button>
                 </div>
-                <div class="clients-list">
-                    <h3>Existing Clients</h3>
-                    <div id="clients-list-container">
+
+                <!-- Add Client Tab -->
+                <div class="tab-content active" id="tab-add">
+                    <div class="add-client-form">
+                        <form id="add-client-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="client-url-input">
+                                        <span class="label-icon">🔗</span>
+                                        Flattrade P&L URL
+                                    </label>
+                                    <input type="url" id="client-url-input" placeholder="https://wall.flattrade.in/pnl/..." required>
+                                    <small class="form-hint">Enter the verified P&L link from Flattrade</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="client-name-input">
+                                        <span class="label-icon">👤</span>
+                                        Client Name
+                                    </label>
+                                    <div class="input-with-button">
+                                        <input type="text" id="client-name-input" placeholder="Enter client name" required>
+                                        <button type="button" id="fetch-name-btn" class="btn-icon" title="Fetch name from URL">
+                                            <span>🔍</span>
+                                        </button>
+                                    </div>
+                                    <small class="form-hint">Click the search icon to auto-fetch name from URL</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="client-capital-input">
+                                        <span class="label-icon">💰</span>
+                                        Capital Amount (₹)
+                                    </label>
+                                    <input type="number" id="client-capital-input" placeholder="10000000" value="10000000" required>
+                                    <small class="form-hint">Enter capital in rupees (e.g., 10000000 for ₹1 Crore)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    <span>➕ Add Client</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Clients List Tab -->
+                <div class="tab-content" id="tab-list">
+                    <div class="clients-list-header">
+                        <div class="clients-count">
+                            <span class="count-number" id="clients-count">0</span>
+                            <span class="count-label">Client(s)</span>
+                        </div>
+                        <button id="clear-all-clients-btn" class="btn btn-danger btn-small" style="display: none;">
+                            🗑️ Clear All
+                        </button>
+                    </div>
+                    <div id="clients-list-container" class="clients-list-container">
                         <!-- Clients will be listed here -->
                     </div>
                 </div>
-                <div id="edit-client-form-container" style="display: none;">
-                    <h3>Edit Client</h3>
+
+                <!-- Edit Client Form (Hidden by default) -->
+                <div id="edit-client-form-container" class="edit-form-container" style="display: none;">
+                    <div class="edit-form-header">
+                        <h3>✏️ Edit Client</h3>
+                        <button type="button" class="btn-icon" id="cancel-edit" title="Cancel editing">
+                            <span>✕</span>
+                        </button>
+                    </div>
                     <form id="edit-client-form">
                         <input type="hidden" id="edit-client-id">
-                        <div class="form-group">
-                            <label for="edit-client-name-input">Client Name:</label>
-                            <input type="text" id="edit-client-name-input" placeholder="Enter client name" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edit-client-name-input">
+                                    <span class="label-icon">👤</span>
+                                    Client Name
+                                </label>
+                                <input type="text" id="edit-client-name-input" placeholder="Enter client name" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="edit-client-url-input">Flattrade P&L URL:</label>
-                            <input type="url" id="edit-client-url-input" placeholder="https://wall.flattrade.in/pnl/..." required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edit-client-url-input">
+                                    <span class="label-icon">🔗</span>
+                                    Flattrade P&L URL
+                                </label>
+                                <input type="url" id="edit-client-url-input" placeholder="https://wall.flattrade.in/pnl/..." required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="edit-client-capital-input">Capital (₹):</label>
-                            <input type="number" id="edit-client-capital-input" placeholder="10000000" value="10000000" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edit-client-capital-input">
+                                    <span class="label-icon">💰</span>
+                                    Capital Amount (₹)
+                                </label>
+                                <input type="number" id="edit-client-capital-input" placeholder="10000000" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                            <button type="button" class="btn btn-secondary" id="cancel-edit">Cancel</button>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-edit-2">Cancel</button>
                         </div>
                     </form>
                 </div>

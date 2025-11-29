@@ -8,6 +8,7 @@ const LAST_UPDATE_KEY = 'fifto_last_update';
 
 // Initialize charts
 let dailyPnlChart = null;
+let monthlyPnlChart = null;
 
 // P&L Data Structure
 let pnlData = {
@@ -18,7 +19,7 @@ let pnlData = {
         total: { pnl: 0, percent: 0 }
     },
     capital: 10000000, // ₹1 Crore default
-    clientName: '',
+    clientName: 'SUNKULA PUSHPAVATHI', // Default client name
     clientInfo: ''
 };
 
@@ -109,11 +110,15 @@ function updateUI() {
     const clientInfoEl = document.getElementById('client-info');
     
     if (clientNameEl) {
-        if (pnlData.clientName && pnlData.clientName.trim()) {
+        // Always default to SUNKULA PUSHPAVATHI if no valid client name
+        if (pnlData.clientName && pnlData.clientName.trim() && 
+            pnlData.clientName !== 'No clients added' && 
+            !pnlData.clientName.toLowerCase().startsWith('client')) {
             clientNameEl.textContent = pnlData.clientName.trim();
         } else {
-            // Keep default if no client name available
-            clientNameEl.textContent = 'Live Performance Dashboard';
+            // Default to SUNKULA PUSHPAVATHI
+            clientNameEl.textContent = 'SUNKULA PUSHPAVATHI';
+            pnlData.clientName = 'SUNKULA PUSHPAVATHI';
         }
     }
     
@@ -124,7 +129,9 @@ function updateUI() {
         // Build client info with capital
         let infoText = '';
         
-        if (pnlData.capital && pnlData.capital > 0) {
+        if (pnlData.daily && pnlData.daily.length === 0) {
+            infoText = 'Please add a client to view P&L data';
+        } else if (pnlData.capital && pnlData.capital > 0) {
             const capitalFormatted = pnlData.capital >= 10000000 
                 ? `₹${(pnlData.capital / 10000000).toFixed(2)}Cr`
                 : `₹${(pnlData.capital / 100000).toFixed(2)}L`;
@@ -135,34 +142,20 @@ function updateUI() {
                 const endDate = new Date(sortedData[sortedData.length - 1].date);
                 infoText += ` | Period: ${startDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${endDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
             }
-        } else if (pnlData.clientInfo) {
+        } else if (pnlData.clientInfo && pnlData.clientInfo !== 'Please add a client to view P&L data') {
             infoText = pnlData.clientInfo;
         } else if (sortedData.length > 0) {
             const startDate = new Date(sortedData[0].date);
             const endDate = new Date(sortedData[sortedData.length - 1].date);
             infoText = `Performance from ${startDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${endDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
         } else {
-            infoText = 'Loading client information...';
+            infoText = 'Please add a client to view P&L data';
         }
         
         clientInfoEl.textContent = infoText;
     }
     
-    // Update period range
-    const periodRangeEl = document.getElementById('period-range');
-    const totalDaysEl = document.getElementById('total-days');
-    
-    if (sortedData.length > 0) {
-        const startDate = new Date(sortedData[0].date);
-        const endDate = new Date(sortedData[sortedData.length - 1].date);
-        if (periodRangeEl) {
-            periodRangeEl.textContent = `${startDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} - ${endDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
-        }
-        if (totalDaysEl) {
-            const days = sortedData.length;
-            totalDaysEl.textContent = `${days} trading days`;
-        }
-    }
+    // Period range removed - now shown in client-info instead
     
     // Calculate advanced metrics
     const metrics = calculateAdvancedMetrics(sortedData);
@@ -253,13 +246,79 @@ function updateUI() {
     const maxLossDateEl = document.getElementById('max-loss-date');
     
     if (maxLossDayEl) {
-        maxLossDayEl.textContent = formatCurrency(metrics.maxLossPerDay || 0);
-        maxLossDayEl.className = 'stat-value negative';
+        if (sortedData.length === 0 || metrics.maxLossPerDay === 0) {
+            maxLossDayEl.textContent = 'N/A';
+            maxLossDayEl.className = 'stat-value';
+        } else {
+            maxLossDayEl.textContent = formatCurrency(metrics.maxLossPerDay);
+            maxLossDayEl.className = 'stat-value negative';
+        }
     }
-    if (maxLossDateEl && metrics.maxLossDate) {
-        maxLossDateEl.textContent = metrics.maxLossDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-    } else if (maxLossDateEl) {
-        maxLossDateEl.textContent = '-';
+    if (maxLossDateEl) {
+        if (metrics.maxLossDate) {
+            maxLossDateEl.textContent = metrics.maxLossDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        } else {
+            maxLossDateEl.textContent = sortedData.length === 0 ? 'No data' : '-';
+        }
+    }
+    
+    // Update win/loss days and winning percentage
+    const totalWinDaysEl = document.getElementById('total-win-days');
+    const totalLossDaysEl = document.getElementById('total-loss-days');
+    const winningPercentageEl = document.getElementById('winning-percentage');
+    
+    if (totalWinDaysEl) {
+        if (sortedData.length === 0) {
+            totalWinDaysEl.textContent = 'N/A';
+            totalWinDaysEl.className = 'stat-value';
+        } else {
+            totalWinDaysEl.textContent = `${metrics.totalWinDays} days`;
+            totalWinDaysEl.className = 'stat-value positive';
+        }
+    }
+    
+    if (totalLossDaysEl) {
+        if (sortedData.length === 0) {
+            totalLossDaysEl.textContent = 'N/A';
+            totalLossDaysEl.className = 'stat-value';
+        } else {
+            totalLossDaysEl.textContent = `${metrics.totalLossDays} days`;
+            totalLossDaysEl.className = 'stat-value negative';
+        }
+    }
+    
+    if (winningPercentageEl) {
+        if (sortedData.length === 0) {
+            winningPercentageEl.textContent = 'N/A';
+            winningPercentageEl.className = 'stat-percent';
+        } else {
+            winningPercentageEl.textContent = formatPercent(metrics.winningPercentage);
+            winningPercentageEl.className = 'stat-percent positive';
+        }
+    }
+    
+    // Update average profit and loss per day
+    const avgProfitPerDayEl = document.getElementById('avg-profit-per-day');
+    const avgLossPerDayEl = document.getElementById('avg-loss-per-day');
+    
+    if (avgProfitPerDayEl) {
+        if (sortedData.length === 0 || metrics.totalWinDays === 0) {
+            avgProfitPerDayEl.textContent = 'N/A';
+            avgProfitPerDayEl.className = 'stat-value';
+        } else {
+            avgProfitPerDayEl.textContent = formatCurrency(metrics.averageProfitPerDay);
+            avgProfitPerDayEl.className = 'stat-value positive';
+        }
+    }
+    
+    if (avgLossPerDayEl) {
+        if (sortedData.length === 0 || metrics.totalLossDays === 0) {
+            avgLossPerDayEl.textContent = 'N/A';
+            avgLossPerDayEl.className = 'stat-value';
+        } else {
+            avgLossPerDayEl.textContent = formatCurrency(metrics.averageLossPerDay);
+            avgLossPerDayEl.className = 'stat-value negative';
+        }
     }
     
     // Update performance summary section
@@ -268,21 +327,32 @@ function updateUI() {
     const capitalDisplayEl = document.getElementById('capital-display');
     const totalReturnDisplayEl = document.getElementById('total-return-display');
     
+    // Ensure we have valid data
+    const capital = pnlData.capital || 10000000;
+    const totalPnl = pnlData.summary?.total?.pnl || 0;
+    const totalPercent = pnlData.summary?.total?.percent || (capital > 0 ? (totalPnl / capital) * 100 : 0);
+    
     if (perfMaxDrawdownEl) {
         perfMaxDrawdownEl.textContent = formatCurrency(metrics.maxDrawdown);
+        // Always red for drawdown (negative value)
+        perfMaxDrawdownEl.className = 'perf-value negative';
     }
     if (perfMaxProfitEl) {
         perfMaxProfitEl.textContent = formatCurrency(metrics.maxProfit);
     }
-    if (capitalDisplayEl && pnlData.capital) {
-        if (pnlData.capital >= 10000000) {
-            capitalDisplayEl.textContent = `₹${(pnlData.capital / 10000000).toFixed(2)}Cr`;
+    if (capitalDisplayEl) {
+        if (capital >= 10000000) {
+            capitalDisplayEl.textContent = `₹${(capital / 10000000).toFixed(2)}Cr`;
+        } else if (capital >= 100000) {
+            capitalDisplayEl.textContent = `₹${(capital / 100000).toFixed(2)}L`;
         } else {
-            capitalDisplayEl.textContent = `₹${(pnlData.capital / 100000).toFixed(2)}L`;
+            capitalDisplayEl.textContent = `₹${capital.toLocaleString('en-IN')}`;
         }
     }
     if (totalReturnDisplayEl) {
-        totalReturnDisplayEl.textContent = formatPercent(pnlData.summary.total.percent);
+        totalReturnDisplayEl.textContent = formatPercent(totalPercent);
+        // Add color class based on positive/negative
+        totalReturnDisplayEl.className = 'perf-value' + (totalPercent >= 0 ? ' positive' : ' negative');
     }
     
     // Update table
@@ -364,7 +434,14 @@ function calculateAdvancedMetrics(sortedData) {
             winningStreak: 0,
             losingStreak: 0,
             maxLossPerDay: 0,
-            maxLossDate: null
+            maxLossDate: null,
+            totalWinDays: 0,
+            totalLossDays: 0,
+            totalNeutralDays: 0,
+            totalTradingDays: 0,
+            winningPercentage: 0,
+            averageProfitPerDay: 0,
+            averageLossPerDay: 0
         };
     }
     
@@ -439,6 +516,32 @@ function calculateAdvancedMetrics(sortedData) {
         }
     });
     
+    // Calculate total win days, loss days, and winning percentage
+    let totalWinDays = 0;
+    let totalLossDays = 0;
+    let totalNeutralDays = 0;
+    let totalProfit = 0; // Sum of all positive P&L
+    let totalLoss = 0; // Sum of all negative P&L (will be negative)
+    
+    sortedData.forEach(day => {
+        if (day.pnl > 0) {
+            totalWinDays++;
+            totalProfit += day.pnl;
+        } else if (day.pnl < 0) {
+            totalLossDays++;
+            totalLoss += day.pnl; // This will be negative
+        } else {
+            totalNeutralDays++;
+        }
+    });
+    
+    const totalTradingDays = sortedData.length;
+    const winningPercentage = totalTradingDays > 0 ? (totalWinDays / totalTradingDays) * 100 : 0;
+    
+    // Calculate average profit and loss per day
+    const averageProfitPerDay = totalWinDays > 0 ? totalProfit / totalWinDays : 0;
+    const averageLossPerDay = totalLossDays > 0 ? totalLoss / totalLossDays : 0; // This will be negative
+    
     return {
         maxDrawdown: -maxDrawdown, // Negative value
         maxDrawdownPercent: -maxDrawdownPercent,
@@ -450,13 +553,21 @@ function calculateAdvancedMetrics(sortedData) {
         winningStreak: maxWinningStreak,
         losingStreak: maxLosingStreak,
         maxLossPerDay: maxLossPerDay,
-        maxLossDate: maxLossDate
+        maxLossDate: maxLossDate,
+        totalWinDays: totalWinDays,
+        totalLossDays: totalLossDays,
+        totalNeutralDays: totalNeutralDays,
+        totalTradingDays: totalTradingDays,
+        winningPercentage: winningPercentage,
+        averageProfitPerDay: averageProfitPerDay,
+        averageLossPerDay: averageLossPerDay
     };
 }
 
 // Update charts
 function updateCharts() {
     updateDailyPnlChart();
+    updateMonthlyPnlChart();
 }
 
 // Daily P&L Chart - Show cumulative P&L starting from 0
@@ -593,7 +704,225 @@ function updateDailyPnlChart() {
     });
 }
 
-// Removed monthly returns and equity curve charts - only showing daily P&L chart
+// Monthly P&L Chart - Show month-wise performance
+function updateMonthlyPnlChart() {
+    const ctx = document.getElementById('monthlyPnlChart');
+    if (!ctx) return;
+    
+    if (pnlData.daily.length === 0) return;
+    
+    // Sort by date
+    const sortedData = [...pnlData.daily].sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    // Aggregate data by month
+    const monthlyData = {};
+    const monthlyCumulative = {};
+    let cumulativePnl = 0;
+    
+    sortedData.forEach(day => {
+        const date = new Date(day.date);
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        const monthLabel = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        
+        if (!monthlyData[monthKey]) {
+            monthlyData[monthKey] = {
+                label: monthLabel,
+                pnl: 0,
+                days: 0,
+                startCumulative: cumulativePnl
+            };
+        }
+        
+        monthlyData[monthKey].pnl += day.pnl;
+        monthlyData[monthKey].days += 1;
+        cumulativePnl += day.pnl;
+        monthlyCumulative[monthKey] = cumulativePnl;
+    });
+    
+    // Convert to arrays for chart
+    const monthKeys = Object.keys(monthlyData).sort();
+    const labels = monthKeys.map(key => monthlyData[key].label);
+    const monthlyPnlValues = monthKeys.map(key => monthlyData[key].pnl);
+    const monthlyCumulativeValues = monthKeys.map(key => monthlyCumulative[key]);
+    
+    // Destroy existing chart if it exists
+    if (monthlyPnlChart) {
+        monthlyPnlChart.destroy();
+    }
+    
+    // Create new chart
+    monthlyPnlChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Monthly P&L (₹)',
+                    data: monthlyPnlValues,
+                    backgroundColor: function(context) {
+                        const value = context.parsed.y;
+                        return value >= 0 
+                            ? 'rgba(16, 185, 129, 0.7)' // Green for profit
+                            : 'rgba(220, 38, 38, 0.7)';  // Red for loss
+                    },
+                    borderColor: function(context) {
+                        const value = context.parsed.y;
+                        return value >= 0 
+                            ? 'rgba(16, 185, 129, 1)'
+                            : 'rgba(220, 38, 38, 1)';
+                    },
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Cumulative P&L (₹)',
+                    data: monthlyCumulativeValues,
+                    type: 'line',
+                    borderColor: 'rgba(13, 79, 60, 1)',
+                    backgroundColor: 'rgba(13, 79, 60, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: 'rgba(13, 79, 60, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        }
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed.y;
+                            const formatted = new Intl.NumberFormat('en-IN', {
+                                style: 'currency',
+                                currency: 'INR',
+                                maximumFractionDigits: 0
+                            }).format(value);
+                            return `${context.dataset.label}: ${formatted}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 11,
+                            weight: '600'
+                        },
+                        color: '#64748b'
+                    }
+                },
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Monthly P&L (₹)',
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        },
+                        color: '#64748b'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            if (value >= 10000000) {
+                                return '₹' + (value / 10000000).toFixed(1) + 'Cr';
+                            } else if (value >= 100000) {
+                                return '₹' + (value / 100000).toFixed(1) + 'L';
+                            } else if (value >= 1000) {
+                                return '₹' + (value / 1000).toFixed(1) + 'K';
+                            }
+                            return '₹' + value;
+                        },
+                        font: {
+                            size: 10
+                        },
+                        color: '#64748b'
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Cumulative P&L (₹)',
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        },
+                        color: '#64748b'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            if (value >= 10000000) {
+                                return '₹' + (value / 10000000).toFixed(1) + 'Cr';
+                            } else if (value >= 100000) {
+                                return '₹' + (value / 100000).toFixed(1) + 'L';
+                            } else if (value >= 1000) {
+                                return '₹' + (value / 1000).toFixed(1) + 'K';
+                            }
+                            return '₹' + value;
+                        },
+                        font: {
+                            size: 10
+                        },
+                        color: '#64748b'
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    }
+                }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            }
+        }
+    });
+}
+
+// Removed monthly returns and equity curve charts - now showing monthly performance chart
 
 // Fetch P&L data from Flattrade (requires backend proxy due to CORS)
 // This function is now called by client-manager.js for multi-client support
@@ -636,7 +965,14 @@ async function fetchPnlData() {
         if (data.daily && Array.isArray(data.daily)) {
             pnlData.daily = data.daily;
             pnlData.summary = data.summary || pnlData.summary;
-            pnlData.clientName = data.clientName || pnlData.clientName || 'Verified P&L Performance';
+            // Default to SUNKULA PUSHPAVATHI, but use fetched name if it's not a generic name
+            const fetchedName = data.clientName && data.clientName.trim() && 
+                               !data.clientName.toLowerCase().startsWith('client') &&
+                               data.clientName !== 'No clients added' &&
+                               data.clientName !== 'Verified P&L Performance'
+                               ? data.clientName.trim() 
+                               : 'SUNKULA PUSHPAVATHI';
+            pnlData.clientName = fetchedName || pnlData.clientName || 'SUNKULA PUSHPAVATHI';
             pnlData.clientInfo = data.clientInfo || pnlData.clientInfo;
             // Recalculate summary if needed
             if (pnlData.daily.length > 0) {
