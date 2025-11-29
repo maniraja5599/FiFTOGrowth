@@ -1027,3 +1027,551 @@ function getSelectedClients() {
     return clients.filter(client => selectedIds.includes(client.id));
 }
 
+// ============================================
+// FETCH DATA FROM VERIFIED URL
+// ============================================
+
+// Fetch P&L data directly from verified URL - Automatic extraction
+// Handle manual data upload
+function uploadPnlData() {
+    const dataInput = document.getElementById('pnl-data-input');
+    const uploadBtn = document.getElementById('upload-data-btn');
+    const statusEl = document.getElementById('upload-status');
+    
+    if (!dataInput || !uploadBtn) return;
+    
+    const dataText = dataInput.value.trim();
+    
+    if (!dataText) {
+        showUploadStatus('error', 'Please paste or upload P&L data');
+        return;
+    }
+    
+    // Parse JSON data
+    let uploadedData;
+    try {
+        uploadedData = JSON.parse(dataText);
+    } catch (error) {
+        showUploadStatus('error', 'Invalid JSON format. Please check your data and try again.');
+        console.error('JSON parse error:', error);
+        return;
+    }
+    
+    // Validate data structure
+    if (!uploadedData.daily || !Array.isArray(uploadedData.daily)) {
+        showUploadStatus('error', 'Invalid data format. Data must include a "daily" array.');
+        return;
+    }
+    
+    // Find selected client
+    let clientId = null;
+    if (typeof clients !== 'undefined' && clients.length > 0) {
+        if (selectedClientIds && selectedClientIds.length > 0) {
+            clientId = selectedClientIds[0];
+        } else if (clients.length > 0) {
+            clientId = clients[0].id;
+        }
+    }
+    
+    if (!clientId) {
+        showUploadStatus('error', 'Please add and select a client first using "Add New Client" button');
+        return;
+    }
+    
+    // Disable button and show loading
+    uploadBtn.disabled = true;
+    const originalText = uploadBtn.textContent;
+    uploadBtn.textContent = '⏳ Processing...';
+    showUploadStatus('info', '⏳ Processing and saving data...');
+    
+    try {
+        // Process and save the data
+        processUploadedData(uploadedData, clientId);
+        
+        // Clear input after successful upload
+        dataInput.value = '';
+        showUploadStatus('success', '✅ Data uploaded and saved successfully! Reloading page...');
+        
+        // Reload data
+        setTimeout(() => {
+            if (typeof loadSelectedClientsData === 'function') {
+                loadSelectedClientsData().then(() => {
+                    if (typeof updateUI === 'function') {
+                        updateUI();
+                    }
+                    setTimeout(() => window.location.reload(), 1000);
+                });
+            } else {
+                setTimeout(() => window.location.reload(), 1000);
+            }
+        }, 500);
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        showUploadStatus('error', 'Error: ' + error.message);
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = originalText;
+    }
+}
+
+// Handle file upload
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const dataInput = document.getElementById('pnl-data-input');
+    if (!dataInput) return;
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            // Try to parse as JSON to validate
+            JSON.parse(content);
+            dataInput.value = content;
+            showUploadStatus('success', '✅ File loaded successfully. Click "Upload Data" to process.');
+        } catch (error) {
+            showUploadStatus('error', 'Invalid JSON file. Please check the file format.');
+            console.error('File parse error:', error);
+        }
+    };
+    
+    reader.onerror = function() {
+        showUploadStatus('error', 'Error reading file. Please try again.');
+    };
+    
+    reader.readAsText(file);
+}
+
+// Clear data input
+function clearDataInput() {
+    const dataInput = document.getElementById('pnl-data-input');
+    if (dataInput) {
+        dataInput.value = '';
+        showUploadStatus('info', 'Input cleared');
+        setTimeout(() => {
+            const statusEl = document.getElementById('upload-status');
+            if (statusEl) statusEl.style.display = 'none';
+        }, 2000);
+    }
+}
+
+// Process uploaded data and update the page
+function processUploadedData(uploadedData, clientId) {
+    try {
+        if (!clientId) {
+            showUploadStatus('error', 'Error: No client selected. Please select a client first.');
+            return;
+        }
+        
+        // Get client to get capital
+        const client = clients.find(c => c.id === clientId);
+        if (!client) {
+            showUploadStatus('error', 'Error: Client not found');
+            return;
+        }
+        
+        // Use capital from uploaded data if provided, otherwise use client's capital
+        const capital = uploadedData.capital || client.capital || 10000000;
+        
+        // Recalculate percentages if needed
+        if (uploadedData.daily && uploadedData.daily.length > 0) {
+            uploadedData.daily = uploadedData.daily.map(day => {
+                if (day.percent === undefined || day.percent === null) {
+                    day.percent = parseFloat(((day.pnl / capital) * 100).toFixed(2));
+                }
+                return day;
+            });
+        }
+        
+        // Recalculate summary
+        let summary = {
+            today: { pnl: 0, percent: 0 },
+            mtd: { pnl: 0, percent: 0 },
+            total: { pnl: 0, percent: 0 }
+        };
+        
+        if (uploadedData.daily && uploadedData.daily.length > 0) {
+            const today = uploadedData.daily[uploadedData.daily.length - 1];
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            
+            const mtdDays = uploadedData.daily.filter(d => {
+                const date = new Date(d.date);
+                return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+            });
+            
+            const totalPnl = uploadedData.daily.reduce((sum, d) => sum + d.pnl, 0);
+            const mtdPnl = mtdDays.reduce((sum, d) => sum + d.pnl, 0);
+            
+            summary = {
+                today: {
+                    pnl: today.pnl,
+                    percent: parseFloat(((today.pnl / capital) * 100).toFixed(2))
+                },
+                mtd: {
+                    pnl: mtdPnl,
+                    percent: parseFloat(((mtdPnl / capital) * 100).toFixed(2))
+                },
+                total: {
+                    pnl: totalPnl,
+                    percent: parseFloat(((totalPnl / capital) * 100).toFixed(2))
+                }
+            };
+        }
+        
+        // Save to localStorage
+        const cacheKey = `fifto_pnl_data_${clientId}`;
+        const dataToCache = {
+            clientName: uploadedData.clientName || client.name,
+            capital: capital,
+            daily: uploadedData.daily || [],
+            summary: summary,
+            clientId: clientId,
+            period: uploadedData.period || null,
+            lastUpdated: uploadedData.lastUpdated || new Date().toISOString(),
+            verifiedUrl: uploadedData.verifiedUrl || client.url || null,
+            expectedPnl: uploadedData.expectedPnl || null,
+            clientInfo: `Capital: ₹${capital >= 10000000 ? (capital / 10000000).toFixed(2) + 'Cr' : (capital / 100000).toFixed(2) + 'L'}`
+        };
+        localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
+        localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
+        
+        console.log('✅ Data saved successfully:', {
+            clientName: dataToCache.clientName,
+            dailyEntries: dataToCache.daily.length,
+            totalPnl: summary.total.pnl
+        });
+    } catch (error) {
+        console.error('Error processing uploaded data:', error);
+        showUploadStatus('error', 'Error processing data: ' + error.message);
+        throw error;
+    }
+}
+
+// Show upload status message
+function showUploadStatus(type, message) {
+    const statusEl = document.getElementById('upload-status');
+    if (!statusEl) return;
+    
+    statusEl.style.display = 'block';
+    statusEl.className = `upload-status upload-status-${type}`;
+    statusEl.innerHTML = message;
+    
+    // Auto-hide after 10 seconds for info messages
+    if (type === 'info') {
+        setTimeout(() => {
+            if (statusEl.className.includes('upload-status-info')) {
+                statusEl.style.display = 'none';
+            }
+        }, 10000);
+    }
+}
+
+// Google Sheets Sync Functionality
+let autoSyncInterval = null;
+let currentSheetUrl = null;
+
+// Sync data from Google Sheets
+async function syncFromGoogleSheet() {
+    const sheetUrlInput = document.getElementById('google-sheet-url');
+    const syncBtn = document.getElementById('sync-from-sheet-btn');
+    const statusEl = document.getElementById('sync-status');
+    
+    if (!sheetUrlInput || !syncBtn) return;
+    
+    const sheetUrl = sheetUrlInput.value.trim();
+    
+    if (!sheetUrl) {
+        showSyncStatus('error', 'Please enter a Google Sheets URL');
+        return;
+    }
+    
+    // Validate Google Sheets URL
+    if (!sheetUrl.includes('docs.google.com/spreadsheets')) {
+        showSyncStatus('error', 'Please enter a valid Google Sheets URL');
+        return;
+    }
+    
+    // Find selected client
+    let clientId = null;
+    if (typeof clients !== 'undefined' && clients.length > 0) {
+        if (selectedClientIds && selectedClientIds.length > 0) {
+            clientId = selectedClientIds[0];
+        } else if (clients.length > 0) {
+            clientId = clients[0].id;
+        }
+    }
+    
+    if (!clientId) {
+        showSyncStatus('error', 'Please add and select a client first');
+        return;
+    }
+    
+    // Disable button and show loading
+    syncBtn.disabled = true;
+    const originalText = syncBtn.textContent;
+    syncBtn.textContent = '⏳ Syncing...';
+    showSyncStatus('info', '⏳ Fetching data from Google Sheets...');
+    
+    try {
+        // Convert Google Sheets URL to CSV export URL
+        const sheetId = extractSheetId(sheetUrl);
+        if (!sheetId) {
+            throw new Error('Invalid Google Sheets URL format');
+        }
+        
+        // Use CSV export URL (public sheets only, or requires authentication)
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=0`;
+        
+        // Fetch CSV data
+        const response = await fetch(csvUrl);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data. Make sure the sheet is publicly accessible or use a published CSV link.');
+        }
+        
+        const csvText = await response.text();
+        
+        // Parse CSV to JSON
+        const parsedData = parseCSVToPnlData(csvText);
+        
+        // Process and save the data
+        processUploadedData(parsedData, clientId);
+        
+        // Store sheet URL for auto-sync
+        currentSheetUrl = sheetUrl;
+        localStorage.setItem('fifto_google_sheet_url', sheetUrl);
+        
+        showSyncStatus('success', '✅ Data synced successfully from Google Sheets! Reloading...');
+        
+        // Reload data
+        setTimeout(() => {
+            if (typeof loadSelectedClientsData === 'function') {
+                loadSelectedClientsData().then(() => {
+                    if (typeof updateUI === 'function') {
+                        updateUI();
+                    }
+                    setTimeout(() => window.location.reload(), 1000);
+                });
+            } else {
+                setTimeout(() => window.location.reload(), 1000);
+            }
+        }, 500);
+        
+    } catch (error) {
+        console.error('Sync error:', error);
+        showSyncStatus('error', 'Error: ' + error.message);
+        syncBtn.disabled = false;
+        syncBtn.textContent = originalText;
+    }
+}
+
+// Extract sheet ID from Google Sheets URL
+function extractSheetId(url) {
+    // Handle different Google Sheets URL formats
+    const patterns = [
+        /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/,
+        /id=([a-zA-Z0-9-_]+)/,
+        /key=([a-zA-Z0-9-_]+)/
+    ];
+    
+    for (const pattern of patterns) {
+        const match = url.match(pattern);
+        if (match && match[1]) {
+            return match[1];
+        }
+    }
+    
+    return null;
+}
+
+// Parse CSV to P&L data format
+function parseCSVToPnlData(csvText) {
+    const lines = csvText.split('\n').filter(line => line.trim());
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+    
+    // Find column indices
+    const dateIndex = headers.findIndex(h => h.includes('date'));
+    const pnlIndex = headers.findIndex(h => h.includes('pnl') || h.includes('profit'));
+    const nameIndex = headers.findIndex(h => h.includes('name') || h.includes('client'));
+    const capitalIndex = headers.findIndex(h => h.includes('capital'));
+    
+    if (dateIndex === -1 || pnlIndex === -1) {
+        throw new Error('CSV must contain "date" and "pnl" columns');
+    }
+    
+    const daily = [];
+    let clientName = 'Unknown Client';
+    let capital = 10000000;
+    
+    // Parse data rows
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(v => v.trim());
+        
+        if (values.length <= Math.max(dateIndex, pnlIndex)) continue;
+        
+        const dateStr = values[dateIndex];
+        const pnlStr = values[pnlIndex];
+        
+        // Parse date (handle various formats)
+        let date = null;
+        try {
+            date = new Date(dateStr);
+            if (isNaN(date.getTime())) {
+                // Try DD-MM-YYYY or DD/MM/YYYY
+                const parts = dateStr.split(/[-\/]/);
+                if (parts.length === 3) {
+                    date = new Date(parts[2], parts[1] - 1, parts[0]);
+                }
+            }
+        } catch (e) {
+            continue;
+        }
+        
+        if (isNaN(date.getTime())) continue;
+        
+        // Parse P&L
+        const pnl = parseFloat(pnlStr.replace(/[₹,]/g, '')) || 0;
+        
+        // Format date as YYYY-MM-DD
+        const formattedDate = date.toISOString().split('T')[0];
+        
+        daily.push({
+            date: formattedDate,
+            pnl: pnl,
+            percent: (pnl / capital) * 100
+        });
+        
+        // Get client name and capital from first row if available
+        if (i === 1) {
+            if (nameIndex !== -1 && values[nameIndex]) {
+                clientName = values[nameIndex];
+            }
+            if (capitalIndex !== -1 && values[capitalIndex]) {
+                capital = parseFloat(values[capitalIndex].replace(/[₹,]/g, '')) || 10000000;
+            }
+        }
+    }
+    
+    // Sort by date
+    daily.sort((a, b) => a.date.localeCompare(b.date));
+    
+    return {
+        clientName: clientName,
+        capital: capital,
+        daily: daily
+    };
+}
+
+// Show sync status
+function showSyncStatus(type, message) {
+    const statusEl = document.getElementById('sync-status');
+    if (!statusEl) return;
+    
+    statusEl.style.display = 'block';
+    statusEl.className = `sync-status sync-status-${type}`;
+    statusEl.innerHTML = message;
+    
+    // Auto-hide after 10 seconds for info messages
+    if (type === 'info') {
+        setTimeout(() => {
+            if (statusEl.className.includes('sync-status-info')) {
+                statusEl.style.display = 'none';
+            }
+        }, 10000);
+    }
+}
+
+// Start/stop auto-sync
+function toggleAutoSync(enabled) {
+    if (autoSyncInterval) {
+        clearInterval(autoSyncInterval);
+        autoSyncInterval = null;
+    }
+    
+    if (enabled && currentSheetUrl) {
+        // Sync every 5 minutes
+        autoSyncInterval = setInterval(() => {
+            const sheetUrlInput = document.getElementById('google-sheet-url');
+            if (sheetUrlInput && sheetUrlInput.value.trim()) {
+                syncFromGoogleSheet();
+            }
+        }, 5 * 60 * 1000); // 5 minutes
+        
+        showSyncStatus('info', '✅ Auto-sync enabled (every 5 minutes)');
+    } else if (!enabled) {
+        showSyncStatus('info', 'Auto-sync disabled');
+    }
+}
+
+// Initialize manual data upload and Google Sheets sync
+document.addEventListener('DOMContentLoaded', function() {
+    // Manual upload handlers
+    const uploadBtn = document.getElementById('upload-data-btn');
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', uploadPnlData);
+    }
+    
+    const fileUploadInput = document.getElementById('file-upload-input');
+    if (fileUploadInput) {
+        fileUploadInput.addEventListener('change', handleFileUpload);
+    }
+    
+    const clearBtn = document.getElementById('clear-data-input');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', clearDataInput);
+    }
+    
+    // Allow Ctrl+Enter or Cmd+Enter to trigger upload
+    const dataInput = document.getElementById('pnl-data-input');
+    if (dataInput) {
+        dataInput.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                uploadPnlData();
+            }
+        });
+    }
+    
+    // Google Sheets sync handlers
+    const syncBtn = document.getElementById('sync-from-sheet-btn');
+    if (syncBtn) {
+        syncBtn.addEventListener('click', syncFromGoogleSheet);
+    }
+    
+    const sheetUrlInput = document.getElementById('google-sheet-url');
+    if (sheetUrlInput) {
+        // Load saved sheet URL
+        const savedUrl = localStorage.getItem('fifto_google_sheet_url');
+        if (savedUrl) {
+            sheetUrlInput.value = savedUrl;
+            currentSheetUrl = savedUrl;
+        }
+        
+        // Allow Enter key to trigger sync
+        sheetUrlInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                syncFromGoogleSheet();
+            }
+        });
+    }
+    
+    // Auto-sync checkbox
+    const autoSyncCheckbox = document.getElementById('auto-sync-enabled');
+    if (autoSyncCheckbox) {
+        const savedAutoSync = localStorage.getItem('fifto_auto_sync_enabled') === 'true';
+        autoSyncCheckbox.checked = savedAutoSync;
+        
+        autoSyncCheckbox.addEventListener('change', function(e) {
+            localStorage.setItem('fifto_auto_sync_enabled', e.target.checked);
+            toggleAutoSync(e.target.checked);
+        });
+        
+        // Start auto-sync if enabled
+        if (savedAutoSync && currentSheetUrl) {
+            toggleAutoSync(true);
+        }
+    }
+});
+

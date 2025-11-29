@@ -59,13 +59,13 @@
                 <i class="fas fa-chart-pie nav-icon"></i>
                 <span class="nav-text">Overview</span>
             </a>
-            <a href="#performance" class="nav-link-left">
-                <i class="fas fa-chart-line nav-icon"></i>
-                <span class="nav-text">Performance</span>
-            </a>
             <a href="#p-l" class="nav-link-left">
                 <i class="fas fa-dollar-sign nav-icon"></i>
                 <span class="nav-text">Live P&L</span>
+            </a>
+            <a href="#performance" class="nav-link-left">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-text">Performance</span>
             </a>
             <a href="#how-it-works" class="nav-link-left">
                 <i class="fas fa-cogs nav-icon"></i>
@@ -156,83 +156,30 @@
         </div>
     </section>
 
-    <!-- Performance Summary -->
-    <section id="performance" class="performance-summary">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Performance Metrics</h2>
-                <p class="section-subtitle">Real-time performance indicators and risk metrics</p>
-            </div>
-            <div class="performance-cards">
-                <div class="perf-card" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="perf-icon">💰</div>
-                    <h3>Capital Under Management</h3>
-                    <p class="perf-value" id="capital-display">₹1 Crore</p>
-                </div>
-                <div class="perf-card" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="perf-icon">📈</div>
-                    <h3>Total Return</h3>
-                    <p class="perf-value" id="total-return-display">-</p>
-                </div>
-                <div class="perf-card" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="perf-icon">📊</div>
-                    <h3>Max Drawdown</h3>
-                    <p class="perf-value" id="max-drawdown">-</p>
-                </div>
-                <div class="perf-card" data-aos="zoom-in" data-aos-delay="400">
-                    <div class="perf-icon">💰</div>
-                    <h3>Max Profit</h3>
-                    <p class="perf-value" id="max-profit">-</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Daily EOD P&L Feed -->
     <section id="p-l" class="p-l-feed">
         <div class="container">
             <div class="p-l-header-main">
-                <div>
-                    <h2 class="section-title" id="client-name">SUNKULA PUSHPAVATHI</h2>
-                    <p class="p-l-subtitle" id="client-info">Real-time P&L tracking and analytics</p>
-                </div>
                 <div class="p-l-header-actions">
-                    <div class="p-l-source">
-                        <p><strong>Data Source:</strong> <a href="#" id="verified-source-link" target="_blank" rel="noopener">Flattrade Verified P&L</a></p>
-                        <p><strong>Daily P&L Videos:</strong> <a href="https://www.youtube.com/@OfficialFiFTO/streams" target="_blank" rel="noopener" class="youtube-link">📺 Watch Live Tracking Videos</a></p>
-                        <p class="last-update">Last Updated: <span id="last-update-time">Loading...</span></p>
+                    <div class="p-l-google-sync">
+                        <div class="google-sync-section">
+                            <h4>📊 Sync from Google Sheets</h4>
+                            <p class="sync-description">Enter your Google Sheets URL to automatically sync P&L data</p>
+                            <div class="sync-input-group">
+                                <input type="url" id="google-sheet-url" class="sheet-url-input" placeholder="https://docs.google.com/spreadsheets/d/...">
+                                <button id="sync-from-sheet-btn" class="btn btn-primary btn-small">🔄 Sync Now</button>
+                            </div>
+                            <div class="sync-options">
+                                <label class="sync-option">
+                                    <input type="checkbox" id="auto-sync-enabled" checked>
+                                    <span>Enable auto-sync (updates every 5 minutes)</span>
+                                </label>
+                            </div>
+                            <div id="sync-status" class="sync-status" style="display: none;"></div>
+                        </div>
                     </div>
                     <div class="p-l-actions-buttons">
-                        <button id="manage-clients" class="btn btn-secondary btn-small">Manage Clients</button>
                         <button id="refresh-pnl" class="btn btn-primary btn-small">Refresh Data</button>
-                    </div>
-                </div>
-            </div>
-            <div class="client-selector-container">
-                <div class="client-selector-header">
-                    <div class="selector-title">
-                        <span class="selector-icon">👥</span>
-                        <h3>Select Client(s) to View</h3>
-                    </div>
-                    <div class="selector-actions">
-                        <button id="select-all-clients" class="btn-select-all" title="Select all clients">
-                            <span>✓</span> Select All
-                        </button>
-                        <button id="clear-selection" class="btn-clear-selection" title="Clear selection">
-                            <span>✕</span> Clear
-                        </button>
-                    </div>
-                </div>
-                <div class="client-selector-grid" id="client-selector-grid">
-                    <!-- Client selection cards will be added here -->
-                </div>
-                <div class="client-selector-footer">
-                    <div class="selection-info">
-                        <span class="info-icon">ℹ️</span>
-                        <span id="selected-clients-count">No clients selected</span>
-                    </div>
-                    <div class="selection-hint">
-                        Click on client cards to select/deselect. Multiple selections will show combined data.
                     </div>
                 </div>
             </div>
@@ -392,6 +339,38 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Summary -->
+    <section id="performance" class="performance-summary">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Performance Metrics</h2>
+                <p class="section-subtitle">Real-time performance indicators and risk metrics</p>
+            </div>
+            <div class="performance-cards">
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="perf-icon">💰</div>
+                    <h3>Capital Under Management</h3>
+                    <p class="perf-value" id="capital-display">₹1 Crore</p>
+                </div>
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="perf-icon">📈</div>
+                    <h3>Total Return</h3>
+                    <p class="perf-value" id="total-return-display">-</p>
+                </div>
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="perf-icon">📊</div>
+                    <h3>Max Drawdown</h3>
+                    <p class="perf-value" id="max-drawdown">-</p>
+                </div>
+                <div class="perf-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="perf-icon">💰</div>
+                    <h3>Max Profit</h3>
+                    <p class="perf-value" id="max-profit">-</p>
                 </div>
             </div>
         </div>
@@ -747,7 +726,6 @@
         </div>
     </div>
 
-    <script src="hardcoded-data.js"></script>
     <script src="pnl-tracker.js"></script>
     <script src="client-manager.js"></script>
     <script src="script.js"></script>

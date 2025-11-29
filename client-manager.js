@@ -2,59 +2,44 @@
 const CLIENTS_STORAGE_KEY = 'fifto_clients';
 const SELECTED_CLIENTS_KEY = 'fifto_selected_clients';
 
-// Default clients - 3 Clients with Hardcoded Data
-const DEFAULT_CLIENTS = [
-    {
-        id: 'client-1',
-        name: 'SUNKULA PUSHPAVATHI', // Default client name
-        url: 'https://verified.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057',
-        capital: 10000000, // ₹1 Crore
-        createdAt: new Date().toISOString()
-    },
-    {
-        id: 'client-2',
-        name: 'SACHIN GUPTA',
-        url: 'https://verified.flattrade.in/pnl/4a217d80d07d4c49af16c77db99946fd',
-        capital: 10000000, // ₹1 Crore
-        createdAt: new Date().toISOString()
-    },
-    {
-        id: 'client-3',
-        name: 'RISHU GARG',
-        url: 'https://verified.flattrade.in/pnl/PO05ba52fb8bee4f85918dc48e4ac88c54',
-        capital: 10000000, // ₹1 Crore
-        createdAt: new Date().toISOString()
-    }
-];
-
-// Initialize clients
+// Initialize clients - start with empty array
 let clients = [];
 let selectedClientIds = [];
 
 // Load clients from localStorage
 function loadClients() {
-    // Clear all old client data from localStorage
-    const keys = Object.keys(localStorage);
-    keys.forEach(key => {
-        if (key.startsWith('fifto_')) {
-            localStorage.removeItem(key);
+    const stored = localStorage.getItem(CLIENTS_STORAGE_KEY);
+    if (stored) {
+        try {
+            clients = JSON.parse(stored);
+        } catch (e) {
+            console.error('Error loading clients:', e);
+            clients = [];
         }
-    });
+    } else {
+        clients = [];
+    }
     
-    // Always use hardcoded default clients
-    clients = JSON.parse(JSON.stringify(DEFAULT_CLIENTS)); // Deep copy
-    saveClients();
-    
-    // Auto-select only the first client (SUNKULA PUSHPAVATHI)
-    if (clients.length > 0) {
-        selectedClientIds = [clients[0].id]; // Select only first client
+    // Load selected clients
+    const storedSelected = localStorage.getItem(SELECTED_CLIENTS_KEY);
+    if (storedSelected) {
+        try {
+            selectedClientIds = JSON.parse(storedSelected);
+        } catch (e) {
+            selectedClientIds = [];
+        }
     } else {
         selectedClientIds = [];
     }
-    saveSelectedClients();
     
-    console.log('Loaded hardcoded clients:', clients.length);
-    console.log('Auto-selected first client:', selectedClientIds[0]);
+    // Auto-select first client if available
+    if (clients.length > 0 && selectedClientIds.length === 0) {
+        selectedClientIds = [clients[0].id];
+        saveSelectedClients();
+    }
+    
+    console.log('Loaded clients:', clients.length);
+    updateClientsList();
 }
 
 // Save clients to localStorage
@@ -131,7 +116,7 @@ function deleteClient(clientId) {
                     daily: [],
                     summary: { today: { pnl: 0, percent: 0 }, mtd: { pnl: 0, percent: 0 }, total: { pnl: 0, percent: 0 } },
                     capital: 0,
-                    clientName: 'SUNKULA PUSHPAVATHI',
+                    clientName: '',
                     clientInfo: ''
                 };
                 if (typeof updateUI === 'function') {
@@ -177,7 +162,7 @@ function clearAllClients() {
                 daily: [],
                 summary: { today: { pnl: 0, percent: 0 }, mtd: { pnl: 0, percent: 0 }, total: { pnl: 0, percent: 0 } },
                 capital: 0,
-                clientName: 'SUNKULA PUSHPAVATHI',
+                clientName: '',
                 clientInfo: 'Please add a client to view P&L data'
             };
             if (typeof updateUI === 'function') {
@@ -349,23 +334,27 @@ function clearClientData(clientId) {
 window.editClient = editClient;
 window.clearClientData = clearClientData;
 
-// Update client selector cards
+// Update client list in the new UI
 function updateClientSelector() {
-    const container = document.getElementById('client-selector-grid');
+    const container = document.getElementById('client-list-grid');
+    const noClientsMsg = document.getElementById('no-clients-message');
+    
     if (!container) return;
     
     // Clear existing cards
     container.innerHTML = '';
     
     if (clients.length === 0) {
+        if (noClientsMsg) noClientsMsg.style.display = 'block';
         return;
     }
+    
+    if (noClientsMsg) noClientsMsg.style.display = 'none';
     
     // Add card for each client
     clients.forEach((client, index) => {
         const card = document.createElement('div');
         card.className = 'client-selection-card';
-        const isFirstClient = index === 0;
         const isSelected = selectedClientIds.includes(client.id);
         
         if (isSelected) {
@@ -387,32 +376,29 @@ function updateClientSelector() {
                     <h4 class="client-card-name">${client.name}</h4>
                     <div class="client-card-capital">${capitalText}</div>
                 </div>
+                ${isSelected ? '<span class="selected-badge">✓ Selected</span>' : ''}
             </div>
             <div class="client-card-url">
                 <span class="client-card-url-label">Verified P&L Link</span>
                 <a href="${client.url}" target="_blank" rel="noopener" class="client-card-url-link" onclick="event.stopPropagation()">${client.url}</a>
             </div>
+            <div class="client-card-actions">
+                <button class="btn btn-secondary btn-small" onclick="deleteClient('${client.id}')" title="Delete client">
+                    ❌ Delete
+                </button>
+            </div>
         `;
         
-        // Add click handler for all clients
+        // Add click handler for selection
         card.addEventListener('click', (e) => {
-            // Don't toggle if clicking on link
-            if (e.target.tagName === 'A') return;
+            // Don't toggle if clicking on link or button
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
             
             handleClientCardClick(client.id);
         });
         
         container.appendChild(card);
     });
-    
-    // Update "Select All" button
-    const selectAllBtn = document.getElementById('select-all-clients');
-    if (selectAllBtn) {
-        const allSelected = selectedClientIds.length === clients.length && clients.length > 0;
-        selectAllBtn.innerHTML = allSelected 
-            ? '<span>✕</span> Deselect All'
-            : '<span>✓</span> Select All';
-    }
     
     // Update selected count
     updateSelectedCount();
@@ -494,7 +480,7 @@ async function loadSelectedClientsData() {
                 daily: [],
                 summary: { today: { pnl: 0, percent: 0 }, mtd: { pnl: 0, percent: 0 }, total: { pnl: 0, percent: 0 } },
                 capital: 0,
-                clientName: 'SUNKULA PUSHPAVATHI',
+                clientName: '',
                 clientInfo: 'Please add a client to view P&L data'
             };
             if (typeof updateUI === 'function') {
@@ -554,8 +540,7 @@ async function loadSelectedClientsData() {
         
     } catch (error) {
         console.error('Error loading client data:', error);
-        // With hardcoded data, errors should be rare, but show a message if needed
-        alert('Error loading client data. Please refresh the page.');
+        // Silently handle errors - don't show alert
     } finally {
         if (refreshBtn) {
             refreshBtn.disabled = false;
@@ -571,92 +556,31 @@ async function fetchClientNameFromUrl(url) {
     return null;
 }
 
-// Fetch data for a single client - Now uses hardcoded data (no API calls)
+// Fetch data for a single client - Loads from localStorage
 async function fetchClientData(client) {
     try {
-        // Use hardcoded data if available
-        if (typeof window !== 'undefined' && window.HARDCODED_CLIENT_DATA) {
-            const hardcodedData = window.HARDCODED_CLIENT_DATA[client.id];
-            if (hardcodedData) {
-                console.log(`Using hardcoded data for ${client.name}`);
-                
-                // Update client name from hardcoded data
-                const clientIndex = clients.findIndex(c => c.id === client.id);
-                if (clientIndex !== -1 && hardcodedData.clientName) {
-                    if (hardcodedData.clientName !== clients[clientIndex].name) {
-                        clients[clientIndex].name = hardcodedData.clientName;
-                        saveClients();
-                        updateClientsList();
-                    }
-                    if (hardcodedData.capital && hardcodedData.capital !== clients[clientIndex].capital) {
-                        clients[clientIndex].capital = hardcodedData.capital;
-                        saveClients();
-                    }
-                }
-                
-                // Ensure data structure is correct
-                const dataToStore = {
-                    daily: hardcodedData.daily || [],
-                    summary: hardcodedData.summary || {
-                        today: { pnl: 0, percent: 0 },
-                        mtd: { pnl: 0, percent: 0 },
-                        total: { pnl: 0, percent: 0 }
-                    },
-                    capital: hardcodedData.capital || client.capital || 10000000,
-                    clientName: hardcodedData.clientName || client.name,
-                    clientInfo: hardcodedData.clientInfo || `Capital: ₹${(hardcodedData.capital || client.capital || 10000000) >= 10000000 ? ((hardcodedData.capital || client.capital || 10000000) / 10000000).toFixed(2) + 'Cr' : ((hardcodedData.capital || client.capital || 10000000) / 100000).toFixed(2) + 'L'}`,
-                    clientId: client.id,
-                    // Preserve metadata from verified URL if available
-                    period: hardcodedData.period || null,
-                    lastUpdated: hardcodedData.lastUpdated || null,
-                    verifiedUrl: hardcodedData.verifiedUrl || client.url || null,
-                    expectedPnl: hardcodedData.expectedPnl || null
-                };
-                
-                // Recalculate summary from daily data to ensure accuracy
-                if (dataToStore.daily && dataToStore.daily.length > 0) {
-                    const today = dataToStore.daily[dataToStore.daily.length - 1];
-                    const currentMonth = new Date().getMonth();
-                    const currentYear = new Date().getFullYear();
-                    
-                    const mtdDays = dataToStore.daily.filter(d => {
-                        const date = new Date(d.date);
-                        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
-                    });
-                    
-                    const totalPnl = dataToStore.daily.reduce((sum, d) => sum + d.pnl, 0);
-                    const mtdPnl = mtdDays.reduce((sum, d) => sum + d.pnl, 0);
-                    
-                    dataToStore.summary = {
-                        today: {
-                            pnl: today.pnl,
-                            percent: parseFloat(((today.pnl / dataToStore.capital) * 100).toFixed(2))
-                        },
-                        mtd: {
-                            pnl: mtdPnl,
-                            percent: parseFloat(((mtdPnl / dataToStore.capital) * 100).toFixed(2))
-                        },
-                        total: {
-                            pnl: totalPnl,
-                            percent: parseFloat(((totalPnl / dataToStore.capital) * 100).toFixed(2))
-                        }
+        // Try to load from localStorage first
+        const cacheKey = `fifto_pnl_data_${client.id}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        
+        if (cachedData) {
+            try {
+                const parsedData = JSON.parse(cachedData);
+                if (parsedData.daily && parsedData.daily.length > 0) {
+                    console.log(`Using cached data for ${client.name}`);
+                    return {
+                        client: client,
+                        data: parsedData
                     };
                 }
-                
-                // Store in cache for consistency
-                const cacheKey = `fifto_pnl_data_${client.id}`;
-                localStorage.setItem(cacheKey, JSON.stringify(dataToStore));
-                localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
-                
-                return {
-                    client: client,
-                    data: dataToStore
-                };
+            } catch (e) {
+                console.error('Error parsing cached data:', e);
             }
         }
         
-        // Fallback: Return empty data structure if hardcoded data not found
-        console.warn(`No hardcoded data found for ${client.id}, returning empty data`);
+        // No cached data - return empty structure
+        // User needs to fetch data using the extraction method
+        console.warn(`No data found for ${client.name}. Please use "Fetch Data" to extract P&L data.`);
         return {
             client: client,
             data: {
@@ -668,7 +592,9 @@ async function fetchClientData(client) {
                 },
                 capital: client.capital || 10000000,
                 clientName: client.name,
-                clientInfo: `Capital: ₹${client.capital >= 10000000 ? (client.capital / 10000000).toFixed(2) + 'Cr' : (client.capital / 100000).toFixed(2) + 'L'}`
+                clientInfo: `Capital: ₹${client.capital >= 10000000 ? (client.capital / 10000000).toFixed(2) + 'Cr' : (client.capital / 100000).toFixed(2) + 'L'}`,
+                clientId: client.id,
+                verifiedUrl: client.url
             }
         };
     } catch (error) {
@@ -683,23 +609,28 @@ function combineClientData(clientDataArray, selectedClients) {
         // Single client - return as is, ensure capital is set
         const singleData = clientDataArray[0].data;
         const clientCapital = selectedClients[0].capital || singleData.capital || 10000000;
-        // Prioritize client name from verified P&L, fallback to stored name, but default to SUNKULA PUSHPAVATHI
-        let clientName = (singleData.clientName && singleData.clientName.trim()) 
-            ? singleData.clientName.trim() 
-            : selectedClients[0].name;
         
-        // If name is generic (client1, client2, etc.) or empty, use default
-        if (!clientName || 
-            clientName.toLowerCase().startsWith('client') || 
-            clientName === 'No clients added' ||
-            clientName === 'Verified P&L Performance') {
-            clientName = 'SUNKULA PUSHPAVATHI';
+        // Get client name - only use fetched name if it came from verified P&L (has verifiedUrl)
+        // Otherwise use the client name from the client list
+        let clientName = selectedClients[0].name; // Default to client name from list
+        
+        // Only use fetched name if it was actually fetched from verified page
+        if (singleData.clientName && singleData.clientName.trim() && 
+            singleData.clientName !== 'Unknown Client' &&
+            singleData.clientName !== 'No clients added' &&
+            singleData.clientName !== 'No Clients Added' &&
+            !singleData.clientName.toLowerCase().startsWith('client') &&
+            singleData.clientName !== 'Verified P&L Performance' &&
+            singleData.verifiedUrl) { // Only if verifiedUrl exists (meaning it was fetched)
+            clientName = singleData.clientName.trim();
         }
+        
         return {
             ...singleData,
-            clientName: clientName,
+            clientName: clientName, // Include client name (fetched or from list)
             capital: clientCapital,
             clientInfo: singleData.clientInfo || `Capital: ₹${clientCapital >= 10000000 ? (clientCapital / 10000000).toFixed(2) + 'Cr' : (clientCapital / 100000).toFixed(2) + 'L'}`,
+            clientId: selectedClients[0].id, // Ensure clientId is included
             // Preserve metadata from verified URL
             period: singleData.period || null,
             lastUpdated: singleData.lastUpdated || null,
@@ -710,6 +641,19 @@ function combineClientData(clientDataArray, selectedClients) {
     
     // Multiple clients - combine data
     const totalCapital = selectedClients.reduce((sum, c) => sum + (c.capital || 0), 0);
+    
+    // Get client names - prioritize fetched names from data
+    const combinedClientNames = selectedClients.map(c => {
+        // Try to get fetched name from data if available
+        const clientData = clientDataArray.find(d => d.client.id === c.id);
+        if (clientData && clientData.data.clientName && 
+            clientData.data.clientName !== 'Unknown Client' &&
+            clientData.data.clientName !== c.name) {
+            return clientData.data.clientName;
+        }
+        return c.name;
+    }).join(', ');
+    
     const combined = {
         daily: [],
         summary: {
@@ -718,8 +662,9 @@ function combineClientData(clientDataArray, selectedClients) {
             total: { pnl: 0, percent: 0 }
         },
         capital: totalCapital,
-        clientName: `${selectedClients.length} Clients (Combined)`,
-        clientInfo: `Capital: ₹${totalCapital >= 10000000 ? (totalCapital / 10000000).toFixed(2) + 'Cr' : (totalCapital / 100000).toFixed(2) + 'L'} | ${selectedClients.map(c => c.name).join(', ')}`
+        clientName: `${selectedClients.length} Clients (Combined): ${combinedClientNames}`,
+        clientInfo: `Capital: ₹${totalCapital >= 10000000 ? (totalCapital / 10000000).toFixed(2) + 'Cr' : (totalCapital / 100000).toFixed(2) + 'L'} | ${combinedClientNames}`,
+        clientIds: selectedClients.map(c => c.id) // Include client IDs
     };
     
     // Combine daily P&L by date
@@ -808,154 +753,8 @@ function initClientManagement() {
         });
     });
     
-    // Setup event listeners
-    const addForm = document.getElementById('add-client-form');
-    if (addForm) {
-        // Auto-fetch client name when URL is entered
-        const urlInput = document.getElementById('client-url-input');
-        const nameInput = document.getElementById('client-name-input');
-        const fetchNameBtn = document.getElementById('fetch-name-btn');
-        
-        if (urlInput && nameInput) {
-            // Add fetch name button functionality
-            if (fetchNameBtn) {
-                fetchNameBtn.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const url = urlInput.value.trim();
-                    if (!url) {
-                        alert('Please enter a P&L URL first');
-                        urlInput.focus();
-                        return;
-                    }
-                    
-                    if (!url.includes('flattrade.in')) {
-                        alert('Please enter a valid Flattrade P&L URL');
-                        urlInput.focus();
-                        return;
-                    }
-                    
-                    // Disable button and show loading
-                    fetchNameBtn.disabled = true;
-                    const btnSpan = fetchNameBtn.querySelector('span');
-                    if (btnSpan) {
-                        btnSpan.textContent = '⏳';
-                    }
-                    
-                    try {
-                        const clientName = await fetchClientNameFromUrl(url);
-                        if (clientName) {
-                            nameInput.value = clientName;
-                            // Show success
-                            if (btnSpan) {
-                                btnSpan.textContent = '✓';
-                                setTimeout(() => {
-                                    if (btnSpan) btnSpan.textContent = '🔍';
-                                }, 2000);
-                            }
-                            // Show success message
-                            const successMsg = document.createElement('div');
-                            successMsg.style.cssText = 'background: #10b981; color: white; padding: 0.5rem; border-radius: 0.5rem; margin-top: 0.5rem; text-align: center; font-size: 0.875rem;';
-                            successMsg.textContent = `✅ Name fetched: ${clientName}`;
-                            const formGroup = nameInput.closest('.form-group');
-                            if (formGroup) {
-                                const existingMsg = formGroup.querySelector('.fetch-success-msg');
-                                if (existingMsg) existingMsg.remove();
-                                successMsg.className = 'fetch-success-msg';
-                                formGroup.appendChild(successMsg);
-                                setTimeout(() => successMsg.remove(), 3000);
-                            }
-                        } else {
-                            alert('Could not fetch client name. Please enter manually.');
-                            if (btnSpan) {
-                                btnSpan.textContent = '🔍';
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error fetching name:', error);
-                        alert('Error fetching client name. Please enter manually.');
-                        if (btnSpan) {
-                            btnSpan.textContent = '🔍';
-                        }
-                    } finally {
-                        fetchNameBtn.disabled = false;
-                    }
-                });
-            }
-            
-            // Auto-fetch name when URL loses focus (if name is empty) - Optional feature
-            // Commented out to avoid automatic fetching without user action
-            // urlInput.addEventListener('blur', async () => {
-            //     const url = urlInput.value.trim();
-            //     const name = nameInput.value.trim();
-            //     
-            //     if (url && !name && url.includes('flattrade.in')) {
-            //         const clientName = await fetchClientNameFromUrl(url);
-            //         if (clientName) {
-            //             nameInput.value = clientName;
-            //         }
-            //     }
-            // });
-        }
-        
-        addForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const nameInput = document.getElementById('client-name-input');
-            const urlInput = document.getElementById('client-url-input');
-            const capitalInput = document.getElementById('client-capital-input');
-            
-            if (!nameInput || !urlInput || !capitalInput) {
-                console.error('Form inputs not found');
-                alert('Form error. Please refresh the page.');
-                return;
-            }
-            
-            const name = nameInput.value.trim();
-            const url = urlInput.value.trim();
-            const capital = capitalInput.value.trim();
-            
-            if (!name || !url) {
-                alert('Please fill in all required fields');
-                return;
-            }
-            
-            try {
-                addClient(name, url, capital);
-                
-                // Reset form
-                addForm.reset();
-                capitalInput.value = '10000000';
-                
-                // Switch to clients list tab
-                const listTabBtn = document.querySelector('[data-tab="list"]');
-                if (listTabBtn) {
-                    listTabBtn.click();
-                }
-                
-                // Show success message
-                const formContainer = addForm.closest('.tab-content');
-                if (formContainer) {
-                    const successMsg = document.createElement('div');
-                    successMsg.style.cssText = 'background: #10b981; color: white; padding: 0.75rem; border-radius: 0.5rem; margin-top: 1rem; text-align: center; font-weight: 600;';
-                    successMsg.textContent = '✅ Client added successfully!';
-                    formContainer.insertBefore(successMsg, formContainer.firstChild);
-                    setTimeout(() => successMsg.remove(), 3000);
-                }
-            } catch (error) {
-                console.error('Error adding client:', error);
-                alert(error.message || 'Error adding client. Please try again.');
-            }
-        });
-    }
-    
-    const editForm = document.getElementById('edit-client-form');
-    if (editForm) {
-        editForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            saveEditedClient();
-        });
-    }
+    // Client form event listeners removed - UI no longer exists
+    // All add client, manage clients, and client list functionality has been removed
     
     const cancelEditBtn = document.getElementById('cancel-edit');
     const cancelEditBtn2 = document.getElementById('cancel-edit-2');
@@ -1008,61 +807,19 @@ function initClientManagement() {
         selectAllBtn.addEventListener('click', handleSelectAllClick);
     }
     
-    const manageBtn = document.getElementById('manage-clients');
-    const modal = document.getElementById('client-management-modal');
-    const closeBtn = document.getElementById('close-modal');
-    
-    if (manageBtn && modal) {
-        manageBtn.addEventListener('click', () => {
-            modal.style.display = 'flex';
-            modal.classList.add('active');
-            // Switch to list tab if clients exist
-            if (clients.length > 0) {
-                const listTabBtn = document.querySelector('[data-tab="list"]');
-                if (listTabBtn) {
-                    listTabBtn.click();
-                }
-            } else {
-                // Switch to add tab if no clients
-                const addTabBtn = document.querySelector('[data-tab="add"]');
-                if (addTabBtn) {
-                    addTabBtn.click();
-                }
-            }
-        });
-    }
-    
-    if (closeBtn && modal) {
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            modal.classList.remove('active');
-        });
-    }
-    
-    // Close modal on outside click
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-                modal.classList.remove('active');
-            }
-        });
-    }
-    
-    // Clear all clients button
-    const clearAllBtn = document.getElementById('clear-all-clients-btn');
-    if (clearAllBtn) {
-        clearAllBtn.addEventListener('click', () => {
-            clearAllClients();
-            // Update UI after clearing
-            updateClientsList();
-            updateClientSelector();
-        });
-    }
+    // Client management UI removed - no longer needed
     
     // Load data for selected clients on init
-    loadSelectedClientsData();
+    if (clients.length > 0) {
+        loadSelectedClientsData();
+    } else {
+        // Show empty state
+        updateClientSelector();
+    }
 }
+
+// Automatic extraction function - REMOVED (now using manual upload)
+// This function has been removed. Users now upload data manually via the upload section.
 
 // Make functions available globally
 window.deleteClient = deleteClient;

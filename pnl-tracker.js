@@ -19,7 +19,7 @@ let pnlData = {
         total: { pnl: 0, percent: 0 }
     },
     capital: 10000000, // ₹1 Crore default
-    clientName: 'SUNKULA PUSHPAVATHI', // Default client name
+    clientName: '', // Client name (set when data is loaded)
     clientInfo: ''
 };
 
@@ -30,6 +30,9 @@ function loadStoredData() {
         try {
             const data = JSON.parse(stored);
             const lastUpdate = localStorage.getItem(LAST_UPDATE_KEY);
+            
+            // Don't auto-update clientName - only use what was fetched from verified P&L
+            // Keep the clientName as-is if it was fetched from verified page
             
             // Check if data is still fresh (less than 1 hour old)
             if (lastUpdate) {
@@ -58,6 +61,9 @@ function loadStoredData() {
 // Save data to localStorage with timestamp
 function saveData() {
     try {
+        // Don't auto-update clientName - only keep what was fetched from verified P&L
+        // Only set clientName if it was fetched from verified page (has verifiedUrl)
+        
         localStorage.setItem(STORAGE_KEY, JSON.stringify(pnlData));
         localStorage.setItem(LAST_UPDATE_KEY, new Date().toISOString());
         
@@ -106,63 +112,12 @@ function formatPercent(value) {
 // Update UI with P&L data
 function updateUI() {
     // Update client name and info
-    const clientNameEl = document.getElementById('client-name');
-    const clientInfoEl = document.getElementById('client-info');
-    
-    if (clientNameEl) {
-        // Always default to SUNKULA PUSHPAVATHI if no valid client name
-        if (pnlData.clientName && pnlData.clientName.trim() && 
-            pnlData.clientName !== 'No clients added' && 
-            !pnlData.clientName.toLowerCase().startsWith('client')) {
-            clientNameEl.textContent = pnlData.clientName.trim();
-        } else {
-            // Default to SUNKULA PUSHPAVATHI
-            clientNameEl.textContent = 'SUNKULA PUSHPAVATHI';
-            pnlData.clientName = 'SUNKULA PUSHPAVATHI';
-        }
-    }
+    // Client name and info elements removed - no longer displayed
     
     // Sort data by date for accurate date range
     const sortedData = pnlData.daily.length > 0 ? [...pnlData.daily].sort((a, b) => new Date(a.date) - new Date(b.date)) : [];
     
-    if (clientInfoEl) {
-        // Build client info with capital
-        let infoText = '';
-        
-        if (pnlData.daily && pnlData.daily.length === 0) {
-            infoText = 'Please add a client to view P&L data';
-        } else if (pnlData.capital && pnlData.capital > 0) {
-            const capitalFormatted = pnlData.capital >= 10000000 
-                ? `₹${(pnlData.capital / 10000000).toFixed(2)}Cr`
-                : `₹${(pnlData.capital / 100000).toFixed(2)}L`;
-            infoText = `Capital: ${capitalFormatted}`;
-            
-            // Use period from verified URL if available, otherwise calculate from data
-            if (pnlData.period) {
-                infoText += ` | Period: ${pnlData.period}`;
-            } else if (sortedData.length > 0) {
-                const startDate = new Date(sortedData[0].date);
-                const endDate = new Date(sortedData[sortedData.length - 1].date);
-                infoText += ` | Period: ${startDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${endDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
-            }
-        } else if (pnlData.clientInfo && pnlData.clientInfo !== 'Please add a client to view P&L data') {
-            infoText = pnlData.clientInfo;
-            // Add period if available
-            if (pnlData.period) {
-                infoText += ` | Period: ${pnlData.period}`;
-            }
-        } else if (sortedData.length > 0) {
-            const startDate = new Date(sortedData[0].date);
-            const endDate = new Date(sortedData[sortedData.length - 1].date);
-            infoText = `Performance from ${startDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${endDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
-        } else {
-            infoText = 'Please add a client to view P&L data';
-        }
-        
-        clientInfoEl.textContent = infoText;
-    }
-    
-    // Period range removed - now shown in client-info instead
+    // Client info display removed
     
     // Calculate advanced metrics
     const metrics = calculateAdvancedMetrics(sortedData);
@@ -368,56 +323,7 @@ function updateUI() {
     // Update charts
     updateCharts();
     
-    // Update verified source link if available
-    const verifiedLinkEl = document.getElementById('verified-source-link');
-    if (verifiedLinkEl) {
-        if (pnlData.verifiedUrl) {
-            verifiedLinkEl.href = pnlData.verifiedUrl;
-        }
-        verifiedLinkEl.textContent = 'Flattrade Verified P&L';
-    }
-    
-    // Update last update time - prioritize metadata from verified URL
-    const timeEl = document.getElementById('last-update-time');
-    if (timeEl) {
-        if (pnlData.lastUpdated) {
-            // Use last updated time from verified URL metadata
-            const lastUpdatedDate = new Date(pnlData.lastUpdated);
-            timeEl.textContent = lastUpdatedDate.toLocaleString('en-IN', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            });
-        } else {
-            // Fallback to localStorage timestamp
-            const lastUpdate = localStorage.getItem(LAST_UPDATE_KEY);
-            if (lastUpdate) {
-                const updateTime = new Date(lastUpdate);
-                timeEl.textContent = updateTime.toLocaleString('en-IN', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                });
-            } else {
-                // Final fallback to current time
-                const now = new Date();
-                timeEl.textContent = now.toLocaleString('en-IN', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                });
-            }
-        }
-    }
+    // Google Sheets sync functionality is handled separately in script.js
 }
 
 // Update table
@@ -1010,14 +916,14 @@ async function fetchPnlData() {
         if (data.daily && Array.isArray(data.daily)) {
             pnlData.daily = data.daily;
             pnlData.summary = data.summary || pnlData.summary;
-            // Default to SUNKULA PUSHPAVATHI, but use fetched name if it's not a generic name
+            // Use fetched name if available, otherwise use client name from list
             const fetchedName = data.clientName && data.clientName.trim() && 
                                !data.clientName.toLowerCase().startsWith('client') &&
                                data.clientName !== 'No clients added' &&
                                data.clientName !== 'Verified P&L Performance'
                                ? data.clientName.trim() 
-                               : 'SUNKULA PUSHPAVATHI';
-            pnlData.clientName = fetchedName || pnlData.clientName || 'SUNKULA PUSHPAVATHI';
+                               : '';
+            pnlData.clientName = fetchedName || pnlData.clientName || '';
             pnlData.clientInfo = data.clientInfo || pnlData.clientInfo;
             // Recalculate summary if needed
             if (pnlData.daily.length > 0) {
