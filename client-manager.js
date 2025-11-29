@@ -590,7 +590,39 @@ async function loadSelectedClientsData() {
         
     } catch (error) {
         console.error('Error loading client data:', error);
-        alert('Error loading client data. Please try again.');
+        
+        // Check if it's a network/CORS error (backend not available)
+        const isNetworkError = error.message.includes('Failed to fetch') || 
+                              error.message.includes('CORS') ||
+                              error.message.includes('NetworkError');
+        
+        if (isNetworkError) {
+            // Try to load cached data instead
+            console.log('Backend not available, trying to load cached data...');
+            const cachedData = localStorage.getItem(`fifto_pnl_data_${selectedClients[0].id}`);
+            if (cachedData) {
+                try {
+                    const data = JSON.parse(cachedData);
+                    if (data.daily && data.daily.length > 0) {
+                        if (typeof pnlData !== 'undefined') {
+                            pnlData = data;
+                            if (typeof updateUI === 'function') {
+                                updateUI();
+                            }
+                            console.log('Loaded cached data successfully');
+                            return; // Successfully loaded cached data
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing cached data:', e);
+                }
+            }
+            
+            // Show user-friendly message
+            alert('⚠️ Backend server not available. Please deploy the backend server or check your connection.\n\nFor now, showing cached data if available.');
+        } else {
+            alert('Error loading client data. Please try again.');
+        }
     } finally {
         if (refreshBtn) {
             refreshBtn.disabled = false;
@@ -606,7 +638,15 @@ async function fetchClientNameFromUrl(url) {
     }
     
     try {
-        const response = await fetch('/api/fetch-pnl', {
+        // Determine API URL based on environment
+        const isProduction = window.location.hostname !== 'localhost' && 
+                           window.location.hostname !== '127.0.0.1';
+        
+        // Use environment variable or default to relative path
+        const API_BASE_URL = window.API_BASE_URL || (isProduction ? '' : 'http://localhost:3000');
+        const apiUrl = `${API_BASE_URL}/api/fetch-pnl`;
+        
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ url: url })
@@ -698,7 +738,15 @@ async function fetchClientData(client) {
             }
         }
         
-        const response = await fetch('/api/fetch-pnl', {
+        // Determine API URL based on environment
+        const isProduction = window.location.hostname !== 'localhost' && 
+                           window.location.hostname !== '127.0.0.1';
+        
+        // Use environment variable or default to relative path
+        const API_BASE_URL = window.API_BASE_URL || (isProduction ? '' : 'http://localhost:3000');
+        const apiUrl = `${API_BASE_URL}/api/fetch-pnl`;
+        
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ url: client.url })

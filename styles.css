@@ -1903,18 +1903,28 @@ section {
 /* ============================================
    OVERVIEW SECTION
    ============================================ */
+.overview-section .section-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem) !important;
+    margin-bottom: var(--space-2);
+}
+
+.overview-section .section-subtitle {
+    font-size: 0.9rem !important;
+    max-width: 550px;
+    margin-bottom: var(--space-6);
+}
 .overview-section {
     background: var(--white);
     position: relative;
-    padding: var(--space-16) 0;
+    padding: var(--space-12) 0;
     border-top: 2px solid var(--gray-200);
     border-bottom: 2px solid var(--gray-200);
 }
 
 .overview-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-8);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
 }
 
 .overview-card,
@@ -1923,11 +1933,11 @@ section {
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(5, 150, 105, 0.2);
-    border-radius: 24px;
-    padding: var(--space-8);
+    border-radius: 20px;
+    padding: var(--space-6);
     text-align: center;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
     position: relative;
     overflow: hidden;
 }
@@ -1970,12 +1980,12 @@ section {
 }
 
 .overview-icon {
-    font-size: 3.5rem;
-    margin-bottom: var(--space-4);
+    font-size: 2.5rem;
+    margin-bottom: var(--space-3);
     display: block;
     color: var(--primary-green);
     transition: all var(--transition-base);
-    filter: drop-shadow(0 4px 8px rgba(13, 79, 60, 0.3));
+    filter: drop-shadow(0 3px 6px rgba(13, 79, 60, 0.25));
 }
 
 .overview-card:nth-child(even) .overview-icon {
@@ -1988,7 +1998,7 @@ section {
 }
 
 .overview-card h3 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: var(--space-2);
@@ -1996,8 +2006,8 @@ section {
 
 .overview-card p {
     color: var(--text-secondary);
-    line-height: 1.6;
-    font-size: 0.9rem;
+    line-height: 1.5;
+    font-size: 0.85rem;
 }
 
 /* ============================================
@@ -4408,7 +4418,35 @@ section {
     
     .overview-grid {
         grid-template-columns: 1fr;
-        gap: var(--space-6);
+        gap: var(--space-5);
+    }
+    
+    .overview-section {
+        padding: var(--space-10) 0;
+    }
+    
+    .overview-section .section-title {
+        font-size: clamp(1.25rem, 5vw, 1.75rem) !important;
+    }
+    
+    .overview-section .section-subtitle {
+        font-size: 0.85rem !important;
+    }
+    
+    .overview-card {
+        padding: var(--space-5);
+    }
+    
+    .overview-icon {
+        font-size: 2rem;
+    }
+    
+    .overview-card h3 {
+        font-size: 1rem;
+    }
+    
+    .overview-card p {
+        font-size: 0.8rem;
     }
     
     .hero-disclaimer {
