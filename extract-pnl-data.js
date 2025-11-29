@@ -294,8 +294,30 @@
     
     // Calculate totals
     const totalCalculated = dailyArray.reduce((sum, day) => sum + day.pnl, 0);
-    console.log(`💰 Calculated Total: ₹${totalCalculated.toLocaleString('en-IN')}`);
-    console.log(`💰 Expected Total: ${totalPnlText}`);
+    const totalCalculatedFormatted = `₹${(totalCalculated / 100000).toFixed(2)}L`;
+    console.log(`💰 Calculated Total: ₹${totalCalculated.toLocaleString('en-IN')} (${totalCalculatedFormatted})`);
+    console.log(`💰 Expected Total from Verified Link: ${totalPnlText}`);
+    
+    // Compare with expected total
+    if (totalPnlText) {
+        const expectedMatch = totalPnlText.match(/₹\s*([\d,]+\.?\d*)/);
+        if (expectedMatch) {
+            const expectedValue = parseFloat(expectedMatch[1].replace(/,/g, ''));
+            const difference = expectedValue - totalCalculated;
+            const differencePercent = ((difference / expectedValue) * 100).toFixed(2);
+            
+            if (Math.abs(difference) > 1000) { // More than ₹1000 difference
+                console.warn(`⚠️ WARNING: Calculated total (${totalCalculatedFormatted}) does NOT match verified link (${totalPnlText})`);
+                console.warn(`⚠️ Difference: ₹${difference.toLocaleString('en-IN')} (${differencePercent}%)`);
+                console.warn(`⚠️ This means some data is missing. Please check:`);
+                console.warn(`   1. Did the extraction go through ALL pages?`);
+                console.warn(`   2. Are there any errors in the console?`);
+                console.warn(`   3. Did the script stop early?`);
+            } else {
+                console.log(`✅ Calculated total matches verified link! (Difference: ₹${difference.toLocaleString('en-IN')})`);
+            }
+        }
+    }
     
     // Output the data
     const output = {
