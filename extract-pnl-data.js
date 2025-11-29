@@ -21,9 +21,14 @@
     console.log('⏳ Waiting for page to load...');
     await new Promise(resolve => {
         const checkTable = setInterval(() => {
-            const table = document.querySelector('table[ref="e1069"]');
-            const loading = document.querySelector('*[ref="e1103"]');
-            if (table && !loading) {
+            // Check if we have data rows (rows with 7+ cells)
+            const allRows = Array.from(document.querySelectorAll('tr'));
+            const dataRows = allRows.filter(row => {
+                const cells = row.querySelectorAll('td');
+                return cells.length >= 7;
+            });
+            
+            if (dataRows.length > 0) {
                 clearInterval(checkTable);
                 resolve();
             }
@@ -51,21 +56,26 @@
     // Function to extract trades from current page
     function extractTradesFromPage() {
         const trades = [];
-        const table = document.querySelector('table[ref="e1069"]');
+        const monthMap = {
+            'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04',
+            'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08',
+            'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'
+        };
         
-        if (!table) {
-            return trades;
-        }
+        // Get all rows - more robust approach
+        const allRows = Array.from(document.querySelectorAll('tr'));
         
-        // Get all rows (skip header)
-        const rows = table.querySelectorAll('tbody tr[ref]');
-        
-        rows.forEach((row) => {
+        allRows.forEach((row) => {
             const cells = row.querySelectorAll('td');
             if (cells.length >= 7) {
                 const symbol = cells[0].textContent.trim();
                 const pnlCell = cells[6];
                 const pnlText = pnlCell.textContent.trim();
+                
+                // Skip header rows
+                if (symbol === 'Symbol' || symbol === '' || pnlText === 'Gross realised P&L') {
+                    return;
+                }
                 
                 // Extract P&L amount (remove +, -, ₹, commas, %)
                 const pnlMatch = pnlText.match(/([+-]?[\d,]+\.?\d*)/);
@@ -85,11 +95,6 @@
                         const dateMatch = symbol.match(pattern);
                         if (dateMatch) {
                             const day = dateMatch[1].padStart(2, '0');
-                            const monthMap = {
-                                'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04',
-                                'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08',
-                                'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'
-                            };
                             const month = monthMap[dateMatch[2].toUpperCase()];
                             const year = dateMatch[3];
                             tradeDate = `${year}-${month}-${day}`;
