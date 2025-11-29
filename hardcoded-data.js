@@ -37,19 +37,31 @@ function generateSampleDailyData(startDate, baseCapital, clientId) {
     return daily;
 }
 
+// ACTUAL P&L DATA FOR FIRST CLIENT (SUNKULA PUSHPAVATHI)
+// Replace the daily array below with actual P&L data
+// Format: { date: 'YYYY-MM-DD', pnl: amount_in_rupees, percent: percentage }
+const ACTUAL_CLIENT_1_DATA = {
+    clientName: 'SUNKULA PUSHPAVATHI',
+    capital: 10000000, // ₹1 Crore
+    // TODO: Replace with actual daily P&L data
+    // Example format:
+    daily: [
+        // { date: '2025-01-01', pnl: 50000, percent: 0.50 },
+        // { date: '2025-01-02', pnl: 45000, percent: 0.45 },
+        // Add all actual daily P&L entries here
+    ],
+    clientInfo: 'Capital: ₹1.00Cr'
+};
+
+// If no actual data provided, use sample data temporarily
+if (!ACTUAL_CLIENT_1_DATA.daily || ACTUAL_CLIENT_1_DATA.daily.length === 0) {
+    ACTUAL_CLIENT_1_DATA.daily = generateSampleDailyData(new Date(), 10000000, 'client-1');
+    console.warn('⚠️ Using sample data for client-1. Please replace with actual P&L data.');
+}
+
 // Hardcoded client data
 const HARDCODED_CLIENT_DATA = {
-    'client-1': {
-        clientName: 'SUNKULA PUSHPAVATHI',
-        capital: 10000000, // ₹1 Crore
-        daily: generateSampleDailyData(new Date(), 10000000, 'client-1'),
-        summary: {
-            today: { pnl: 45000, percent: 0.45 },
-            mtd: { pnl: 850000, percent: 8.5 },
-            total: { pnl: 1260000, percent: 12.6 }
-        },
-        clientInfo: 'Capital: ₹1.00Cr'
-    },
+    'client-1': ACTUAL_CLIENT_1_DATA,
     'client-2': {
         clientName: 'Client 2',
         capital: 10000000, // ₹1 Crore
