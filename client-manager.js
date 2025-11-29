@@ -13,14 +13,14 @@ const DEFAULT_CLIENTS = [
     },
     {
         id: 'client-2',
-        name: 'Client 2',
+        name: 'SACHIN GUPTA',
         url: 'https://verified.flattrade.in/pnl/4a217d80d07d4c49af16c77db99946fd',
         capital: 10000000, // ₹1 Crore
         createdAt: new Date().toISOString()
     },
     {
         id: 'client-3',
-        name: 'Client 3',
+        name: 'RISHU GARG',
         url: 'https://verified.flattrade.in/pnl/PO05ba52fb8bee4f85918dc48e4ac88c54',
         capital: 10000000, // ₹1 Crore
         createdAt: new Date().toISOString()

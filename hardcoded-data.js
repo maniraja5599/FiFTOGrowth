@@ -82,7 +82,7 @@ if (!ACTUAL_CLIENT_1_DATA.daily || ACTUAL_CLIENT_1_DATA.daily.length === 0) {
 const HARDCODED_CLIENT_DATA = {
     'client-1': ACTUAL_CLIENT_1_DATA,
     'client-2': {
-        clientName: 'Client 2',
+        clientName: 'SACHIN GUPTA',
         capital: 10000000, // ₹1 Crore
         daily: (function() {
             const januaryStart = new Date(new Date().getFullYear(), 0, 1);
@@ -96,7 +96,7 @@ const HARDCODED_CLIENT_DATA = {
         clientInfo: 'Capital: ₹1.00Cr'
     },
     'client-3': {
-        clientName: 'Client 3',
+        clientName: 'RISHU GARG',
         capital: 10000000, // ₹1 Crore
         daily: (function() {
             const januaryStart = new Date(new Date().getFullYear(), 0, 1);
