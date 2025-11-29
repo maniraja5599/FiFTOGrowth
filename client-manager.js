@@ -372,12 +372,6 @@ function updateClientSelector() {
             card.classList.add('selected');
         }
         
-        // First client is always selected and cannot be deselected
-        if (isFirstClient) {
-            card.classList.add('always-selected');
-            card.setAttribute('title', 'This client is always selected by default');
-        }
-        
         // Get initials for avatar
         const initials = client.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
         
@@ -390,7 +384,7 @@ function updateClientSelector() {
             <div class="client-card-header">
                 <div class="client-card-avatar">${initials}</div>
                 <div class="client-card-info">
-                    <h4 class="client-card-name">${client.name}${isFirstClient ? ' <span style="font-size: 0.7em; color: #059669;">(Default)</span>' : ''}</h4>
+                    <h4 class="client-card-name">${client.name}</h4>
                     <div class="client-card-capital">${capitalText}</div>
                 </div>
             </div>
@@ -400,23 +394,13 @@ function updateClientSelector() {
             </div>
         `;
         
-        // Add click handler - first client cannot be deselected
-        if (!isFirstClient) {
-            card.addEventListener('click', (e) => {
-                // Don't toggle if clicking on link
-                if (e.target.tagName === 'A') return;
-                
-                handleClientCardClick(client.id);
-            });
-        } else {
-            // First client card - show it's always selected
-            card.style.cursor = 'default';
-            card.addEventListener('click', (e) => {
-                // Don't toggle if clicking on link
-                if (e.target.tagName === 'A') return;
-                // First client cannot be deselected - do nothing or show a message
-            });
-        }
+        // Add click handler for all clients
+        card.addEventListener('click', (e) => {
+            // Don't toggle if clicking on link
+            if (e.target.tagName === 'A') return;
+            
+            handleClientCardClick(client.id);
+        });
         
         container.appendChild(card);
     });
@@ -436,25 +420,14 @@ function updateClientSelector() {
 
 // Handle client card click
 function handleClientCardClick(clientId) {
-    // Prevent deselecting the first client (SUNKULA PUSHPAVATHI)
-    if (clients.length > 0 && clientId === clients[0].id) {
-        // First client is always selected, cannot be deselected
-        return;
-    }
-    
     const index = selectedClientIds.indexOf(clientId);
     
     if (index > -1) {
-        // Deselect (but not the first client)
+        // Deselect
         selectedClientIds.splice(index, 1);
     } else {
         // Select
         selectedClientIds.push(clientId);
-    }
-    
-    // Ensure first client is always selected
-    if (clients.length > 0 && !selectedClientIds.includes(clients[0].id)) {
-        selectedClientIds.unshift(clients[0].id);
     }
     
     saveSelectedClients();
@@ -468,12 +441,8 @@ function handleSelectAllClick() {
     const allSelected = selectedClientIds.length === clients.length && clients.length > 0;
     
     if (allSelected) {
-        // Deselect all, but keep first client selected (SUNKULA PUSHPAVATHI)
-        if (clients.length > 0) {
-            selectedClientIds = [clients[0].id]; // Always keep first client selected
-        } else {
-            selectedClientIds = [];
-        }
+        // Deselect all
+        selectedClientIds = [];
     } else {
         // Select all
         selectedClientIds = clients.map(c => c.id);
@@ -508,12 +477,7 @@ function updateSelectedCount() {
 
 // Clear selection function (kept for compatibility)
 function clearSelection() {
-    // Always keep first client selected
-    if (clients.length > 0) {
-        selectedClientIds = [clients[0].id];
-    } else {
-        selectedClientIds = [];
-    }
+    selectedClientIds = [];
     saveSelectedClients();
     updateClientSelector();
     updateSelectedCount();
@@ -630,14 +594,52 @@ async function fetchClientData(client) {
                     }
                 }
                 
+                // Ensure data structure is correct
+                const dataToStore = {
+                    daily: hardcodedData.daily || [],
+                    summary: hardcodedData.summary || {
+                        today: { pnl: 0, percent: 0 },
+                        mtd: { pnl: 0, percent: 0 },
+                        total: { pnl: 0, percent: 0 }
+                    },
+                    capital: hardcodedData.capital || client.capital || 10000000,
+                    clientName: hardcodedData.clientName || client.name,
+                    clientInfo: hardcodedData.clientInfo || `Capital: ₹${(hardcodedData.capital || client.capital || 10000000) >= 10000000 ? ((hardcodedData.capital || client.capital || 10000000) / 10000000).toFixed(2) + 'Cr' : ((hardcodedData.capital || client.capital || 10000000) / 100000).toFixed(2) + 'L'}`,
+                    clientId: client.id
+                };
+                
+                // Recalculate summary from daily data to ensure accuracy
+                if (dataToStore.daily && dataToStore.daily.length > 0) {
+                    const today = dataToStore.daily[dataToStore.daily.length - 1];
+                    const currentMonth = new Date().getMonth();
+                    const currentYear = new Date().getFullYear();
+                    
+                    const mtdDays = dataToStore.daily.filter(d => {
+                        const date = new Date(d.date);
+                        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+                    });
+                    
+                    const totalPnl = dataToStore.daily.reduce((sum, d) => sum + d.pnl, 0);
+                    const mtdPnl = mtdDays.reduce((sum, d) => sum + d.pnl, 0);
+                    
+                    dataToStore.summary = {
+                        today: {
+                            pnl: today.pnl,
+                            percent: parseFloat(((today.pnl / dataToStore.capital) * 100).toFixed(2))
+                        },
+                        mtd: {
+                            pnl: mtdPnl,
+                            percent: parseFloat(((mtdPnl / dataToStore.capital) * 100).toFixed(2))
+                        },
+                        total: {
+                            pnl: totalPnl,
+                            percent: parseFloat(((totalPnl / dataToStore.capital) * 100).toFixed(2))
+                        }
+                    };
+                }
+                
                 // Store in cache for consistency
                 const cacheKey = `fifto_pnl_data_${client.id}`;
-                const dataToStore = {
-                    ...hardcodedData,
-                    clientId: client.id,
-                    clientName: hardcodedData.clientName || client.name,
-                    capital: hardcodedData.capital || client.capital
-                };
                 localStorage.setItem(cacheKey, JSON.stringify(dataToStore));
                 localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
                 
@@ -766,11 +768,7 @@ function combineClientData(clientDataArray, selectedClients) {
 function initClientManagement() {
     loadClients();
     
-    // Ensure first client is always selected
-    if (clients.length > 0 && !selectedClientIds.includes(clients[0].id)) {
-        selectedClientIds = [clients[0].id];
-        saveSelectedClients();
-    }
+    // No longer forcing first client to be selected
     
     updateClientsList();
     updateClientSelector();
@@ -987,12 +985,7 @@ function initClientManagement() {
     const clearBtn = document.getElementById('clear-selection');
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
-            // Always keep first client selected
-            if (clients.length > 0) {
-                selectedClientIds = [clients[0].id];
-            } else {
-                selectedClientIds = [];
-            }
+            selectedClientIds = [];
             saveSelectedClients();
             updateClientSelector();
             updateSelectedCount();

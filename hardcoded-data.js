@@ -112,10 +112,12 @@ function calculateSummary(daily, capital) {
     };
 }
 
-// Recalculate summaries for all clients
+// Recalculate summaries for all clients based on actual daily data
 Object.keys(HARDCODED_CLIENT_DATA).forEach(clientId => {
     const clientData = HARDCODED_CLIENT_DATA[clientId];
-    clientData.summary = calculateSummary(clientData.daily, clientData.capital);
+    // Recalculate summary from actual daily data to ensure accuracy
+    const recalculatedSummary = calculateSummary(clientData.daily, clientData.capital);
+    clientData.summary = recalculatedSummary;
 });
 
 // Export for use in other files
