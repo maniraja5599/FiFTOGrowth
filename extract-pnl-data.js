@@ -142,24 +142,24 @@
     
     // Function to click next page
     async function goToNextPage() {
-        const nextButton = document.querySelector('button[ref="e1372"], button:has-text("Next"), button[aria-label*="Next"]');
+        // Try finding next button by ref attribute (e1335 is the next button ref)
+        let nextButton = document.querySelector('button[ref="e1335"]');
+        
         if (!nextButton) {
-            // Try finding by text content
+            // Try finding by text content or other attributes
             const buttons = Array.from(document.querySelectorAll('button'));
-            const nextBtn = buttons.find(btn => {
+            nextButton = buttons.find(btn => {
+                const ref = btn.getAttribute('ref');
                 const text = btn.textContent.trim();
-                return text.includes('Next') || text === '→' || text === '›';
+                const ariaLabel = btn.getAttribute('aria-label') || '';
+                return (ref === 'e1335' || ref === 'e1372') || 
+                       text.includes('Next') || 
+                       ariaLabel.includes('Next') ||
+                       (!btn.disabled && (text === '→' || text === '›'));
             });
-            
-            if (nextBtn && !nextBtn.disabled) {
-                nextBtn.click();
-                await wait(2000); // Wait for page to load
-                return true;
-            }
-            return false;
         }
         
-        if (nextButton.disabled) {
+        if (!nextButton || nextButton.disabled) {
             return false;
         }
         
