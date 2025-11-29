@@ -160,7 +160,12 @@ const ACTUAL_CLIENT_1_DATA = {
         { date: '2025-11-27', pnl: 14393, percent: 0.14 },
         { date: '2025-12-02', pnl: 81885, percent: 0.82 }
     ],
-    clientInfo: 'Capital: ₹1.00Cr'
+    clientInfo: 'Capital: ₹1.00Cr',
+    // Metadata from verified URL
+    period: 'Nov 26, 2024 to Nov 26, 2025', // Period shown on verified link
+    verifiedUrl: 'https://verified.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057',
+    lastUpdated: new Date().toISOString(), // Will be updated when data is extracted
+    expectedPnl: '₹ 62,42,428.09' // Total P&L from verified link
 };
 
 // Hardcoded client data
