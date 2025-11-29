@@ -2,27 +2,27 @@
 const CLIENTS_STORAGE_KEY = 'fifto_clients';
 const SELECTED_CLIENTS_KEY = 'fifto_selected_clients';
 
-// Default clients - 3 Verified P&L Links (Hardcoded)
+// Default clients - 3 Clients with Hardcoded Data
 const DEFAULT_CLIENTS = [
     {
         id: 'client-1',
-        name: 'Client 1', // Name will be fetched from P&L data
+        name: 'SUNKULA PUSHPAVATHI', // Default client name
         url: 'https://verified.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057',
-        capital: 10000000, // 1 Crore (default, will be updated from data)
+        capital: 10000000, // ₹1 Crore
         createdAt: new Date().toISOString()
     },
     {
         id: 'client-2',
-        name: 'Client 2', // Name will be fetched from P&L data
+        name: 'Client 2',
         url: 'https://verified.flattrade.in/pnl/4a217d80d07d4c49af16c77db99946fd',
-        capital: 10000000, // 1 Crore (default, will be updated from data)
+        capital: 10000000, // ₹1 Crore
         createdAt: new Date().toISOString()
     },
     {
         id: 'client-3',
-        name: 'Client 3', // Name will be fetched from P&L data
+        name: 'Client 3',
         url: 'https://verified.flattrade.in/pnl/PO05ba52fb8bee4f85918dc48e4ac88c54',
-        capital: 10000000, // 1 Crore (default, will be updated from data)
+        capital: 10000000, // ₹1 Crore
         createdAt: new Date().toISOString()
     }
 ];
@@ -590,39 +590,8 @@ async function loadSelectedClientsData() {
         
     } catch (error) {
         console.error('Error loading client data:', error);
-        
-        // Check if it's a network/CORS error (backend not available)
-        const isNetworkError = error.message.includes('Failed to fetch') || 
-                              error.message.includes('CORS') ||
-                              error.message.includes('NetworkError');
-        
-        if (isNetworkError) {
-            // Try to load cached data instead
-            console.log('Backend not available, trying to load cached data...');
-            const cachedData = localStorage.getItem(`fifto_pnl_data_${selectedClients[0].id}`);
-            if (cachedData) {
-                try {
-                    const data = JSON.parse(cachedData);
-                    if (data.daily && data.daily.length > 0) {
-                        if (typeof pnlData !== 'undefined') {
-                            pnlData = data;
-                            if (typeof updateUI === 'function') {
-                                updateUI();
-                            }
-                            console.log('Loaded cached data successfully');
-                            return; // Successfully loaded cached data
-                        }
-                    }
-                } catch (e) {
-                    console.error('Error parsing cached data:', e);
-                }
-            }
-            
-            // Show user-friendly message
-            alert('⚠️ Backend server not available. Please deploy the backend server or check your connection.\n\nFor now, showing cached data if available.');
-        } else {
-            alert('Error loading client data. Please try again.');
-        }
+        // With hardcoded data, errors should be rare, but show a message if needed
+        alert('Error loading client data. Please refresh the page.');
     } finally {
         if (refreshBtn) {
             refreshBtn.disabled = false;
@@ -631,174 +600,72 @@ async function loadSelectedClientsData() {
     }
 }
 
-// Fetch client name from verified P&L URL
+// Fetch client name from verified P&L URL - Now uses hardcoded data
 async function fetchClientNameFromUrl(url) {
-    if (!url || !url.includes('flattrade.in')) {
-        return null;
-    }
-    
-    try {
-        // Determine API URL based on environment
-        const isProduction = window.location.hostname !== 'localhost' && 
-                           window.location.hostname !== '127.0.0.1';
-        
-        // Use environment variable or default to relative path
-        const API_BASE_URL = window.API_BASE_URL || (isProduction ? '' : 'http://localhost:3000');
-        const apiUrl = `${API_BASE_URL}/api/fetch-pnl`;
-        
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url: url })
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            // Try multiple possible name fields from API response
-            const clientName = data.clientName || 
-                              data.clientModifiedName || 
-                              data.name || 
-                              data.accountName ||
-                              (data.clientDetailsJson && typeof data.clientDetailsJson === 'string' ? 
-                                (() => {
-                                    try {
-                                        const parsed = JSON.parse(data.clientDetailsJson);
-                                        return parsed.clientModifiedName || parsed.clientName || parsed.name || null;
-                                    } catch (e) {
-                                        return null;
-                                    }
-                                })() : null) ||
-                              null;
-            
-            if (clientName && clientName.trim()) {
-                return clientName.trim();
-            }
-        } else {
-            console.error('Failed to fetch client name:', response.status, response.statusText);
-        }
-    } catch (error) {
-        console.error('Error fetching client name:', error);
-    }
-    
+    // No longer fetching from API - return null to use default names
+    // Client names are now set in DEFAULT_CLIENTS
     return null;
 }
 
-// Fetch data for a single client
+// Fetch data for a single client - Now uses hardcoded data (no API calls)
 async function fetchClientData(client) {
     try {
-        // Check for cached data first
-        const cacheKey = `fifto_pnl_data_${client.id}`;
-        const cached = localStorage.getItem(cacheKey);
-        const cacheTime = localStorage.getItem(`${cacheKey}_time`);
-        
-        // Use cache if less than 1 hour old
-        if (cached && cacheTime) {
-            const cacheAge = Date.now() - parseInt(cacheTime);
-            if (cacheAge < 3600000) { // 1 hour
-                try {
-                    const cachedData = JSON.parse(cached);
-                    console.log(`Using cached data for ${client.name}`);
-                    
-                    // Update client name and capital if they're different in the cached data
-                    const clientIndex = clients.findIndex(c => c.id === client.id);
-                    if (clientIndex !== -1) {
-                        let updated = false;
-                        
-                        // Update name - but don't update if it's a generic name
-                        if (cachedData.clientName && cachedData.clientName.trim() && 
-                            cachedData.clientName.trim() !== clients[clientIndex].name.trim() &&
-                            !cachedData.clientName.toLowerCase().startsWith('client') &&
-                            cachedData.clientName !== 'No clients added' &&
-                            cachedData.clientName !== 'Verified P&L Performance') {
-                            console.log(`Updating client name from "${clients[clientIndex].name}" to "${cachedData.clientName}"`);
-                            clients[clientIndex].name = cachedData.clientName.trim();
-                            updated = true;
-                        }
-                        
-                        // Update capital from cached data if available
-                        if (cachedData.capital && cachedData.capital > 0 && cachedData.capital !== clients[clientIndex].capital) {
-                            console.log(`Updating client capital from ${clients[clientIndex].capital} to ${cachedData.capital}`);
-                            clients[clientIndex].capital = cachedData.capital;
-                            updated = true;
-                        }
-                        
-                        if (updated) {
-                            saveClients();
-                            updateClientsList();
-                        }
+        // Use hardcoded data if available
+        if (typeof window !== 'undefined' && window.HARDCODED_CLIENT_DATA) {
+            const hardcodedData = window.HARDCODED_CLIENT_DATA[client.id];
+            if (hardcodedData) {
+                console.log(`Using hardcoded data for ${client.name}`);
+                
+                // Update client name from hardcoded data
+                const clientIndex = clients.findIndex(c => c.id === client.id);
+                if (clientIndex !== -1 && hardcodedData.clientName) {
+                    if (hardcodedData.clientName !== clients[clientIndex].name) {
+                        clients[clientIndex].name = hardcodedData.clientName;
+                        saveClients();
+                        updateClientsList();
                     }
-                    
-                    return {
-                        client: client,
-                        data: cachedData
-                    };
-                } catch (e) {
-                    // Cache corrupted, fetch fresh
+                    if (hardcodedData.capital && hardcodedData.capital !== clients[clientIndex].capital) {
+                        clients[clientIndex].capital = hardcodedData.capital;
+                        saveClients();
+                    }
                 }
+                
+                // Store in cache for consistency
+                const cacheKey = `fifto_pnl_data_${client.id}`;
+                const dataToStore = {
+                    ...hardcodedData,
+                    clientId: client.id,
+                    clientName: hardcodedData.clientName || client.name,
+                    capital: hardcodedData.capital || client.capital
+                };
+                localStorage.setItem(cacheKey, JSON.stringify(dataToStore));
+                localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
+                
+                return {
+                    client: client,
+                    data: dataToStore
+                };
             }
         }
         
-        // Determine API URL based on environment
-        const isProduction = window.location.hostname !== 'localhost' && 
-                           window.location.hostname !== '127.0.0.1';
-        
-        // Use environment variable or default to relative path
-        const API_BASE_URL = window.API_BASE_URL || (isProduction ? '' : 'http://localhost:3000');
-        const apiUrl = `${API_BASE_URL}/api/fetch-pnl`;
-        
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url: client.url })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        // Update client name and capital if they're different in the fetched data
-        const clientIndex = clients.findIndex(c => c.id === client.id);
-        if (clientIndex !== -1) {
-            let updated = false;
-            
-            // Update name - but don't update if it's a generic name
-            if (data.clientName && data.clientName.trim() && 
-                data.clientName.trim() !== clients[clientIndex].name.trim() &&
-                !data.clientName.toLowerCase().startsWith('client') &&
-                data.clientName !== 'No clients added' &&
-                data.clientName !== 'Verified P&L Performance') {
-                console.log(`Updating client name from "${clients[clientIndex].name}" to "${data.clientName}"`);
-                clients[clientIndex].name = data.clientName.trim();
-                updated = true;
-            }
-            
-            // Update capital from data if available
-            if (data.capital && data.capital > 0 && data.capital !== clients[clientIndex].capital) {
-                console.log(`Updating client capital from ${clients[clientIndex].capital} to ${data.capital}`);
-                clients[clientIndex].capital = data.capital;
-                updated = true;
-            }
-            
-            if (updated) {
-                saveClients();
-                updateClientsList();
-                updateClientSelector();
-            }
-        }
-        
-        // Store in cache with client ID
-        data.clientId = client.id;
-        localStorage.setItem(cacheKey, JSON.stringify(data));
-        localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
-        
+        // Fallback: Return empty data structure if hardcoded data not found
+        console.warn(`No hardcoded data found for ${client.id}, returning empty data`);
         return {
             client: client,
-            data: data
+            data: {
+                daily: [],
+                summary: {
+                    today: { pnl: 0, percent: 0 },
+                    mtd: { pnl: 0, percent: 0 },
+                    total: { pnl: 0, percent: 0 }
+                },
+                capital: client.capital || 10000000,
+                clientName: client.name,
+                clientInfo: `Capital: ₹${client.capital >= 10000000 ? (client.capital / 10000000).toFixed(2) + 'Cr' : (client.capital / 100000).toFixed(2) + 'L'}`
+            }
         };
     } catch (error) {
-        console.error(`Error fetching data for ${client.name}:`, error);
+        console.error(`Error loading data for ${client.name}:`, error);
         throw error;
     }
 }
