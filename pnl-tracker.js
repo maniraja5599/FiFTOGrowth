@@ -137,13 +137,20 @@ function updateUI() {
                 : `₹${(pnlData.capital / 100000).toFixed(2)}L`;
             infoText = `Capital: ${capitalFormatted}`;
             
-            if (sortedData.length > 0) {
+            // Use period from verified URL if available, otherwise calculate from data
+            if (pnlData.period) {
+                infoText += ` | Period: ${pnlData.period}`;
+            } else if (sortedData.length > 0) {
                 const startDate = new Date(sortedData[0].date);
                 const endDate = new Date(sortedData[sortedData.length - 1].date);
                 infoText += ` | Period: ${startDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })} to ${endDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
             }
         } else if (pnlData.clientInfo && pnlData.clientInfo !== 'Please add a client to view P&L data') {
             infoText = pnlData.clientInfo;
+            // Add period if available
+            if (pnlData.period) {
+                infoText += ` | Period: ${pnlData.period}`;
+            }
         } else if (sortedData.length > 0) {
             const startDate = new Date(sortedData[0].date);
             const endDate = new Date(sortedData[sortedData.length - 1].date);
@@ -361,16 +368,54 @@ function updateUI() {
     // Update charts
     updateCharts();
     
-    // Update last update time
-    const lastUpdate = localStorage.getItem(LAST_UPDATE_KEY);
-    if (lastUpdate) {
-        const updateTime = new Date(lastUpdate);
-        const timeEl = document.getElementById('last-update-time');
-        if (timeEl) {
-            timeEl.textContent = updateTime.toLocaleString('en-IN', {
-                dateStyle: 'medium',
-                timeStyle: 'short'
+    // Update verified source link if available
+    const verifiedLinkEl = document.getElementById('verified-source-link');
+    if (verifiedLinkEl) {
+        if (pnlData.verifiedUrl) {
+            verifiedLinkEl.href = pnlData.verifiedUrl;
+        }
+        verifiedLinkEl.textContent = 'Flattrade Verified P&L';
+    }
+    
+    // Update last update time - prioritize metadata from verified URL
+    const timeEl = document.getElementById('last-update-time');
+    if (timeEl) {
+        if (pnlData.lastUpdated) {
+            // Use last updated time from verified URL metadata
+            const lastUpdatedDate = new Date(pnlData.lastUpdated);
+            timeEl.textContent = lastUpdatedDate.toLocaleString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
             });
+        } else {
+            // Fallback to localStorage timestamp
+            const lastUpdate = localStorage.getItem(LAST_UPDATE_KEY);
+            if (lastUpdate) {
+                const updateTime = new Date(lastUpdate);
+                timeEl.textContent = updateTime.toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            } else {
+                // Final fallback to current time
+                const now = new Date();
+                timeEl.textContent = now.toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
         }
     }
 }

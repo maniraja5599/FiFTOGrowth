@@ -50,8 +50,22 @@
     const totalPnlEl = document.querySelector('[ref="e30"]');
     const totalPnlText = totalPnlEl ? totalPnlEl.textContent.trim() : '';
     
+    // Get period from the page (format: "Nov 26, 2024 to Nov 26, 2025")
+    const periodEl = document.querySelector('[ref="e28"]');
+    let periodText = '';
+    if (periodEl) {
+        const periodContent = periodEl.textContent.trim();
+        // Extract period text (should contain date range)
+        periodText = periodContent || '';
+    }
+    
+    // Get last updated time (if available on page)
+    const lastUpdated = new Date().toISOString();
+    
     console.log(`📊 Client: ${clientName}`);
     console.log(`💰 Total P&L: ${totalPnlText}`);
+    console.log(`📅 Period: ${periodText}`);
+    console.log(`🕐 Last Updated: ${lastUpdated}`);
     
     // Function to extract trades from current page
     function extractTradesFromPage() {
@@ -292,6 +306,9 @@
         totalPages: currentPage - 1,
         totalPnl: totalCalculated,
         expectedPnl: totalPnlText,
+        period: periodText, // Period from verified link (e.g., "Nov 26, 2024 to Nov 26, 2025")
+        lastUpdated: lastUpdated, // ISO timestamp
+        verifiedUrl: window.location.href, // Current verified link URL
         clientInfo: `Capital: ₹1.00Cr`
     };
     

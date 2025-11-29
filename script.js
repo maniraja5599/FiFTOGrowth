@@ -941,6 +941,20 @@ function importDataFromJSON() {
                 window.HARDCODED_CLIENT_DATA[clientId].clientName = importedData.clientName;
             }
             
+            // Store metadata from verified URL
+            if (importedData.period) {
+                window.HARDCODED_CLIENT_DATA[clientId].period = importedData.period;
+            }
+            if (importedData.lastUpdated) {
+                window.HARDCODED_CLIENT_DATA[clientId].lastUpdated = importedData.lastUpdated;
+            }
+            if (importedData.verifiedUrl) {
+                window.HARDCODED_CLIENT_DATA[clientId].verifiedUrl = importedData.verifiedUrl;
+            }
+            if (importedData.expectedPnl) {
+                window.HARDCODED_CLIENT_DATA[clientId].expectedPnl = importedData.expectedPnl;
+            }
+            
             // Recalculate summary
             if (typeof calculateSummary === 'function') {
                 const capital = window.HARDCODED_CLIENT_DATA[clientId].capital || 10000000;
@@ -953,7 +967,11 @@ function importDataFromJSON() {
                 clientName: window.HARDCODED_CLIENT_DATA[clientId].clientName,
                 capital: capital,
                 daily: importedData.daily,
-                summary: window.HARDCODED_CLIENT_DATA[clientId].summary
+                summary: window.HARDCODED_CLIENT_DATA[clientId].summary,
+                period: window.HARDCODED_CLIENT_DATA[clientId].period,
+                lastUpdated: window.HARDCODED_CLIENT_DATA[clientId].lastUpdated,
+                verifiedUrl: window.HARDCODED_CLIENT_DATA[clientId].verifiedUrl,
+                expectedPnl: window.HARDCODED_CLIENT_DATA[clientId].expectedPnl
             };
             localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
             

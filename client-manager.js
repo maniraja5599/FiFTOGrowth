@@ -605,7 +605,12 @@ async function fetchClientData(client) {
                     capital: hardcodedData.capital || client.capital || 10000000,
                     clientName: hardcodedData.clientName || client.name,
                     clientInfo: hardcodedData.clientInfo || `Capital: ₹${(hardcodedData.capital || client.capital || 10000000) >= 10000000 ? ((hardcodedData.capital || client.capital || 10000000) / 10000000).toFixed(2) + 'Cr' : ((hardcodedData.capital || client.capital || 10000000) / 100000).toFixed(2) + 'L'}`,
-                    clientId: client.id
+                    clientId: client.id,
+                    // Preserve metadata from verified URL if available
+                    period: hardcodedData.period || null,
+                    lastUpdated: hardcodedData.lastUpdated || null,
+                    verifiedUrl: hardcodedData.verifiedUrl || client.url || null,
+                    expectedPnl: hardcodedData.expectedPnl || null
                 };
                 
                 // Recalculate summary from daily data to ensure accuracy
