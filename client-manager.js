@@ -699,7 +699,12 @@ function combineClientData(clientDataArray, selectedClients) {
             ...singleData,
             clientName: clientName,
             capital: clientCapital,
-            clientInfo: singleData.clientInfo || `Capital: ₹${clientCapital >= 10000000 ? (clientCapital / 10000000).toFixed(2) + 'Cr' : (clientCapital / 100000).toFixed(2) + 'L'}`
+            clientInfo: singleData.clientInfo || `Capital: ₹${clientCapital >= 10000000 ? (clientCapital / 10000000).toFixed(2) + 'Cr' : (clientCapital / 100000).toFixed(2) + 'L'}`,
+            // Preserve metadata from verified URL
+            period: singleData.period || null,
+            lastUpdated: singleData.lastUpdated || null,
+            verifiedUrl: singleData.verifiedUrl || selectedClients[0].url || null,
+            expectedPnl: singleData.expectedPnl || null
         };
     }
     
