@@ -1,76 +1,66 @@
-# Quick Start Guide - Fix CORS Error
+# 🚀 Quick Start - Extract P&L Data (5-10 minutes per client)
 
-## 🚀 Solution 1: Run Local Server (Easiest)
+## Step-by-Step Instructions:
 
-### Step 1: Start the Server
-Open Terminal in this folder and run:
+### For Client 1 (SUNKULA PUSHPAVATHI):
 
-```bash
-node server.js
-```
+1. **Open this link in your browser:**
+   ```
+   https://verified.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057
+   ```
 
-You should see:
-```
-🚀 FiFTO P&L Server running at http://localhost:3000
-📊 Open your browser and go to: http://localhost:3000
-```
+2. **Wait for page to fully load** (30-60 seconds - wait until you see all trades table)
 
-### Step 2: Open Website
-Open your browser and go to:
-```
-http://localhost:3000
-```
+3. **Open Developer Tools:**
+   - Press `F12` (or `Cmd+Option+I` on Mac)
+   - Click on **Console** tab
 
-### Step 3: Click "Refresh Data"
-Click the "Refresh Data" button on the P&L Feed section. The data should now load!
+4. **Copy the entire script:**
+   - Open file: `extract-pnl-data.js`
+   - Select ALL (Ctrl+A / Cmd+A)
+   - Copy (Ctrl+C / Cmd+C)
 
----
+5. **Paste in browser console:**
+   - Click in the console
+   - Paste (Ctrl+V / Cmd+V)
+   - Press **Enter**
 
-## 📝 Solution 2: Manual Data Entry (No Server Needed)
+6. **Wait for completion:**
+   - You'll see progress: "📄 Page 1... Page 2... etc."
+   - Takes 5-10 minutes for 193 pages
+   - Shows progress every 20 pages
 
-### Step 1: Open Manual Entry Tool
-Open `manual-data-entry.html` in your browser
-
-### Step 2: Enter Data
-- Enter today's date
-- Enter P&L amount (e.g., 50000)
-- Enter percentage (e.g., 0.5)
-- Click "Add Entry"
-
-### Step 3: View on Main Page
-Open `index.html` and the data will appear automatically!
+7. **Get the data:**
+   - JSON will be displayed in console
+   - File will auto-download: `SUNKULA_PUSHPAVATHI_pnl_data.json`
+   - Copy the JSON or send me the file
 
 ---
 
-## 🔧 Troubleshooting
+### Repeat for Client 2 (SACHIN GUPTA):
 
-### "Cannot find module 'http'" Error
-You're not using Node.js. Make sure Node.js is installed:
-- Download from: https://nodejs.org/
-- Or use Solution 2 (Manual Entry) instead
-
-### Server Won't Start
-Check if port 3000 is already in use:
-```bash
-# On Mac/Linux
-lsof -i :3000
-
-# Kill the process if needed, then try again
-```
-
-### Still Getting CORS Error?
-1. Make sure you're using `http://localhost:3000` (not `file://`)
-2. Check browser console for errors
-3. Try Solution 2 (Manual Entry) as alternative
+1. Open: `https://verified.flattrade.in/pnl/4a217d80d07d4c49af16c77db99946fd`
+2. Follow same steps (F12 → Console → Paste script → Enter)
+3. Wait for completion
+4. Get the JSON file
 
 ---
 
-## 📊 Next Steps
+### Repeat for Client 3 (RISHU GARG):
 
-Once data is loading:
-1. The charts will automatically update
-2. Statistics will calculate (Today, MTD, Total)
-3. Data is saved locally for offline viewing
+1. Open: `https://verified.flattrade.in/pnl/PO05ba52fb8bee4f85918dc48e4ac88c54`
+2. Follow same steps (F12 → Console → Paste script → Enter)
+3. Wait for completion
+4. Get the JSON file
 
-For production deployment, you'll need to set up a proper backend server.
+---
 
+## ✅ Once You Have All 3 JSON Files:
+
+**Send them to me** and I'll:
+1. ✅ Update `hardcoded-data.js` with exact data
+2. ✅ Verify totals match verified links
+3. ✅ Deploy to Netlify
+4. ✅ Test the website
+
+**That's it! The script does everything automatically.** 🎉
