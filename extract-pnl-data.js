@@ -222,7 +222,7 @@
     let currentPage = 1;
     let maxPages = 1;
     let consecutiveEmptyPages = 0;
-    const maxEmptyPages = 3; // Stop if 3 consecutive pages have no data
+    const maxEmptyPages = 5; // Stop if 5 consecutive pages have no data (increased for better coverage)
     
     console.log('📄 Starting to extract trades from all pages...');
     
@@ -258,9 +258,10 @@
         
         currentPage++;
         
-        // Safety limit
-        if (currentPage > 500) {
-            console.log('  ⚠️ Reached safety limit of 500 pages');
+        // Safety limit - increased to handle large datasets
+        if (currentPage > 1000) {
+            console.log('  ⚠️ Reached safety limit of 1000 pages');
+            console.log('  ⚠️ If extraction stopped here, verify the total matches the verified link');
             break;
         }
     }
