@@ -45,7 +45,15 @@ function generateSampleDailyData(startDate, baseCapital, clientId) {
 
 // ACTUAL P&L DATA FOR FIRST CLIENT (SUNKULA PUSHPAVATHI)
 // Verified P&L Link: https://verified.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057
-// Replace the daily array below with actual P&L data from the verified link
+// 
+// VERIFIED DATA FROM LINK:
+// - Total Net P&L: ₹ 62,42,428.09 (Nov 26, 2024 to Nov 26, 2025)
+// - Most Profitable Day: Oct 14, 2025 - ₹ 5,20,977.04
+// - Longest Streak: Aug 14-29, 2025 (11 days)
+// - Period: Nov 26, 2024 to Nov 26, 2025
+//
+// NOTE: The verified link shows monthly calendar view but daily data needs to be extracted manually
+// or provided by the user. Replace the daily array below with actual daily P&L data.
 // Format: { date: 'YYYY-MM-DD', pnl: amount_in_rupees, percent: percentage }
 const ACTUAL_CLIENT_1_DATA = {
     clientName: 'SUNKULA PUSHPAVATHI',
