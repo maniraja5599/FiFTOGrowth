@@ -789,3 +789,223 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// ============================================
+// DATA EXTRACTION & EXPORT FUNCTIONS
+// ============================================
+
+// Client verified links
+const CLIENT_VERIFIED_LINKS = {
+    'client-1': 'https://verified.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057',
+    'client-2': 'https://verified.flattrade.in/pnl/4a217d80d07d4c49af16c77db99946fd',
+    'client-3': 'https://verified.flattrade.in/pnl/PO05ba52fb8bee4f85918dc48e4ac88c54'
+};
+
+// Open extraction guide with instructions
+function openExtractionGuide() {
+    // Get currently selected client(s)
+    const selectedClients = getSelectedClients();
+    
+    if (selectedClients.length === 0) {
+        alert('Please select at least one client first.');
+        return;
+    }
+    
+    // Get the first selected client's link
+    const firstClient = selectedClients[0];
+    const verifiedLink = CLIENT_VERIFIED_LINKS[firstClient.id] || CLIENT_VERIFIED_LINKS['client-1'];
+    
+    // Create instructions modal
+    const instructions = `
+📋 DATA EXTRACTION INSTRUCTIONS
+
+1. The verified P&L link will open in a new tab
+2. Wait for the page to fully load
+3. Press F12 to open Developer Tools
+4. Go to the Console tab
+5. Copy and paste the extraction script (see below)
+6. Press Enter and wait 5-10 minutes
+7. Copy the JSON output from console
+8. Return here and click "Import Data" to paste it
+
+EXTRACTION SCRIPT:
+(You can find the full script in extract-pnl-data.js file)
+
+Click OK to open the verified link.
+    `;
+    
+    if (confirm(instructions)) {
+        // Open verified link in new tab
+        window.open(verifiedLink, '_blank');
+        
+        // Show extraction script in console
+        console.log('%c📋 EXTRACTION SCRIPT', 'color: #10b981; font-size: 16px; font-weight: bold;');
+        console.log('%cCopy the extract-pnl-data.js file content and paste it in the verified link page console', 'color: #6b7280; font-size: 12px;');
+    }
+}
+
+// Toggle import section visibility
+function toggleImportSection() {
+    const importSection = document.getElementById('import-section');
+    if (importSection) {
+        const isVisible = importSection.style.display !== 'none';
+        importSection.style.display = isVisible ? 'none' : 'block';
+        
+        if (!isVisible) {
+            // Focus on textarea
+            const textarea = document.getElementById('import-json-textarea');
+            if (textarea) {
+                setTimeout(() => textarea.focus(), 100);
+            }
+        }
+    }
+}
+
+// Export current data as JSON
+function exportCurrentData() {
+    // Get currently selected client(s)
+    const selectedClients = getSelectedClients();
+    
+    if (selectedClients.length === 0) {
+        alert('Please select at least one client first.');
+        return;
+    }
+    
+    // Get P&L data for selected clients
+    if (typeof pnlData === 'undefined' || !pnlData || !pnlData.daily) {
+        alert('No P&L data available to export. Please load data first.');
+        return;
+    }
+    
+    // Prepare export data
+    const exportData = {
+        clientName: pnlData.clientName || 'Combined Clients',
+        capital: pnlData.capital || 10000000,
+        daily: pnlData.daily || [],
+        summary: pnlData.summary || {},
+        exportedAt: new Date().toISOString(),
+        exportedFrom: 'FiFTO Portfolio Management System'
+    };
+    
+    // Create and download JSON file
+    const jsonStr = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `fifto_pnl_data_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    // Show success message
+    alert('✅ Data exported successfully!');
+}
+
+// Import data from JSON
+function importDataFromJSON() {
+    const textarea = document.getElementById('import-json-textarea');
+    if (!textarea) {
+        alert('Import textarea not found.');
+        return;
+    }
+    
+    const jsonText = textarea.value.trim();
+    if (!jsonText) {
+        alert('Please paste JSON data first.');
+        return;
+    }
+    
+    try {
+        const importedData = JSON.parse(jsonText);
+        
+        // Validate data structure
+        if (!importedData.daily || !Array.isArray(importedData.daily)) {
+            throw new Error('Invalid data format: missing "daily" array');
+        }
+        
+        // Get currently selected client
+        const selectedClients = getSelectedClients();
+        if (selectedClients.length === 0) {
+            alert('Please select a client first.');
+            return;
+        }
+        
+        const clientId = selectedClients[0].id;
+        
+        // Update hardcoded data for the client
+        if (typeof window.HARDCODED_CLIENT_DATA !== 'undefined' && window.HARDCODED_CLIENT_DATA[clientId]) {
+            // Update the client data
+            window.HARDCODED_CLIENT_DATA[clientId].daily = importedData.daily;
+            if (importedData.clientName) {
+                window.HARDCODED_CLIENT_DATA[clientId].clientName = importedData.clientName;
+            }
+            
+            // Recalculate summary
+            if (typeof calculateSummary === 'function') {
+                const capital = window.HARDCODED_CLIENT_DATA[clientId].capital || 10000000;
+                window.HARDCODED_CLIENT_DATA[clientId].summary = calculateSummary(importedData.daily, capital);
+            }
+            
+            // Save to localStorage
+            const cacheKey = `fifto_pnl_data_${clientId}`;
+            const dataToCache = {
+                clientName: window.HARDCODED_CLIENT_DATA[clientId].clientName,
+                capital: capital,
+                daily: importedData.daily,
+                summary: window.HARDCODED_CLIENT_DATA[clientId].summary
+            };
+            localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
+            
+            // Reload P&L data
+            if (typeof loadSelectedClientsData === 'function') {
+                loadSelectedClientsData().then(() => {
+                    if (typeof updateUI === 'function') {
+                        updateUI();
+                    }
+                    alert('✅ Data imported successfully! The page will refresh to show updated data.');
+                    // Clear textarea
+                    textarea.value = '';
+                    toggleImportSection();
+                    // Reload page to ensure all data is refreshed
+                    setTimeout(() => window.location.reload(), 1000);
+                }).catch(err => {
+                    console.error('Error reloading data:', err);
+                    alert('Data imported but error reloading. Please refresh the page manually.');
+                });
+            } else {
+                alert('✅ Data imported! Please refresh the page to see changes.');
+                window.location.reload();
+            }
+        } else {
+            alert('Error: Client data structure not found. Please refresh the page and try again.');
+        }
+    } catch (error) {
+        console.error('Import error:', error);
+        alert('❌ Error importing data: ' + error.message + '\n\nPlease check that the JSON is valid and try again.');
+    }
+}
+
+// Helper function to get selected clients
+function getSelectedClients() {
+    if (typeof clients === 'undefined' || !clients) {
+        return [];
+    }
+    
+    // Get selected client IDs from checkboxes or cards
+    const selectedIds = [];
+    const clientCards = document.querySelectorAll('.client-card');
+    
+    clientCards.forEach(card => {
+        if (card.classList.contains('selected')) {
+            const clientId = card.getAttribute('data-client-id');
+            if (clientId) {
+                selectedIds.push(clientId);
+            }
+        }
+    });
+    
+    // Return client objects
+    return clients.filter(client => selectedIds.includes(client.id));
+}
+

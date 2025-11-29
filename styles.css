@@ -2353,6 +2353,182 @@ section {
     font-weight: 500;
 }
 
+/* Data Extraction & Export Section */
+.data-extraction-section {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.08) 100%);
+    border: 2px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);
+}
+
+.extraction-header {
+    text-align: center;
+    margin-bottom: var(--space-6);
+}
+
+.extraction-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: var(--space-2);
+}
+
+.extraction-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.extraction-controls {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+}
+
+.extract-btn,
+.export-btn,
+.import-btn {
+    padding: var(--space-3) var(--space-6);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.extract-btn {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+    color: var(--white);
+}
+
+.extract-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: var(--white);
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.import-btn {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: var(--white);
+}
+
+.import-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.import-section {
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-200);
+}
+
+.import-instructions {
+    background: rgba(16, 185, 129, 0.05);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
+    border-left: 4px solid var(--primary-green);
+}
+
+.import-instructions p {
+    font-weight: 600;
+    color: var(--primary-green);
+    margin-bottom: var(--space-2);
+}
+
+.import-instructions ol {
+    margin-left: var(--space-5);
+    color: var(--text-primary);
+    line-height: 1.8;
+}
+
+.import-instructions li {
+    margin-bottom: var(--space-2);
+}
+
+.import-textarea-container {
+    margin-bottom: var(--space-4);
+}
+
+.import-textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: var(--space-4);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.import-textarea:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.import-actions {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: flex-end;
+}
+
+.apply-btn,
+.cancel-btn {
+    padding: var(--space-3) var(--space-6);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.apply-btn {
+    background: var(--primary-green);
+    color: var(--white);
+}
+
+.apply-btn:hover {
+    background: var(--dark-green);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.cancel-btn {
+    background: var(--gray-300);
+    color: var(--text-primary);
+}
+
+.cancel-btn:hover {
+    background: var(--gray-400);
+}
+
 .p-l-table-container {
     background: var(--white);
     border: 1px solid var(--gray-200);
@@ -4367,6 +4543,31 @@ section {
     
     .quick-stats {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .data-extraction-section {
+        padding: var(--space-4);
+    }
+    
+    .extraction-controls {
+        flex-direction: column;
+    }
+    
+    .extract-btn,
+    .export-btn,
+    .import-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .import-actions {
+        flex-direction: column;
+    }
+    
+    .apply-btn,
+    .cancel-btn {
+        width: 100%;
+        justify-content: center;
     }
     
     .p-l-table-container {

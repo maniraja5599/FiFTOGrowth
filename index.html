@@ -329,6 +329,51 @@
                 </div>
             </div>
             </div>
+            
+            <!-- Data Extraction & Export Section -->
+            <div class="data-extraction-section">
+                <div class="extraction-header">
+                    <h3>📊 Data Management</h3>
+                    <p>Extract, import, or export P&L data</p>
+                </div>
+                <div class="extraction-controls">
+                    <button class="extract-btn" id="extract-data-btn" onclick="openExtractionGuide()">
+                        <i class="fas fa-download"></i> Extract Data
+                    </button>
+                    <button class="export-btn" id="export-data-btn" onclick="exportCurrentData()">
+                        <i class="fas fa-file-export"></i> Export Data
+                    </button>
+                    <button class="import-btn" id="import-data-btn" onclick="toggleImportSection()">
+                        <i class="fas fa-file-import"></i> Import Data
+                    </button>
+                </div>
+                <div class="import-section" id="import-section" style="display: none;">
+                    <div class="import-instructions">
+                        <p><strong>Instructions:</strong></p>
+                        <ol>
+                            <li>Click "Extract Data" to open the verified P&L link</li>
+                            <li>Run the extraction script in browser console (F12)</li>
+                            <li>Copy the JSON output</li>
+                            <li>Paste it below and click "Apply Data"</li>
+                        </ol>
+                    </div>
+                    <div class="import-textarea-container">
+                        <textarea 
+                            id="import-json-textarea" 
+                            class="import-textarea" 
+                            placeholder="Paste JSON data here..."></textarea>
+                    </div>
+                    <div class="import-actions">
+                        <button class="apply-btn" onclick="importDataFromJSON()">
+                            <i class="fas fa-check"></i> Apply Data
+                        </button>
+                        <button class="cancel-btn" onclick="toggleImportSection()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <div class="p-l-table-container">
                 <div class="p-l-table-wrapper">
                     <table class="p-l-table">
