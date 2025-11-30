@@ -140,8 +140,8 @@ const PnLChart = () => {
                         {/* P&L Chart Container */}
                         <div
                             className={`transition-all duration-300 ${isFullScreen
-                                    ? 'fixed inset-0 z-50 bg-premium-dark p-6 md:p-10 flex flex-col'
-                                    : 'glass-panel p-6 md:p-8 h-[550px] relative group'
+                                ? 'fixed inset-0 z-50 bg-premium-dark p-6 md:p-10 flex flex-col'
+                                : 'glass-panel p-6 md:p-8 h-[550px] relative group'
                                 }`}
                         >
                             {/* Highlight Effect (Only in normal mode) */}
@@ -250,7 +250,7 @@ const PnLChart = () => {
                                                 tick={{ fill: '#888', fontSize: 10 }}
                                                 axisLine={false}
                                                 tickLine={false}
-                                                tickFormatter={(value) => `₹${value / 1000}k`}
+                                                tickFormatter={(value) => `₹${(value / 100000).toFixed(2)}L`}
                                             />
                                             <Tooltip content={<CustomTooltip viewMode={viewMode} chartType={chartType} />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }} />
                                             <ReferenceLine y={0} stroke="#666" />
@@ -280,7 +280,7 @@ const PnLChart = () => {
                                                 tick={{ fill: '#888', fontSize: 10 }}
                                                 axisLine={false}
                                                 tickLine={false}
-                                                tickFormatter={(value) => `₹${value / 1000}k`}
+                                                tickFormatter={(value) => `₹${(value / 100000).toFixed(2)}L`}
                                             />
                                             <Tooltip content={<CustomTooltip viewMode={viewMode} chartType={chartType} />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
                                             <ReferenceLine y={0} stroke="#666" />
@@ -307,7 +307,7 @@ const PnLChart = () => {
                                                 tick={{ fill: '#888', fontSize: 10 }}
                                                 axisLine={false}
                                                 tickLine={false}
-                                                tickFormatter={(value) => `₹${value / 1000}k`}
+                                                tickFormatter={(value) => `₹${(value / 100000).toFixed(2)}L`}
                                             />
                                             <Tooltip content={<CustomTooltip viewMode={viewMode} chartType={chartType} />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }} />
                                             <ReferenceLine y={0} stroke="#666" />
