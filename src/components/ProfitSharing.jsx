@@ -37,8 +37,12 @@ const ProfitSharing = () => {
                                     <ShieldCheck className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h4 className="text-lg font-semibold text-white">Account assistance</h4>
-                                    <p className="text-gray-400 text-sm mb-2">Dedicated support for account monitoring and risk management.</p>
+                                    <h4 className="text-lg font-semibold text-white">Recommended Broker</h4>
+                                    <p className="text-gray-400 text-sm mb-2">
+                                        <a href="https://openaccount.flattrade.in/O_FT003862" target="_blank" rel="noopener noreferrer" className="text-premium-gold hover:underline">
+                                            Zero Brokerage Account (Flattrade)
+                                        </a>
+                                    </p>
                                     <div className="text-premium-gold font-mono font-bold text-xl">₹5,000 <span className="text-xs text-gray-500 font-normal">/ month</span></div>
                                 </div>
                             </div>
@@ -48,8 +52,12 @@ const ProfitSharing = () => {
                                     <TrendingUp className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h4 className="text-lg font-semibold text-white">Trading platform fee</h4>
-                                    <p className="text-gray-400 text-sm mb-2">Advanced algorithmic trading infrastructure and execution.</p>
+                                    <h4 className="text-lg font-semibold text-white">Trading Platform</h4>
+                                    <p className="text-gray-400 text-sm mb-2">
+                                        <a href="https://www.tradetron.tech?ref=maniraja" target="_blank" rel="noopener noreferrer" className="text-premium-gold hover:underline">
+                                            TradeTron (Algo Execution)
+                                        </a>
+                                    </p>
                                     <div className="text-premium-gold font-mono font-bold text-xl">₹5,000 <span className="text-xs text-gray-500 font-normal">/ month</span></div>
                                 </div>
                             </div>
