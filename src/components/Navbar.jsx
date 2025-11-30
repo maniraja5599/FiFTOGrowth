@@ -37,7 +37,7 @@ const Navbar = () => {
                                     WebkitTextFillColor: 'transparent'
                                 }}>i</span>
                                 {/* Red Dot */}
-                                <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-red-600 rounded-full shadow-sm border border-red-400"></span>
+                                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-red-600 rounded-full shadow-sm border border-red-400"></span>
                             </span>
                             <span className="text-green-700" style={{
                                 background: 'linear-gradient(to bottom, #008000, #004d00)',

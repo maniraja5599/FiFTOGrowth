@@ -33,7 +33,7 @@ const Footer = () => {
                                         WebkitTextFillColor: 'transparent'
                                     }}>i</span>
                                     {/* Red Dot */}
-                                    <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-red-600 rounded-full shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.3),2px_2px_4px_rgba(0,0,0,0.4)] border border-red-400"></span>
+                                    <span className="absolute top-0 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-red-600 rounded-full shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.3),2px_2px_4px_rgba(0,0,0,0.4)] border border-red-400"></span>
                                 </span>
                                 <span className="text-green-700" style={{
                                     background: 'linear-gradient(to bottom, #008000, #004d00)',
