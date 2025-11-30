@@ -51,12 +51,42 @@ const Hero = () => {
                             </motion.span>
                         ))}
                         <br className="hidden md:block" />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-premium-gold via-yellow-200 to-premium-gold inline-block drop-shadow-lg">
-                            {["Redefined", "for", "HNIs"].map((word, i) => (
-                                <span key={i} className="inline-block mr-3 md:mr-4">
-                                    {word}
-                                </span>
-                            ))}
+                        <span className="relative inline-block">
+                            {/* Gradient Stroke Layer */}
+                            <span className="absolute inset-0 z-0 select-none"
+                                aria-hidden="true"
+                                style={{
+                                    backgroundImage: 'linear-gradient(120deg, #8a6e2f 0%, #FFD700 30%, #FFFFFF 50%, #FFD700 70%, #8a6e2f 100%)',
+                                    backgroundSize: '200% auto',
+                                    animation: 'shine 4s linear infinite',
+                                    WebkitBackgroundClip: 'text',
+                                    backgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    WebkitTextStroke: '3px transparent',
+                                }}
+                            >
+                                {["Redefined", "for", "HNIs"].map((word, i) => (
+                                    <span key={i} className="inline-block mr-3 md:mr-4">
+                                        {word}
+                                    </span>
+                                ))}
+                            </span>
+
+                            {/* Dark Fill Layer */}
+                            <span className="relative z-10 text-premium-dark">
+                                {["Redefined", "for", "HNIs"].map((word, i) => (
+                                    <span key={i} className="inline-block mr-3 md:mr-4">
+                                        {word}
+                                    </span>
+                                ))}
+                            </span>
+
+                            <style jsx>{`
+                                @keyframes shine {
+                                    0% { background-position: 0% center; }
+                                    100% { background-position: 200% center; }
+                                }
+                            `}</style>
                         </span>
                     </motion.h1>
 

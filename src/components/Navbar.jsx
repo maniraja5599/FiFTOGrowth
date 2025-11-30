@@ -18,7 +18,7 @@ const Navbar = () => {
         <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-premium-dark/90 backdrop-blur-lg border-b border-white/5' : 'bg-transparent'}`}>
             <div className="container mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
-                    <div className="flex flex-col items-center cursor-pointer group">
+                    <a href="/" className="flex flex-col items-center cursor-pointer group">
                         {/* Main Logo Text */}
                         {/* Main Logo Text */}
                         <div className="relative font-black text-4xl leading-none" style={{
@@ -76,7 +76,7 @@ const Navbar = () => {
                             <span className="text-green-500">Your trusted partner in </span>
                             <span className="text-red-500">financial growth</span>
                         </div>
-                    </div>
+                    </a>
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center gap-8">
                         <a href="#philosophy" className="text-gray-300 hover:text-white transition-colors">Philosophy</a>
