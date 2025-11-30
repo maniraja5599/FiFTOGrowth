@@ -61,7 +61,7 @@ const Footer = () => {
                             {/* Decorative Lines */}
                             <div className="flex items-center gap-2 mt-1 w-full max-w-[280px]">
                                 <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent via-green-700 to-transparent rounded-full"></div>
-                                <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent via-red-600 to-transparent rounded-full"></div>
+                                <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent via-red-700 to-transparent rounded-full"></div>
                             </div>
                         </div>
 

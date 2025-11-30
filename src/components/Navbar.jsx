@@ -59,14 +59,14 @@ const Navbar = () => {
                         {/* Animated Separator Line */}
                         <div className="w-full flex items-center justify-center gap-1 my-1 overflow-hidden">
                             {/* Left Green Line */}
-                            <div className="relative h-[1px] w-full bg-gradient-to-r from-transparent via-green-500 to-green-400">
-                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-green-400 rounded-full shadow-[0_0_5px_1px_rgba(74,222,128,0.8)] animate-pulse"></div>
+                            <div className="relative h-[1px] w-full bg-gradient-to-r from-transparent via-green-700 to-green-600">
+                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-green-600 rounded-full shadow-[0_0_5px_1px_rgba(21,128,61,0.8)] animate-pulse"></div>
                                 <div className="absolute top-1/2 -translate-y-1/2 w-0.5 h-0.5 bg-white rounded-full animate-moveRight"></div>
                             </div>
 
                             {/* Right Red Line */}
-                            <div className="relative h-[1px] w-full bg-gradient-to-l from-transparent via-red-500 to-red-400">
-                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-red-400 rounded-full shadow-[0_0_5px_1px_rgba(248,113,113,0.8)] animate-pulse"></div>
+                            <div className="relative h-[1px] w-full bg-gradient-to-l from-transparent via-red-700 to-red-600">
+                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-red-600 rounded-full shadow-[0_0_5px_1px_rgba(185,28,28,0.8)] animate-pulse"></div>
                                 <div className="absolute top-1/2 -translate-y-1/2 w-0.5 h-0.5 bg-white rounded-full animate-moveLeft"></div>
                             </div>
                         </div>
