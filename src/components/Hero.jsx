@@ -21,9 +21,9 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-8">
-                        <AlertTriangle className="w-4 h-4 text-red-500" />
-                        <span className="text-sm text-red-200 font-medium">FiFTO is not a SEBI registered investment advisor</span>
+                    <div className="inline-flex items-center gap-2 px-2 py-1.5 md:px-4 md:py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-8 max-w-[95vw]">
+                        <AlertTriangle className="w-3 h-3 md:w-4 md:h-4 text-red-500 flex-shrink-0" />
+                        <span className="text-[10px] md:text-sm text-red-200 font-medium whitespace-nowrap overflow-hidden text-ellipsis">FiFTO is not a SEBI registered investment advisor</span>
                     </div>
 
                     <motion.h1
@@ -54,18 +54,11 @@ const Hero = () => {
                             </motion.span>
                         ))}
                         <br />
-                        <span className="gold-gradient-text">
+                        <span className="gold-gradient-text inline-block">
                             {["Redefined", "for", "HNIs"].map((word, i) => (
-                                <motion.span
-                                    key={i}
-                                    className="inline-block mr-3"
-                                    variants={{
-                                        hidden: { opacity: 0, y: 20 },
-                                        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-                                    }}
-                                >
+                                <span key={i} className="inline-block mr-3">
                                     {word}
-                                </motion.span>
+                                </span>
                             ))}
                         </span>
                     </motion.h1>
