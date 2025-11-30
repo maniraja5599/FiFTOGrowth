@@ -10,14 +10,14 @@ import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 
 const Footer = () => {
     return (
-        <footer className="bg-black border-t border-white/10 pt-20 pb-10">
+        <footer className="bg-black border-t border-white/10 pt-24 pb-12">
             <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20 mb-16">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-32 mb-20">
                     {/* Column 1: Brand & Connect */}
-                    <div className="space-y-8">
+                    <div className="space-y-10">
                         <div className="flex flex-col items-start cursor-pointer group">
                             {/* Main Logo Text */}
-                            <div className="relative font-black text-6xl tracking-tight leading-none" style={{
+                            <div className="relative text-6xl tracking-tight leading-none" style={{
                                 fontFamily: '"Anton", sans-serif'
                             }}>
                                 <span className="text-green-700" style={{
