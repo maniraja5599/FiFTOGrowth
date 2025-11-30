@@ -73,9 +73,8 @@ const Navbar = () => {
 
                         {/* Tagline */}
                         <div className="text-[0.55rem] md:text-xs font-medium tracking-wide uppercase whitespace-nowrap">
-                            <span className="text-green-500">Investment </span>
-                            <span className="text-gray-400">& </span>
-                            <span className="text-red-500">Trading</span>
+                            <span className="text-green-500">Your trusted partner in </span>
+                            <span className="text-red-500">financial growth</span>
                         </div>
                     </div>
                     {/* Desktop Menu */}
