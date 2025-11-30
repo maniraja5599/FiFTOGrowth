@@ -22,7 +22,7 @@ const Navbar = () => {
                         {/* Main Logo Text */}
                         {/* Main Logo Text */}
                         <div className="relative font-black text-4xl tracking-tight leading-none" style={{
-                            fontFamily: 'Impact, sans-serif',
+                            fontFamily: 'Impact, "Arial Black", sans-serif',
                             letterSpacing: '0.05em'
                         }}>
                             <span className="text-green-700" style={{

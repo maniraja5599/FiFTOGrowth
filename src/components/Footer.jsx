@@ -18,7 +18,7 @@ const Footer = () => {
                         <div className="flex flex-col items-start cursor-pointer group">
                             {/* Main Logo Text */}
                             <div className="relative font-black text-6xl tracking-tight leading-none" style={{
-                                fontFamily: 'Impact, sans-serif'
+                                fontFamily: 'Impact, "Arial Black", sans-serif'
                             }}>
                                 <span className="text-green-700" style={{
                                     background: 'linear-gradient(to bottom, #008000, #004d00)',
