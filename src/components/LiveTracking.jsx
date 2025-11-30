@@ -43,7 +43,9 @@ const LiveTracking = () => {
                         <div className="w-2 h-2 bg-red-500 rounded-full" />
                         {videoId ? 'Latest Session' : 'Live Now'}
                     </div>
-                    <h2 className="text-4xl font-bold mb-4">Everyday Live Trading</h2>
+                    <h2 className="text-4xl font-bold mb-4">
+                        <span className="text-white">Everyday</span> <span className="text-premium-gold">Live Trading</span>
+                    </h2>
                     <p className="text-gray-400 max-w-2xl mx-auto">
                         Witness our execution in real-time. We believe in absolute transparency.
                         Watch our live trading sessions every market day.
