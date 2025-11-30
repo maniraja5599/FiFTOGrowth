@@ -107,7 +107,7 @@ const Footer = () => {
                     </div>
 
                     {/* Column 3: Contact & Support */}
-                    <div>
+                    <div id="contact">
                         <h3 className="text-white font-semibold text-lg mb-6">Contact Us</h3>
                         <ul className="space-y-6 text-base text-gray-400 mb-8">
                             <li className="flex items-start gap-4 group">
