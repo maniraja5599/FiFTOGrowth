@@ -19,7 +19,7 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 max-w-[95vw] hover:bg-white/10 transition-colors cursor-default">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 mt-12 md:mt-0 max-w-[95vw] hover:bg-white/10 transition-colors cursor-default">
                         <AlertTriangle className="w-3 h-3 md:w-4 md:h-4 text-premium-gold flex-shrink-0" />
                         <span className="text-[10px] md:text-sm text-gray-300 font-medium whitespace-nowrap overflow-hidden text-ellipsis">FiFTO is not a SEBI registered investment advisor</span>
                     </div>

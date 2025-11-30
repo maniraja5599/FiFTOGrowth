@@ -140,10 +140,7 @@ const Footer = () => {
                             </li>
                         </ul>
 
-                        <button className="w-full py-4 px-6 bg-gradient-to-r from-premium-gold to-yellow-600 text-black font-bold rounded-xl hover:shadow-[0_0_20px_rgba(250,204,21,0.3)] transition-all duration-300 flex items-center justify-center gap-2 group">
-                            Schedule a Consultation
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </button>
+
                     </div>
                 </div>
 
