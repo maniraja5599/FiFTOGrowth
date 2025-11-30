@@ -27,7 +27,7 @@ const Hero = () => {
                     </div>
 
                     <motion.h1
-                        className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
+                        className="text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-white via-white to-premium-gold bg-clip-text text-transparent"
                         initial="hidden"
                         animate="visible"
                         variants={{

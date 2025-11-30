@@ -70,8 +70,8 @@ const Roadmap = () => {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                        Future <span className="gold-gradient-text">Roadmap</span>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-white to-premium-gold bg-clip-text text-transparent">
+                        Future Roadmap
                     </h2>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                         We are constantly innovating to provide the best wealth management experience. Here is what we are building next.
