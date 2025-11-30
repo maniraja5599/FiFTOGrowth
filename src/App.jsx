@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import MeteorBackground from './components/MeteorBackground';
 
 // Lazy load components that are not immediately visible
 // Lazy load components that are not immediately visible
@@ -20,7 +21,8 @@ const LoadingSpinner = () => (
 
 function App() {
   return (
-    <div className="bg-premium-dark min-h-screen text-white selection:bg-premium-gold selection:text-black">
+    <div className="bg-premium-dark min-h-screen text-white selection:bg-premium-gold selection:text-black relative">
+      <MeteorBackground />
       <Navbar />
       <Hero />
       <Suspense fallback={<LoadingSpinner />}>

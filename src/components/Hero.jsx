@@ -9,11 +9,7 @@ import AlertTriangle from 'lucide-react/dist/esm/icons/alert-triangle';
 const Hero = () => {
     return (
         <div id="philosophy" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-premium-dark pt-20">
-            {/* Background Effects */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-premium-gold/10 rounded-full blur-3xl" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-            </div>
+            {/* Background Effects Removed - Moved to Global MeteorBackground */}
 
             <div className="container mx-auto px-6 relative z-10 text-center">
                 <motion.div
@@ -21,13 +17,14 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-2 py-1.5 md:px-4 md:py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-8 max-w-[95vw]">
-                        <AlertTriangle className="w-3 h-3 md:w-4 md:h-4 text-red-500 flex-shrink-0" />
-                        <span className="text-[10px] md:text-sm text-red-200 font-medium whitespace-nowrap overflow-hidden text-ellipsis">FiFTO is not a SEBI registered investment advisor</span>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 max-w-[95vw] hover:bg-white/10 transition-colors cursor-default">
+                        <AlertTriangle className="w-3 h-3 md:w-4 md:h-4 text-premium-gold flex-shrink-0" />
+                        <span className="text-[10px] md:text-sm text-gray-300 font-medium whitespace-nowrap overflow-hidden text-ellipsis">FiFTO is not a SEBI registered investment advisor</span>
                     </div>
 
                     <motion.h1
-                        className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
+                        className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight leading-tight"
+                        style={{ fontFamily: '"Outfit", sans-serif' }}
                         initial="hidden"
                         animate="visible"
                         variants={{
@@ -44,7 +41,7 @@ const Hero = () => {
                         {["Wealth", "Management"].map((word, i) => (
                             <motion.span
                                 key={i}
-                                className="inline-block mr-3 text-white"
+                                className="inline-block mr-3 md:mr-4 text-white drop-shadow-lg"
                                 variants={{
                                     hidden: { opacity: 0, y: 20 },
                                     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -53,35 +50,35 @@ const Hero = () => {
                                 {word}
                             </motion.span>
                         ))}
-                        <br />
-                        <span className="text-premium-gold inline-block">
+                        <br className="hidden md:block" />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-premium-gold via-yellow-200 to-premium-gold inline-block drop-shadow-lg">
                             {["Redefined", "for", "HNIs"].map((word, i) => (
-                                <span key={i} className="inline-block mr-3">
+                                <span key={i} className="inline-block mr-3 md:mr-4">
                                     {word}
                                 </span>
                             ))}
                         </span>
                     </motion.h1>
 
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                        Exclusive portfolio management for capital above ₹1 Cr.
+                    <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed" style={{ fontFamily: '"Outfit", sans-serif' }}>
+                        Exclusive portfolio management for capital above <span className="text-white font-medium">₹1 Cr</span>.
                         Experience transparency with live tracking, verified P&L, and a pure profit-sharing model.
                     </p>
 
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-                        <a href="#contact" className="px-8 py-4 bg-premium-gold hover:bg-premium-gold-hover text-black font-bold rounded-lg flex items-center gap-2 transition-all transform hover:scale-105 group">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                        <a href="#contact" className="px-8 py-4 bg-gradient-to-r from-premium-gold to-yellow-600 hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] text-black font-bold text-lg rounded-xl flex items-center gap-3 transition-all transform hover:scale-105 group">
                             Start Your Journey
-                            <div className="p-1 rounded-full bg-black/10">
-                                <ArrowRight className="w-5 h-5 icon-3d-gold text-black" />
+                            <div className="p-1 rounded-full bg-black/10 group-hover:bg-black/20 transition-colors">
+                                <ArrowRight className="w-5 h-5" />
                             </div>
                         </a>
                         <button
                             onClick={() => window.open('https://verified.flattrade.in/pnl/PO0e9bb3329bca40ad8b3edd96638994cc', '_blank')}
-                            className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-lg flex items-center gap-2 transition-all group"
+                            className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white font-semibold text-lg rounded-xl flex items-center gap-3 transition-all hover:border-white/20 group"
                         >
                             View Verified P&L
-                            <div className="p-1 rounded-full bg-white/10 icon-container-3d">
-                                <TrendingUp className="w-5 h-5 icon-3d-blue" />
+                            <div className="p-1 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                                <TrendingUp className="w-5 h-5 text-blue-400" />
                             </div>
                         </button>
                     </div>
@@ -92,16 +89,16 @@ const Hero = () => {
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+                    className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto"
                 >
                     {[
                         { label: "Minimum Capital", value: "₹1 Cr+" },
                         { label: "Profit Sharing", value: "Performance Based" },
                         { label: "Transparency", value: "100% Live Tracking" },
                     ].map((stat, index) => (
-                        <div key={index} className="glass-panel p-6">
-                            <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                            <div className="text-sm text-gray-400">{stat.label}</div>
+                        <div key={index} className="glass-panel p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors group">
+                            <div className="text-2xl font-bold text-white mb-1 group-hover:text-premium-gold transition-colors" style={{ fontFamily: '"Outfit", sans-serif' }}>{stat.value}</div>
+                            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider">{stat.label}</div>
                         </div>
                     ))}
                 </motion.div>
