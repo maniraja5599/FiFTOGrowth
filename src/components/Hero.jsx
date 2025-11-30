@@ -44,7 +44,7 @@ const Hero = () => {
                         {["Wealth", "Management"].map((word, i) => (
                             <motion.span
                                 key={i}
-                                className={`inline-block mr-3 ${i === 0 ? 'text-white' : 'text-premium-gold'}`}
+                                className="inline-block mr-3 text-white"
                                 variants={{
                                     hidden: { opacity: 0, y: 20 },
                                     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -54,7 +54,7 @@ const Hero = () => {
                             </motion.span>
                         ))}
                         <br />
-                        <span className="gold-gradient-text inline-block">
+                        <span className="text-premium-gold inline-block">
                             {["Redefined", "for", "HNIs"].map((word, i) => (
                                 <span key={i} className="inline-block mr-3">
                                     {word}
