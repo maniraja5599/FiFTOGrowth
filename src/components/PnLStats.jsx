@@ -85,7 +85,6 @@ const PnLStats = ({ data }) => {
                 value={`${totalDays} Days`}
                 subValue={`${startDate} - ${endDate}`}
                 icon={Activity}
-                trend="neutral"
             />
             <StatCard
                 title="Total ROI"
