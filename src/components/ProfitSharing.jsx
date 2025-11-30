@@ -79,10 +79,6 @@ const ProfitSharing = () => {
 
                         <div className="space-y-4 mb-8">
                             <div className="flex items-center justify-between p-3 border-b border-white/10">
-                                <span className="text-gray-300">Upto 1 Cr</span>
-                                <span className="text-premium-gold font-bold font-mono text-lg">25%</span>
-                            </div>
-                            <div className="flex items-center justify-between p-3 border-b border-white/10">
                                 <span className="text-gray-300">1 Cr - 5 Cr</span>
                                 <span className="text-premium-gold font-bold font-mono text-lg">20%</span>
                             </div>
@@ -91,8 +87,12 @@ const ProfitSharing = () => {
                                 <span className="text-premium-gold font-bold font-mono text-lg">15%</span>
                             </div>
                             <div className="flex items-center justify-between p-3 border-b border-white/10">
-                                <span className="text-gray-300">Above 10 Cr</span>
+                                <span className="text-gray-300">10 Cr - 20 Cr</span>
                                 <span className="text-premium-gold font-bold font-mono text-lg">12%</span>
+                            </div>
+                            <div className="flex items-center justify-between p-3 border-b border-white/10">
+                                <span className="text-gray-300">Above 20 Cr</span>
+                                <span className="text-premium-gold font-bold font-mono text-lg">10%</span>
                             </div>
                         </div>
 

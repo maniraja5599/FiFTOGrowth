@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Menu from 'lucide-react/dist/esm/icons/menu';
 import X from 'lucide-react/dist/esm/icons/x';
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -14,11 +16,16 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const handleLoginClick = () => {
+        setIsMobileMenuOpen(false);
+        navigate('/login');
+    };
+
     return (
         <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-premium-dark/90 backdrop-blur-lg border-b border-white/5' : 'bg-transparent'}`}>
             <div className="container mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
-                    <a href="/" className="flex flex-col items-center cursor-pointer group">
+                    <a href="/" className="flex flex-col items-center cursor-pointer group relative z-50">
                         {/* Main Logo Text */}
                         {/* Main Logo Text */}
                         <div className="relative font-black text-4xl leading-none" style={{
@@ -83,7 +90,10 @@ const Navbar = () => {
                         <a href="#performance" className="text-gray-300 hover:text-white transition-colors">Performance</a>
                         <a href="#live-tracking" className="text-gray-300 hover:text-white transition-colors">Live Tracking</a>
                         <a href="#profit-sharing" className="text-gray-300 hover:text-white transition-colors">Profit Sharing</a>
-                        <button className="px-5 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg text-white text-sm font-medium transition-all">
+                        <button
+                            onClick={handleLoginClick}
+                            className="px-5 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg text-white text-sm font-medium transition-all"
+                        >
                             Client Login
                         </button>
                     </div>
@@ -101,11 +111,14 @@ const Navbar = () => {
             {/* Mobile Menu */}
             {isMobileMenuOpen && (
                 <div className="md:hidden absolute top-full left-0 w-full bg-premium-dark border-b border-white/10 p-6 flex flex-col gap-4">
-                    <a href="#philosophy" className="text-gray-300 hover:text-white">Philosophy</a>
-                    <a href="#performance" className="text-gray-300 hover:text-white">Performance</a>
-                    <a href="#live-tracking" className="text-gray-300 hover:text-white">Live Tracking</a>
-                    <a href="#profit-sharing" className="text-gray-300 hover:text-white">Profit Sharing</a>
-                    <button className="w-full py-3 bg-premium-gold text-black font-bold rounded-lg">
+                    <a href="#philosophy" className="text-gray-300 hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>Philosophy</a>
+                    <a href="#performance" className="text-gray-300 hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>Performance</a>
+                    <a href="#live-tracking" className="text-gray-300 hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>Live Tracking</a>
+                    <a href="#profit-sharing" className="text-gray-300 hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>Profit Sharing</a>
+                    <button
+                        onClick={handleLoginClick}
+                        className="w-full py-3 bg-premium-gold text-black font-bold rounded-lg"
+                    >
                         Client Login
                     </button>
                 </div>

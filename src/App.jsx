@@ -1,46 +1,29 @@
 import React, { Suspense, lazy } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import MeteorBackground from './components/MeteorBackground';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Lazy load components that are not immediately visible
-// Lazy load components that are not immediately visible
-const PnLChart = lazy(() => import('./components/PnLChart'));
-const LiveTracking = lazy(() => import('./components/LiveTracking'));
-const PnLTable = lazy(() => import('./components/PnLTable'));
-const Roadmap = lazy(() => import('./components/Roadmap'));
-const ProfitSharing = lazy(() => import('./components/ProfitSharing'));
-const Footer = lazy(() => import('./components/Footer'));
-const AnimatedDivider = lazy(() => import('./components/AnimatedDivider'));
+// Lazy load pages
+const Home = lazy(() => import('./pages/Home'));
+const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
 
 // Loading fallback component
 const LoadingSpinner = () => (
-  <div className="flex items-center justify-center py-20">
+  <div className="flex items-center justify-center py-20 bg-premium-dark min-h-screen">
     <div className="w-8 h-8 border-4 border-premium-gold border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
 function App() {
   return (
-    <div className="bg-premium-dark min-h-screen text-white selection:bg-premium-gold selection:text-black relative">
-      <MeteorBackground />
-      <Navbar />
-      <Hero />
+    <Router>
       <Suspense fallback={<LoadingSpinner />}>
-        <AnimatedDivider />
-        <PnLChart />
-        <AnimatedDivider />
-        <PnLTable />
-        <AnimatedDivider />
-        <LiveTracking />
-        <AnimatedDivider />
-        <Roadmap />
-        <AnimatedDivider />
-        <ProfitSharing />
-        <AnimatedDivider />
-        <Footer />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
       </Suspense>
-    </div>
+    </Router>
   );
 }
 
