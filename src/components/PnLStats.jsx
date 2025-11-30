@@ -8,24 +8,33 @@ import Target from 'lucide-react/dist/esm/icons/target';
 import BarChart3 from 'lucide-react/dist/esm/icons/bar-chart-3';
 import ArrowDownCircle from 'lucide-react/dist/esm/icons/arrow-down-circle';
 
-const StatCard = ({ title, value, subValue, icon: Icon, trend }) => (
-    <div className="p-6 bg-premium-card/30 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-premium-card/50 transition-all duration-300 group">
-        <div className="flex items-start justify-between mb-4">
-            <div className="p-3 bg-white/5 rounded-lg group-hover:bg-premium-gold/10 transition-colors">
-                <Icon className="w-6 h-6 text-premium-gold" />
+const StatCard = ({ title, value, subValue, icon: Icon, trend, iconColor = "gold" }) => {
+    const colorMap = {
+        gold: "icon-3d-gold",
+        green: "icon-3d-green",
+        red: "icon-3d-red",
+        blue: "icon-3d-blue"
+    };
+
+    return (
+        <div className="p-6 bg-premium-card/30 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-premium-card/50 transition-all duration-300 group">
+            <div className="flex items-start justify-between mb-4">
+                <div className={`p-3 rounded-xl icon-container-3d group-hover:border-white/20 transition-colors`}>
+                    <Icon className={`w-6 h-6 ${colorMap[iconColor] || colorMap.gold}`} />
+                </div>
+                {trend && (
+                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${trend === 'up' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
+                        }`}>
+                        {trend === 'up' ? 'Positive' : 'Negative'}
+                    </span>
+                )}
             </div>
-            {trend && (
-                <span className={`text-xs font-medium px-2 py-1 rounded-full ${trend === 'up' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
-                    }`}>
-                    {trend === 'up' ? 'Positive' : 'Negative'}
-                </span>
-            )}
+            <h3 className="text-gray-400 text-sm font-medium mb-1">{title}</h3>
+            <div className="text-2xl font-bold text-white mb-1">{value}</div>
+            {subValue && <div className="text-xs text-gray-500">{subValue}</div>}
         </div>
-        <h3 className="text-gray-400 text-sm font-medium mb-1">{title}</h3>
-        <div className="text-2xl font-bold text-white mb-1">{value}</div>
-        {subValue && <div className="text-xs text-gray-500">{subValue}</div>}
-    </div>
-);
+    );
+};
 
 const PnLStats = ({ data }) => {
     if (!data || data.length === 0) return null;

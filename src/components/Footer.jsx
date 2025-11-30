@@ -69,17 +69,17 @@ const Footer = () => {
                         </p>
 
                         <div className="flex gap-4">
-                            <a href="https://www.linkedin.com/in/maniraja5599/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
-                                <Linkedin className="w-5 h-5" />
+                            <a href="https://www.linkedin.com/in/maniraja5599/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl icon-container-3d flex items-center justify-center hover:border-blue-500/50 transition-all duration-300 group">
+                                <Linkedin className="w-6 h-6 icon-3d-blue group-hover:scale-110 transition-transform" />
                             </a>
-                            <a href="https://telegram.me/s/easytrademarket" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
-                                <Send className="w-5 h-5" />
+                            <a href="https://telegram.me/s/easytrademarket" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl icon-container-3d flex items-center justify-center hover:border-blue-400/50 transition-all duration-300 group">
+                                <Send className="w-6 h-6 icon-3d-blue group-hover:scale-110 transition-transform" />
                             </a>
-                            <a href="https://www.instagram.com/fifto.official/?hl=en" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
-                                <Instagram className="w-5 h-5" />
+                            <a href="https://www.instagram.com/fifto.official/?hl=en" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl icon-container-3d flex items-center justify-center hover:border-pink-500/50 transition-all duration-300 group">
+                                <Instagram className="w-6 h-6 icon-3d-pink group-hover:scale-110 transition-transform" />
                             </a>
-                            <a href="https://www.youtube.com/@OfficialFiFTO" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
-                                <Youtube className="w-5 h-5" />
+                            <a href="https://www.youtube.com/@OfficialFiFTO" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl icon-container-3d flex items-center justify-center hover:border-red-500/50 transition-all duration-300 group">
+                                <Youtube className="w-6 h-6 icon-3d-red group-hover:scale-110 transition-transform" />
                             </a>
                         </div>
                     </div>

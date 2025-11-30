@@ -69,14 +69,20 @@ const Hero = () => {
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-                        <button className="px-8 py-4 bg-premium-gold hover:bg-premium-gold-hover text-black font-bold rounded-lg flex items-center gap-2 transition-all transform hover:scale-105">
-                            Start Your Journey <ArrowRight className="w-5 h-5" />
+                        <button className="px-8 py-4 bg-premium-gold hover:bg-premium-gold-hover text-black font-bold rounded-lg flex items-center gap-2 transition-all transform hover:scale-105 group">
+                            Start Your Journey
+                            <div className="p-1 rounded-full bg-black/10">
+                                <ArrowRight className="w-5 h-5 icon-3d-gold text-black" />
+                            </div>
                         </button>
                         <button
                             onClick={() => window.open('https://verified.flattrade.in/pnl/PO0e9bb3329bca40ad8b3edd96638994cc', '_blank')}
-                            className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-lg flex items-center gap-2 transition-all"
+                            className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-lg flex items-center gap-2 transition-all group"
                         >
-                            View Verified P&L <TrendingUp className="w-5 h-5" />
+                            View Verified P&L
+                            <div className="p-1 rounded-full bg-white/10 icon-container-3d">
+                                <TrendingUp className="w-5 h-5 icon-3d-blue" />
+                            </div>
                         </button>
                     </div>
                 </motion.div>

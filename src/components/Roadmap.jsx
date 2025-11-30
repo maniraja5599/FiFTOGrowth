@@ -88,8 +88,8 @@ const Roadmap = () => {
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                             className={`glass-panel p-8 rounded-2xl border transition-all duration-300 hover:-translate-y-1 group ${feature.highlight ? 'border-emerald-500/50 shadow-[0_0_30px_-10px_rgba(16,185,129,0.3)]' : 'border-white/5 hover:border-premium-gold/30'}`}
                         >
-                            <div className="mb-6 inline-block p-3 rounded-xl bg-white/5 group-hover:bg-premium-gold/10 transition-colors">
-                                <feature.icon className={`w-8 h-8 ${feature.highlight ? 'text-emerald-400' : 'text-gray-300 group-hover:text-premium-gold'} transition-colors`} />
+                            <div className={`mb-6 inline-block p-3 rounded-xl icon-container-3d transition-colors`}>
+                                <feature.icon className={`w-8 h-8 ${feature.highlight ? 'icon-3d-green' : 'icon-3d-gold'} transition-colors`} />
                             </div>
 
                             <h3 className="text-xl font-bold mb-3 text-white group-hover:text-premium-gold transition-colors">
