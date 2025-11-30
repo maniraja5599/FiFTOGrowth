@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, TrendingUp } from 'lucide-react';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
 
 const Hero = () => {
     return (
-        <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-premium-dark pt-20">
+        <div id="philosophy" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-premium-dark pt-20">
             {/* Background Effects */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-premium-gold/10 rounded-full blur-3xl" />
@@ -22,10 +24,49 @@ const Hero = () => {
                         <span className="text-sm text-gray-300">Verified & Audited Performance</span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-                        Wealth Management <br />
-                        <span className="gold-gradient-text">Redefined for HNIs</span>
-                    </h1>
+                    <motion.h1
+                        className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            hidden: { opacity: 0 },
+                            visible: {
+                                opacity: 1,
+                                transition: {
+                                    staggerChildren: 0.1,
+                                    delayChildren: 0.2
+                                }
+                            }
+                        }}
+                    >
+                        {["Wealth", "Management"].map((word, i) => (
+                            <motion.span
+                                key={i}
+                                className="inline-block mr-3"
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                                }}
+                            >
+                                {word}
+                            </motion.span>
+                        ))}
+                        <br />
+                        <span className="gold-gradient-text">
+                            {["Redefined", "for", "HNIs"].map((word, i) => (
+                                <motion.span
+                                    key={i}
+                                    className="inline-block mr-3"
+                                    variants={{
+                                        hidden: { opacity: 0, y: 20 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                                    }}
+                                >
+                                    {word}
+                                </motion.span>
+                            ))}
+                        </span>
+                    </motion.h1>
 
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
                         Exclusive portfolio management for capital above ₹1 Cr.

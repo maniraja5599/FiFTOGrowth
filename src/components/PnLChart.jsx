@@ -1,29 +1,27 @@
-import React from 'react';
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts';
-import { CheckCircle, ExternalLink, TrendingUp, TrendingDown } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from 'recharts';
+import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
+import ExternalLink from 'lucide-react/dist/esm/icons/external-link';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import TrendingDown from 'lucide-react/dist/esm/icons/trending-down';
+import PnLStats from './PnLStats';
+import CalendarHeatmap from './CalendarHeatmap';
 import { pnlData as data } from '../utils/pnlData';
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, viewMode }) => {
     if (active && payload && payload.length) {
-        const daily = payload.find(p => p.dataKey === 'dailyPnL')?.value || 0;
-        const cumulative = payload.find(p => p.dataKey === 'cumulativePnL')?.value || 0;
+        const value = payload[0].value;
 
         return (
             <div className="bg-premium-card border border-white/10 p-3 rounded-lg shadow-xl z-50">
                 <p className="text-gray-400 text-xs mb-2">{label}</p>
-                <div className="space-y-1">
-                    <div className="flex justify-between gap-4">
-                        <span className="text-gray-400 text-xs">Daily:</span>
-                        <span className={`font-mono font-bold text-sm ${daily >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {daily >= 0 ? '+' : ''}₹{daily.toLocaleString()}
-                        </span>
-                    </div>
-                    <div className="flex justify-between gap-4">
-                        <span className="text-gray-400 text-xs">Net P&L:</span>
-                        <span className={`font-mono font-bold text-sm ${cumulative >= 0 ? 'text-premium-gold' : 'text-red-400'}`}>
-                            {cumulative >= 0 ? '+' : ''}₹{cumulative.toLocaleString()}
-                        </span>
-                    </div>
+                <div className="flex justify-between gap-4">
+                    <span className="text-gray-400 text-xs">
+                        {viewMode === 'day' ? 'Daily P&L:' : viewMode === 'month' ? 'Monthly P&L:' : 'Quarterly P&L:'}
+                    </span>
+                    <span className={`font-mono font-bold text-sm ${value >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {value >= 0 ? '+' : ''}₹{value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
                 </div>
             </div>
         );
@@ -32,39 +30,65 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const PnLChart = () => {
-    const totalPnL = data[data.length - 1].cumulativePnL;
+    const [viewMode, setViewMode] = useState('day'); // 'day', 'month', 'quarter'
+
+    if (!data || data.length === 0) return null;
+
     const winDays = data.filter(d => d.dailyPnL > 0).length;
     const lossDays = data.filter(d => d.dailyPnL <= 0).length;
-    const winRate = Math.round((winDays / (winDays + lossDays)) * 100);
+
+    // Aggregate Data Logic
+    const chartData = useMemo(() => {
+        if (viewMode === 'day') return data;
+
+        const aggregated = {};
+
+        data.forEach(item => {
+            const date = new Date(item.rawDate);
+            let key;
+            let label;
+
+            if (viewMode === 'month') {
+                key = `${date.getFullYear()}-${date.getMonth()}`;
+                label = date.toLocaleString('default', { month: 'short', year: 'numeric' });
+            } else if (viewMode === 'quarter') {
+                const quarter = Math.floor(date.getMonth() / 3) + 1;
+                key = `${date.getFullYear()}-Q${quarter}`;
+                label = `Q${quarter} ${date.getFullYear()}`;
+            }
+
+            if (!aggregated[key]) {
+                aggregated[key] = {
+                    date: label,
+                    rawKey: key, // For sorting if needed
+                    dailyPnL: 0
+                };
+            }
+            aggregated[key].dailyPnL += item.dailyPnL;
+        });
+
+        return Object.values(aggregated);
+    }, [viewMode]);
 
     return (
-        <section className="py-20 bg-premium-card/30">
+        <section id="performance" className="py-20 bg-premium-card/30">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col lg:flex-row items-start gap-12">
-                    <div className="w-full lg:w-1/3">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                            Verified Consistency <br />
-                            <span className="text-premium-gold">Daily Performance</span>
-                        </h2>
-                        <p className="text-gray-400 mb-8 text-lg">
-                            Transparency is our currency. View our day-to-day performance from the start of the year.
-                            The green line represents our consistent equity growth.
-                        </p>
+                {/* New Detailed Stats Section */}
+                <div className="mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+                        Verified Consistency <br />
+                        <span className="text-premium-gold">Key Performance Metrics</span>
+                    </h2>
+                    <PnLStats data={data} />
+                </div>
 
-                        <div className="grid grid-cols-2 gap-4 mb-8">
-                            <div className="p-4 bg-white/5 rounded-lg border border-white/10">
-                                <div className="text-sm text-gray-400 mb-1">Net P&L (YTD)</div>
-                                <div className={`text-xl font-bold ${totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                    {totalPnL >= 0 ? '+' : ''}₹{totalPnL.toLocaleString()}
-                                </div>
-                            </div>
-                            <div className="p-4 bg-white/5 rounded-lg border border-white/10">
-                                <div className="text-sm text-gray-400 mb-1">Win Rate</div>
-                                <div className="text-xl font-bold text-premium-gold">
-                                    {winRate}%
-                                </div>
-                            </div>
-                        </div>
+                <div className="flex flex-col lg:flex-row items-start gap-12 mb-12">
+                    <div className="w-full lg:w-1/3">
+                        <h3 className="text-2xl font-bold mb-4">Performance Overview</h3>
+                        <p className="text-gray-400 mb-8 text-lg">
+                            Transparency is our currency. View our performance broken down by day, month, or quarter.
+                            Consistent growth with controlled risk.
+                        </p>
 
                         <div className="space-y-4 mb-8">
                             <div className="flex items-center gap-3">
@@ -97,15 +121,31 @@ const PnLChart = () => {
                         </a>
                     </div>
 
-                    <div className="w-full lg:w-2/3">
+                    <div className="w-full lg:w-2/3 space-y-8">
+                        {/* P&L Chart */}
                         <div className="glass-panel p-6 md:p-8 h-[500px]">
-                            <div className="flex items-center justify-between mb-8">
-                                <h3 className="text-xl font-semibold text-white">Equity Curve & Daily P&L</h3>
+                            <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
+                                <h3 className="text-xl font-semibold text-white">
+                                    {viewMode === 'day' ? 'Daily' : viewMode === 'month' ? 'Monthly' : 'Quarterly'} P&L
+                                </h3>
+
+                                {/* View Toggles */}
+                                <div className="flex bg-black/20 p-1 rounded-lg">
+                                    {['day', 'month', 'quarter'].map((mode) => (
+                                        <button
+                                            key={mode}
+                                            onClick={() => setViewMode(mode)}
+                                            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${viewMode === mode
+                                                    ? 'bg-premium-gold text-black shadow-lg'
+                                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                                }`}
+                                        >
+                                            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
+
                                 <div className="flex items-center gap-4 text-sm">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-3 h-3 bg-premium-gold rounded-full"></div>
-                                        <span className="text-gray-400">Equity Curve</span>
-                                    </div>
                                     <div className="flex items-center gap-2">
                                         <div className="w-3 h-3 bg-green-400 rounded-sm"></div>
                                         <span className="text-gray-400">Profit</span>
@@ -119,7 +159,7 @@ const PnLChart = () => {
 
                             <div className="h-[400px] w-full">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <ComposedChart data={data} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+                                    <BarChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
                                         <XAxis
                                             dataKey="date"
@@ -127,48 +167,30 @@ const PnLChart = () => {
                                             tick={{ fill: '#888', fontSize: 10 }}
                                             axisLine={false}
                                             tickLine={false}
-                                            interval={30} // Show label every ~30 days
+                                            minTickGap={30}
                                         />
                                         <YAxis
-                                            yAxisId="left"
                                             stroke="#666"
                                             tick={{ fill: '#888', fontSize: 10 }}
                                             axisLine={false}
                                             tickLine={false}
                                             tickFormatter={(value) => `₹${value / 1000}k`}
                                         />
-                                        <YAxis
-                                            yAxisId="right"
-                                            orientation="right"
-                                            stroke="#666"
-                                            tick={{ fill: '#D4AF37', fontSize: 10 }}
-                                            axisLine={false}
-                                            tickLine={false}
-                                            tickFormatter={(value) => `₹${value / 100000}L`}
-                                        />
-                                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
-                                        <ReferenceLine y={0} yAxisId="left" stroke="#666" />
-
-                                        <Bar yAxisId="left" dataKey="dailyPnL" radius={[2, 2, 0, 0]}>
-                                            {data.map((entry, index) => (
+                                        <Tooltip content={<CustomTooltip viewMode={viewMode} />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
+                                        <ReferenceLine y={0} stroke="#666" />
+                                        <Bar dataKey="dailyPnL" radius={[2, 2, 0, 0]}>
+                                            {chartData.map((entry, index) => (
                                                 <Cell key={`cell-${index}`} fill={entry.dailyPnL >= 0 ? '#4ade80' : '#f87171'} />
                                             ))}
                                         </Bar>
-
-                                        <Line
-                                            yAxisId="right"
-                                            type="monotone"
-                                            dataKey="cumulativePnL"
-                                            stroke="#D4AF37"
-                                            strokeWidth={2}
-                                            dot={false}
-                                        />
-                                    </ComposedChart>
+                                    </BarChart>
                                 </ResponsiveContainer>
                             </div>
                         </div>
                     </div>
                 </div>
+                {/* Calendar Heatmap Section */}
+                <CalendarHeatmap data={data} />
             </div>
         </section>
     );

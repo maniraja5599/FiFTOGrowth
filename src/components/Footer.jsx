@@ -1,67 +1,164 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Instagram, Twitter, Linkedin } from 'lucide-react';
+import Mail from 'lucide-react/dist/esm/icons/mail';
+import Phone from 'lucide-react/dist/esm/icons/phone';
+import MapPin from 'lucide-react/dist/esm/icons/map-pin';
+import Instagram from 'lucide-react/dist/esm/icons/instagram';
+import Twitter from 'lucide-react/dist/esm/icons/twitter';
+import Linkedin from 'lucide-react/dist/esm/icons/linkedin';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 
 const Footer = () => {
     return (
-        <footer className="bg-black border-t border-white/10 pt-16 pb-8">
+        <footer className="bg-black border-t border-white/10 pt-20 pb-10">
             <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                    <div>
-                        <div className="flex items-center gap-2 mb-6">
-                            <img src="/logo.png" alt="FiFTO Logo" className="h-12 w-auto" />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20 mb-16">
+                    {/* Column 1: Brand & Connect */}
+                    <div className="space-y-8">
+                        <div className="flex flex-col items-start cursor-pointer group">
+                            {/* Main Logo Text */}
+                            <div className="relative font-black text-6xl tracking-tight leading-none" style={{
+                                fontFamily: 'Impact, sans-serif'
+                            }}>
+                                <span className="text-green-700" style={{
+                                    background: 'linear-gradient(to bottom, #008000, #004d00)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent'
+                                }}>F</span>
+                                <span className="relative inline-block">
+                                    <span className="text-green-700" style={{
+                                        background: 'linear-gradient(to bottom, #008000, #004d00)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent'
+                                    }}>i</span>
+                                    {/* Red Dot */}
+                                    <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-red-600 rounded-full shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.3),2px_2px_4px_rgba(0,0,0,0.4)] border border-red-400"></span>
+                                </span>
+                                <span className="text-green-700" style={{
+                                    background: 'linear-gradient(to bottom, #008000, #004d00)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent'
+                                }}>F</span>
+                                <span className="text-green-700" style={{
+                                    background: 'linear-gradient(to bottom, #008000, #004d00)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent'
+                                }}>T</span>
+                                <span className="text-red-600" style={{
+                                    background: 'linear-gradient(to bottom, #ff3333, #cc0000)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent'
+                                }}>O</span>
+                            </div>
+
+                            {/* Tagline */}
+                            <div className="mt-4 text-lg font-bold tracking-wide whitespace-nowrap">
+                                <span className="text-green-800">Your trusted partner in </span>
+                                <span className="text-red-700">financial growth</span>
+                            </div>
+
+                            {/* Decorative Lines */}
+                            <div className="flex items-center gap-2 mt-1 w-full max-w-[280px]">
+                                <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent via-green-700 to-transparent rounded-full"></div>
+                                <div className="h-0.5 flex-1 bg-gradient-to-r from-transparent via-red-600 to-transparent rounded-full"></div>
+                            </div>
                         </div>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                            Premium portfolio management services designed for High Net-worth Individuals.
-                            Transparency, Consistency, and Growth.
+
+                        <p className="text-gray-400 text-base leading-relaxed max-w-sm">
+                            Premium portfolio management services designed exclusively for High Net-worth Individuals. We prioritize transparency, consistency, and long-term wealth generation.
                         </p>
-                    </div>
 
-                    <div>
-                        <h3 className="text-white font-semibold mb-6">Quick Links</h3>
-                        <ul className="space-y-4 text-sm text-gray-400">
-                            <li><a href="#" className="hover:text-premium-gold transition-colors">About Us</a></li>
-                            <li><a href="#" className="hover:text-premium-gold transition-colors">Our Strategy</a></li>
-                            <li><a href="#" className="hover:text-premium-gold transition-colors">Verified P&L</a></li>
-                            <li><a href="#" className="hover:text-premium-gold transition-colors">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-white font-semibold mb-6">Contact</h3>
-                        <ul className="space-y-4 text-sm text-gray-400">
-                            <li className="flex items-center gap-3">
-                                <Mail className="w-4 h-4 text-premium-gold" />
-                                <span>contact@fifto.com</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <Phone className="w-4 h-4 text-premium-gold" />
-                                <span>+91 98765 43210</span>
-                            </li>
-                            <li className="flex items-center gap-3">
-                                <MapPin className="w-4 h-4 text-premium-gold" />
-                                <span>Mumbai, India</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-white font-semibold mb-6">Connect</h3>
                         <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all">
+                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
                                 <Twitter className="w-5 h-5" />
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all">
+                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
                                 <Linkedin className="w-5 h-5" />
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all">
+                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
                                 <Instagram className="w-5 h-5" />
                             </a>
                         </div>
                     </div>
+
+                    {/* Column 2: Navigation */}
+                    <div className="grid grid-cols-2 gap-8">
+                        <div>
+                            <h3 className="text-white font-semibold text-lg mb-6">Platform</h3>
+                            <ul className="space-y-4 text-base text-gray-400">
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Home</a></li>
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Roadmap</a></li>
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Verified P&L</a></li>
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Strategies</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="text-white font-semibold text-lg mb-6">Legal</h3>
+                            <ul className="space-y-4 text-base text-gray-400">
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200">Privacy Policy</a></li>
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200">Terms of Service</a></li>
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200">Risk Disclosure</a></li>
+                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200">Disclaimer</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Column 3: Contact & Support */}
+                    <div>
+                        <h3 className="text-white font-semibold text-lg mb-6">Contact Us</h3>
+                        <ul className="space-y-6 text-base text-gray-400 mb-8">
+                            <li className="flex items-start gap-4 group">
+                                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-premium-gold/10 transition-colors">
+                                    <Mail className="w-5 h-5 text-premium-gold" />
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 mb-0.5">Email</span>
+                                    <span className="text-white group-hover:text-premium-gold transition-colors">official.fifto@gmail.com</span>
+                                </div>
+                            </li>
+                            <li className="flex items-start gap-4 group">
+                                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-premium-gold/10 transition-colors">
+                                    <Phone className="w-5 h-5 text-premium-gold" />
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 mb-0.5">Phone</span>
+                                    <span className="text-white group-hover:text-premium-gold transition-colors">+91-8300030123</span>
+                                </div>
+                            </li>
+                            <li className="flex items-start gap-4 group">
+                                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-premium-gold/10 transition-colors">
+                                    <MapPin className="w-5 h-5 text-premium-gold" />
+                                </div>
+                                <div>
+                                    <span className="block text-xs text-gray-500 mb-0.5">Location</span>
+                                    <span className="text-white group-hover:text-premium-gold transition-colors">Mumbai, India</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <button className="w-full py-4 px-6 bg-gradient-to-r from-premium-gold to-yellow-600 text-black font-bold rounded-xl hover:shadow-[0_0_20px_rgba(250,204,21,0.3)] transition-all duration-300 flex items-center justify-center gap-2 group">
+                            Schedule a Consultation
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                    </div>
                 </div>
 
-                <div className="border-t border-white/10 pt-8 text-center text-sm text-gray-500">
-                    <p>&copy; {new Date().getFullYear()} FiFTO. All rights reserved.</p>
+                {/* Bottom Section */}
+                <div className="border-t border-white/10 pt-8">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+                        <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} FiFTO. All rights reserved.</p>
+                        <div className="flex gap-6 text-sm text-gray-500">
+                            <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500"></div> System Operational</span>
+                            <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-premium-gold"></div> Market Data Active</span>
+                        </div>
+                    </div>
+
+                    {/* Risk Disclaimer */}
+                    <div className="p-6 bg-white/5 rounded-xl border border-white/5">
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Risk Disclosure</h4>
+                        <p className="text-xs text-gray-500 leading-relaxed text-justify">
+                            Trading in financial markets, including derivatives (F&O), equities, and commodities, involves a high degree of risk and may not be suitable for all investors. You could lose some or all of your initial investment. Past performance is not indicative of future results. The information provided on this platform is for educational and informational purposes only and should not be construed as financial advice. FiFTO is not a SEBI registered investment advisor. Please consult with a qualified financial advisor before making any investment decisions.
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>
