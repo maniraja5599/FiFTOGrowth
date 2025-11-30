@@ -102,6 +102,20 @@ const PnLStats = ({ data }) => {
                 trend={Number(winRate) > 50 ? 'up' : 'down'}
             />
             <StatCard
+                title="Total Profit Days"
+                value={winDays}
+                subValue="Green Days"
+                icon={TrendingUp}
+                trend="up"
+            />
+            <StatCard
+                title="Total Loss Days"
+                value={lossDays}
+                subValue="Red Days"
+                icon={TrendingDown}
+                trend="down"
+            />
+            <StatCard
                 title="Profit Factor"
                 value={profitFactor}
                 subValue="Gross Wins vs Losses"
