@@ -21,9 +21,9 @@ const Navbar = () => {
                     <div className="flex flex-col items-center cursor-pointer group">
                         {/* Main Logo Text */}
                         {/* Main Logo Text */}
-                        <div className="relative font-black text-4xl tracking-tight leading-none" style={{
+                        <div className="relative font-black text-4xl leading-none" style={{
                             fontFamily: '"Anton", sans-serif',
-                            letterSpacing: '0.05em'
+                            letterSpacing: '0.1em'
                         }}>
                             <span className="text-green-700" style={{
                                 background: 'linear-gradient(to bottom, #008000, #004d00)',

@@ -17,8 +17,9 @@ const Footer = () => {
                     <div className="space-y-10">
                         <div className="flex flex-col items-start cursor-pointer group">
                             {/* Main Logo Text */}
-                            <div className="relative text-6xl tracking-tight leading-none" style={{
-                                fontFamily: '"Anton", sans-serif'
+                            <div className="relative text-6xl leading-none" style={{
+                                fontFamily: '"Anton", sans-serif',
+                                letterSpacing: '0.1em'
                             }}>
                                 <span className="text-green-700" style={{
                                     background: 'linear-gradient(to bottom, #008000, #004d00)',
