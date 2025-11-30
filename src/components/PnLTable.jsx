@@ -56,7 +56,9 @@ const PnLTable = () => {
             <div className="container mx-auto px-4 md:px-6">
                 <div className="mb-8 relative flex flex-col md:flex-row items-center justify-center">
                     <div className="text-center">
-                        <h2 className="text-2xl font-bold mb-1 bg-gradient-to-r from-white via-premium-gold to-premium-gold bg-clip-text text-transparent">Daily Performance Ledger</h2>
+                        <h2 className="text-2xl font-bold mb-1">
+                            <span className="text-white">Daily Performance</span> <span className="text-premium-gold">Ledger</span>
+                        </h2>
                         <p className="text-gray-400 text-sm">Detailed breakdown of every trading day.</p>
                     </div>
                     <button

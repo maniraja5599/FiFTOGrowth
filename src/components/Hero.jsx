@@ -27,7 +27,7 @@ const Hero = () => {
                     </div>
 
                     <motion.h1
-                        className="text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-white via-premium-gold to-premium-gold bg-clip-text text-transparent"
+                        className="text-5xl md:text-7xl font-bold mb-6 tracking-tight"
                         initial="hidden"
                         animate="visible"
                         variants={{
@@ -44,7 +44,7 @@ const Hero = () => {
                         {["Wealth", "Management"].map((word, i) => (
                             <motion.span
                                 key={i}
-                                className="inline-block mr-3"
+                                className={`inline-block mr-3 ${i === 0 ? 'text-white' : 'text-premium-gold'}`}
                                 variants={{
                                     hidden: { opacity: 0, y: 20 },
                                     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }

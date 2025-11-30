@@ -75,16 +75,18 @@ const PnLChart = () => {
             <div className="container mx-auto px-6">
                 {/* New Detailed Stats Section */}
                 <div className="mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center bg-gradient-to-r from-white via-premium-gold to-premium-gold bg-clip-text text-transparent">
-                        Verified Consistency <br />
-                        Key Performance Metrics
+                    <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+                        <span className="text-white">Verified Consistency</span> <br />
+                        <span className="text-premium-gold">Key Performance Metrics</span>
                     </h2>
                     <PnLStats data={data} />
                 </div>
 
                 <div className="flex flex-col lg:flex-row items-start gap-12 mb-12">
                     <div className="w-full lg:w-1/3">
-                        <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-white via-premium-gold to-premium-gold bg-clip-text text-transparent">Performance Overview</h3>
+                        <h3 className="text-2xl font-bold mb-4">
+                            <span className="text-white">Performance</span> <span className="text-premium-gold">Overview</span>
+                        </h3>
                         <p className="text-gray-400 mb-8 text-lg">
                             Transparency is our currency. View our performance broken down by day, month, or quarter.
                             Consistent growth with controlled risk.
@@ -125,8 +127,8 @@ const PnLChart = () => {
                         {/* P&L Chart */}
                         <div className="glass-panel p-6 md:p-8 h-[500px]">
                             <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
-                                <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-premium-gold to-premium-gold bg-clip-text text-transparent">
-                                    {viewMode === 'day' ? 'Daily' : viewMode === 'month' ? 'Monthly' : 'Quarterly'} P&L
+                                <h3 className="text-xl font-semibold">
+                                    <span className="text-white">{viewMode === 'day' ? 'Daily' : viewMode === 'month' ? 'Monthly' : 'Quarterly'}</span> <span className="text-premium-gold">P&L</span>
                                 </h3>
 
                                 {/* View Toggles */}
