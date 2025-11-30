@@ -54,14 +54,14 @@ const PnLTable = () => {
     return (
         <section className="py-12 bg-premium-dark">
             <div className="container mx-auto px-4 md:px-6">
-                <div className="mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="text-center md:text-left">
+                <div className="mb-8 relative flex flex-col md:flex-row items-center justify-center">
+                    <div className="text-center">
                         <h2 className="text-2xl font-bold mb-1">Daily Performance Ledger</h2>
                         <p className="text-gray-400 text-sm">Detailed breakdown of every trading day.</p>
                     </div>
                     <button
                         onClick={handleExport}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium transition-colors text-premium-gold hover:text-premium-gold-hover"
+                        className="mt-4 md:mt-0 md:absolute md:right-0 flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium transition-colors text-premium-gold hover:text-premium-gold-hover"
                     >
                         <Download className="w-3.5 h-3.5" />
                         Export CSV
