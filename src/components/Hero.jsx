@@ -4,6 +4,8 @@ import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
 
+import AlertTriangle from 'lucide-react/dist/esm/icons/alert-triangle';
+
 const Hero = () => {
     return (
         <div id="philosophy" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-premium-dark pt-20">
@@ -19,9 +21,9 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
-                        <ShieldCheck className="w-4 h-4 text-premium-gold" />
-                        <span className="text-sm text-gray-300">Verified & Audited Performance</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-8">
+                        <AlertTriangle className="w-4 h-4 text-red-500" />
+                        <span className="text-sm text-red-200 font-medium">FiFTO is not a SEBI registered investment advisor</span>
                     </div>
 
                     <motion.h1
