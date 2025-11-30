@@ -72,7 +72,10 @@ const Hero = () => {
                         <button className="px-8 py-4 bg-premium-gold hover:bg-premium-gold-hover text-black font-bold rounded-lg flex items-center gap-2 transition-all transform hover:scale-105">
                             Start Your Journey <ArrowRight className="w-5 h-5" />
                         </button>
-                        <button className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-lg flex items-center gap-2 transition-all">
+                        <button
+                            onClick={() => window.open('https://verified.flattrade.in/pnl/PO0e9bb3329bca40ad8b3edd96638994cc', '_blank')}
+                            className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-lg flex items-center gap-2 transition-all"
+                        >
                             View Verified P&L <TrendingUp className="w-5 h-5" />
                         </button>
                     </div>

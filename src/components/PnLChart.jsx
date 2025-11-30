@@ -112,7 +112,7 @@ const PnLChart = () => {
                         </div>
 
                         <a
-                            href="https://wall.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057"
+                            href="https://verified.flattrade.in/pnl/PO0e9bb3329bca40ad8b3edd96638994cc"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 px-6 py-3 bg-premium-gold hover:bg-premium-gold-hover text-black font-bold rounded-lg transition-all"
@@ -136,8 +136,8 @@ const PnLChart = () => {
                                             key={mode}
                                             onClick={() => setViewMode(mode)}
                                             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${viewMode === mode
-                                                    ? 'bg-premium-gold text-black shadow-lg'
-                                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                                ? 'bg-premium-gold text-black shadow-lg'
+                                                : 'text-gray-400 hover:text-white hover:bg-white/5'
                                                 }`}
                                         >
                                             {mode.charAt(0).toUpperCase() + mode.slice(1)}
