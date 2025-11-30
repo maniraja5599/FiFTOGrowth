@@ -38,11 +38,12 @@ const ProfitSharing = () => {
                                 </div>
                                 <div>
                                     <h4 className="text-lg font-semibold text-white">Recommended Broker</h4>
-                                    <p className="text-gray-400 text-sm mb-2">
-                                        <a href="https://openaccount.flattrade.in/O_FT003862" target="_blank" rel="noopener noreferrer" className="text-premium-gold hover:underline">
-                                            Zero Brokerage Account (Flattrade)
+                                    <div className="mb-3 mt-2">
+                                        <a href="https://openaccount.flattrade.in/O_FT003862" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-premium-gold to-yellow-500 text-black font-bold rounded-lg shadow-[0_0_15px_rgba(250,204,21,0.4)] hover:shadow-[0_0_25px_rgba(250,204,21,0.6)] hover:scale-105 transition-all duration-300 text-sm">
+                                            Open Zero Brokerage Account
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                         </a>
-                                    </p>
+                                    </div>
                                     <div className="text-premium-gold font-mono font-bold text-xl">₹5,000 <span className="text-xs text-gray-500 font-normal">/ month</span></div>
                                 </div>
                             </div>
@@ -53,11 +54,12 @@ const ProfitSharing = () => {
                                 </div>
                                 <div>
                                     <h4 className="text-lg font-semibold text-white">Trading Platform</h4>
-                                    <p className="text-gray-400 text-sm mb-2">
-                                        <a href="https://www.tradetron.tech?ref=maniraja" target="_blank" rel="noopener noreferrer" className="text-premium-gold hover:underline">
-                                            TradeTron (Algo Execution)
+                                    <div className="mb-3 mt-2">
+                                        <a href="https://www.tradetron.tech?ref=maniraja" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-premium-gold to-yellow-500 text-black font-bold rounded-lg shadow-[0_0_15px_rgba(250,204,21,0.4)] hover:shadow-[0_0_25px_rgba(250,204,21,0.6)] hover:scale-105 transition-all duration-300 text-sm">
+                                            Sign Up on TradeTron
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                         </a>
-                                    </p>
+                                    </div>
                                     <div className="text-premium-gold font-mono font-bold text-xl">₹5,000 <span className="text-xs text-gray-500 font-normal">/ month</span></div>
                                 </div>
                             </div>
