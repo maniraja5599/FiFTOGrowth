@@ -3,8 +3,9 @@ import Mail from 'lucide-react/dist/esm/icons/mail';
 import Phone from 'lucide-react/dist/esm/icons/phone';
 import MapPin from 'lucide-react/dist/esm/icons/map-pin';
 import Instagram from 'lucide-react/dist/esm/icons/instagram';
-import Twitter from 'lucide-react/dist/esm/icons/twitter';
+import Youtube from 'lucide-react/dist/esm/icons/youtube';
 import Linkedin from 'lucide-react/dist/esm/icons/linkedin';
+import Send from 'lucide-react/dist/esm/icons/send';
 import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 
 const Footer = () => {
@@ -68,14 +69,17 @@ const Footer = () => {
                         </p>
 
                         <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
-                                <Twitter className="w-5 h-5" />
-                            </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
+                            <a href="https://www.linkedin.com/in/maniraja5599/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
                                 <Linkedin className="w-5 h-5" />
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
+                            <a href="https://telegram.me/s/easytrademarket" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
+                                <Send className="w-5 h-5" />
+                            </a>
+                            <a href="https://www.instagram.com/fifto.official/?hl=en" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
                                 <Instagram className="w-5 h-5" />
+                            </a>
+                            <a href="https://www.youtube.com/@OfficialFiFTO" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-premium-gold hover:text-black transition-all duration-300 border border-white/5 hover:border-premium-gold">
+                                <Youtube className="w-5 h-5" />
                             </a>
                         </div>
                     </div>
@@ -130,7 +134,7 @@ const Footer = () => {
                                 </div>
                                 <div>
                                     <span className="block text-xs text-gray-500 mb-0.5">Location</span>
-                                    <span className="text-white group-hover:text-premium-gold transition-colors">Mumbai, India</span>
+                                    <span className="text-white group-hover:text-premium-gold transition-colors">Tamilnadu, India</span>
                                 </div>
                             </li>
                         </ul>
