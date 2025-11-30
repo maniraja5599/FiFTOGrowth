@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
 import path from 'path';
 
-const URL = 'https://wall.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057';
+const URL = process.argv[2] || 'https://wall.flattrade.in/pnl/PO48d06e2272034b9e85d476c7fbd58057';
 
 async function scrape() {
     console.log('Launching browser...');
