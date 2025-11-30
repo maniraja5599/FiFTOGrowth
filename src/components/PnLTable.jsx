@@ -5,18 +5,29 @@ import ArrowDownRight from 'lucide-react/dist/esm/icons/arrow-down-right';
 import Download from 'lucide-react/dist/esm/icons/download';
 
 const PnLTable = () => {
+    // Calculate cumulative ROI before reversing
+    let runningRoi = 0;
+    const dataWithCumulativeRoi = pnlData.map(day => {
+        runningRoi += parseFloat(day.roi);
+        return {
+            ...day,
+            cumulativeRoi: runningRoi.toFixed(2)
+        };
+    });
+
     // Reverse data to show newest first
-    const sortedData = [...pnlData].reverse();
+    const sortedData = [...dataWithCumulativeRoi].reverse();
 
     const handleExport = () => {
         // Define CSV headers
-        const headers = ['Date', 'Daily P&L', 'ROI (%)', 'Cumulative P&L'];
+        const headers = ['Date', 'Daily P&L', 'ROI (%)', 'Cumulative ROI (%)', 'Cumulative P&L'];
 
         // Convert data to CSV rows
         const rows = sortedData.map(day => [
             day.date,
             day.dailyPnL,
             day.roi,
+            day.cumulativeRoi,
             day.cumulativePnL
         ]);
 
@@ -65,6 +76,7 @@ const PnLTable = () => {
                                     <th scope="col" className="px-4 py-3 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider">Date</th>
                                     <th scope="col" className="px-4 py-3 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">P&L</th>
                                     <th scope="col" className="px-4 py-3 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">ROI</th>
+                                    <th scope="col" className="px-4 py-3 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">Cum. ROI</th>
                                     <th scope="col" className="px-4 py-3 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">Cumulative</th>
                                 </tr>
                             </thead>
@@ -82,6 +94,9 @@ const PnLTable = () => {
                                         </td>
                                         <td className={`px-4 py-2.5 whitespace-nowrap text-xs text-right font-mono ${Number(day.roi) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                                             {day.roi}%
+                                        </td>
+                                        <td className={`px-4 py-2.5 whitespace-nowrap text-xs text-right font-mono ${Number(day.cumulativeRoi) >= 0 ? 'text-premium-gold' : 'text-red-400'}`}>
+                                            {day.cumulativeRoi}%
                                         </td>
                                         <td className={`px-4 py-2.5 whitespace-nowrap text-xs font-bold text-right font-mono ${day.cumulativePnL >= 0 ? 'text-premium-gold' : 'text-red-400'}`}>
                                             {day.cumulativePnL >= 0 ? '+' : ''}₹{day.cumulativePnL.toLocaleString()}
