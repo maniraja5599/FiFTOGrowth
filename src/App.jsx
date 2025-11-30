@@ -9,6 +9,7 @@ const PnLChart = lazy(() => import('./components/PnLChart'));
 const LiveTracking = lazy(() => import('./components/LiveTracking'));
 const PnLTable = lazy(() => import('./components/PnLTable'));
 const Roadmap = lazy(() => import('./components/Roadmap'));
+const ProfitSharing = lazy(() => import('./components/ProfitSharing'));
 const Footer = lazy(() => import('./components/Footer'));
 const AnimatedDivider = lazy(() => import('./components/AnimatedDivider'));
 
@@ -34,6 +35,8 @@ function App() {
         <LiveTracking />
         <AnimatedDivider />
         <Roadmap />
+        <AnimatedDivider />
+        <ProfitSharing />
         <AnimatedDivider />
         <Footer />
       </Suspense>
