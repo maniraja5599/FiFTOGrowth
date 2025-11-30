@@ -41,59 +41,55 @@ const PnLTable = () => {
     };
 
     return (
-        <section className="py-20 bg-premium-dark">
-            <div className="container mx-auto px-6">
-                <div className="mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <section className="py-12 bg-premium-dark">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="text-center md:text-left">
-                        <h2 className="text-3xl font-bold mb-2">Daily Performance Ledger</h2>
-                        <p className="text-gray-400">Detailed breakdown of every trading day.</p>
+                        <h2 className="text-2xl font-bold mb-1">Daily Performance Ledger</h2>
+                        <p className="text-gray-400 text-sm">Detailed breakdown of every trading day.</p>
                     </div>
                     <button
                         onClick={handleExport}
-                        className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-medium transition-colors text-premium-gold hover:text-premium-gold-hover"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-medium transition-colors text-premium-gold hover:text-premium-gold-hover"
                     >
-                        <Download className="w-4 h-4" />
+                        <Download className="w-3.5 h-3.5" />
                         Export CSV
                     </button>
                 </div>
 
-                <div className="overflow-hidden">
-                    <div className="min-w-full inline-block align-middle">
-                        <div className="border border-white/10 rounded-xl overflow-hidden bg-premium-card/30 backdrop-blur-sm">
-                            <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
-                                <table className="min-w-full divide-y divide-white/10 relative">
-                                    <thead className="bg-premium-dark sticky top-0 z-10 shadow-lg">
-                                        <tr>
-                                            <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider bg-premium-dark">Date</th>
-                                            <th scope="col" className="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider bg-premium-dark">P&L</th>
-                                            <th scope="col" className="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider bg-premium-dark">ROI</th>
-                                            <th scope="col" className="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider bg-premium-dark">Cumulative</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-white/10 bg-transparent">
-                                        {sortedData.map((day, index) => (
-                                            <tr key={index} className="hover:bg-white/5 transition-colors">
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-mono">
-                                                    {day.date}
-                                                </td>
-                                                <td className={`px - 6 py - 4 whitespace - nowrap text - sm font - bold text - right font - mono ${day.dailyPnL >= 0 ? 'text-green-400' : 'text-red-400'} `}>
-                                                    <div className="flex items-center justify-end gap-2">
-                                                        {day.dailyPnL >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-                                                        {day.dailyPnL >= 0 ? '+' : ''}₹{day.dailyPnL.toLocaleString()}
-                                                    </div>
-                                                </td>
-                                                <td className={`px - 6 py - 4 whitespace - nowrap text - sm text - right font - mono ${Number(day.roi) >= 0 ? 'text-green-400' : 'text-red-400'} `}>
-                                                    {day.roi}%
-                                                </td>
-                                                <td className={`px - 6 py - 4 whitespace - nowrap text - sm font - bold text - right font - mono ${day.cumulativePnL >= 0 ? 'text-premium-gold' : 'text-red-400'} `}>
-                                                    {day.cumulativePnL >= 0 ? '+' : ''}₹{day.cumulativePnL.toLocaleString()}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                <div className="overflow-hidden rounded-xl border border-white/10 bg-premium-card/30 backdrop-blur-sm shadow-2xl">
+                    <div className="max-h-[500px] overflow-y-auto custom-scrollbar">
+                        <table className="min-w-full divide-y divide-white/5">
+                            <thead className="bg-black/40 sticky top-0 z-10 backdrop-blur-md">
+                                <tr>
+                                    <th scope="col" className="px-4 py-3 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider">Date</th>
+                                    <th scope="col" className="px-4 py-3 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">P&L</th>
+                                    <th scope="col" className="px-4 py-3 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">ROI</th>
+                                    <th scope="col" className="px-4 py-3 text-right text-[10px] font-bold text-gray-400 uppercase tracking-wider">Cumulative</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/5 bg-transparent">
+                                {sortedData.map((day, index) => (
+                                    <tr key={index} className="hover:bg-white/5 transition-colors group">
+                                        <td className="px-4 py-2.5 whitespace-nowrap text-xs text-gray-300 font-mono border-l-2 border-transparent group-hover:border-premium-gold/50 transition-all">
+                                            {day.date}
+                                        </td>
+                                        <td className={`px-4 py-2.5 whitespace-nowrap text-xs font-bold text-right font-mono ${day.dailyPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            <div className="flex items-center justify-end gap-1.5">
+                                                {day.dailyPnL >= 0 ? <ArrowUpRight className="w-3.5 h-3.5 opacity-70" /> : <ArrowDownRight className="w-3.5 h-3.5 opacity-70" />}
+                                                {day.dailyPnL >= 0 ? '+' : ''}₹{day.dailyPnL.toLocaleString()}
+                                            </div>
+                                        </td>
+                                        <td className={`px-4 py-2.5 whitespace-nowrap text-xs text-right font-mono ${Number(day.roi) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                            {day.roi}%
+                                        </td>
+                                        <td className={`px-4 py-2.5 whitespace-nowrap text-xs font-bold text-right font-mono ${day.cumulativePnL >= 0 ? 'text-premium-gold' : 'text-red-400'}`}>
+                                            {day.cumulativePnL >= 0 ? '+' : ''}₹{day.cumulativePnL.toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
