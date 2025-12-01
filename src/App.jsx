@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import BackgroundMusic from './components/BackgroundMusic';
+
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -22,7 +22,7 @@ function App() {
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-premium-gold"></div>
         </div>
       }>
-        <BackgroundMusic />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
