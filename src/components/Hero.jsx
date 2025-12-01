@@ -92,33 +92,27 @@ const Hero = () => {
                         </span>
                     </motion.h1>
 
-                    {/* User Requested Background Dots - Enhanced with Framer Motion for Random Movement */}
+                    {/* User Requested Background Dots - Optimized */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        {[...Array(8)].map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className={`absolute mix-blend-screen filter ${i % 2 === 0 ? 'bg-green-500/20' : 'bg-red-500/20'}`}
-                                style={{
-                                    width: Math.random() * 180 + 20 + 'px', // Random size 20-200px
-                                    height: Math.random() * 180 + 20 + 'px',
-                                    top: Math.random() * 100 + '%',
-                                    left: Math.random() * 100 + '%',
-                                    filter: `blur(${Math.random() * 10 + 10}px)`, // Random blur 10-20px
-                                    borderRadius: `${Math.random() * 40 + 30}% ${Math.random() * 40 + 30}% ${Math.random() * 40 + 30}% ${Math.random() * 40 + 30}% / ${Math.random() * 40 + 30}% ${Math.random() * 40 + 30}% ${Math.random() * 40 + 30}% ${Math.random() * 40 + 30}%`, // Uneven blob shape
-                                }}
-                                animate={{
-                                    x: [0, Math.random() * 400 - 200, Math.random() * 400 - 200, 0],
-                                    y: [0, Math.random() * 400 - 200, Math.random() * 400 - 200, 0],
-                                    scale: [1, 1.2, 0.8, 1],
-                                    opacity: [0.3, 0.6, 0.3],
-                                }}
-                                transition={{
-                                    duration: Math.random() * 10 + 15, // Slow duration 15-25s
-                                    repeat: Infinity,
-                                    ease: "linear",
-                                }}
-                            />
-                        ))}
+                        {[...Array(5)].map((_, i) => {
+                            // Assign different animation speeds based on index
+                            const animClass = i % 3 === 0 ? 'animate-float-slow' : i % 3 === 1 ? 'animate-float-medium' : 'animate-float-fast';
+                            return (
+                                <div
+                                    key={i}
+                                    className={`absolute mix-blend-screen filter ${i % 2 === 0 ? 'bg-green-500/20' : 'bg-red-500/20'} ${animClass}`}
+                                    style={{
+                                        width: Math.random() * 150 + 20 + 'px',
+                                        height: Math.random() * 150 + 20 + 'px',
+                                        top: Math.random() * 100 + '%',
+                                        left: Math.random() * 100 + '%',
+                                        filter: `blur(${Math.random() * 10 + 10}px)`,
+                                        borderRadius: '50%',
+                                        opacity: 0.3,
+                                    }}
+                                />
+                            );
+                        })}
                     </div>
 
                     <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed" style={{ fontFamily: '"Outfit", sans-serif' }}>

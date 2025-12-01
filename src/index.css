@@ -54,3 +54,76 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.08);
 }
+
+/* Floating Animation Keyframes */
+@keyframes float-slow {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(10px, 10px);
+  }
+
+  50% {
+    transform: translate(0, 20px);
+  }
+
+  75% {
+    transform: translate(-10px, 10px);
+  }
+}
+
+@keyframes float-medium {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-15px, 5px);
+  }
+
+  50% {
+    transform: translate(-5px, -15px);
+  }
+
+  75% {
+    transform: translate(10px, -5px);
+  }
+}
+
+@keyframes float-fast {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(5px, -10px);
+  }
+
+  50% {
+    transform: translate(15px, 0);
+  }
+
+  75% {
+    transform: translate(5px, 15px);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float-medium 15s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-fast 12s ease-in-out infinite;
+}
