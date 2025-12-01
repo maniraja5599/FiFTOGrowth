@@ -96,48 +96,8 @@ const PnLChart = () => {
                     <PnLStats data={data} />
                 </div>
 
-                <div className="flex flex-col lg:flex-row items-start gap-12 mb-12">
-                    <div className="w-full lg:w-1/3">
-                        <h3 className="text-2xl font-bold mb-4">
-                            <span className="text-white">Performance</span> <span className="text-premium-gold">Overview</span>
-                        </h3>
-                        <p className="text-gray-400 mb-8 text-lg">
-                            Transparency is our currency. View our performance broken down by day, month, or quarter.
-                            Consistent growth with controlled risk.
-                        </p>
-
-                        <div className="space-y-4 mb-8">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
-                                    <TrendingUp className="w-4 h-4 text-green-400" />
-                                </div>
-                                <div>
-                                    <div className="text-white font-medium">{winDays} Green Days</div>
-                                    <div className="text-xs text-gray-500">Consistent Profits</div>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center">
-                                    <TrendingDown className="w-4 h-4 text-red-400" />
-                                </div>
-                                <div>
-                                    <div className="text-white font-medium">{lossDays} Red Days</div>
-                                    <div className="text-xs text-gray-500">Controlled Losses</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <a
-                            href="https://verified.flattrade.in/pnl/PO0e9bb3329bca40ad8b3edd96638994cc"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-premium-gold hover:bg-premium-gold-hover text-black font-bold rounded-lg transition-all"
-                        >
-                            Verify on Flattrade <ExternalLink className="w-4 h-4" />
-                        </a>
-                    </div>
-
-                    <div className="w-full lg:w-2/3 space-y-8">
+                <div className="w-full mb-12">
+                    <div className="w-full space-y-8">
                         {/* P&L Chart Container */}
                         <div
                             className={`transition-all duration-300 ${isFullScreen

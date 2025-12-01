@@ -4,6 +4,7 @@ import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
 import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import Wallet from 'lucide-react/dist/esm/icons/wallet';
 import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import AlertTriangle from 'lucide-react/dist/esm/icons/alert-triangle';
 
 const ProfitSharing = () => {
     return (
@@ -17,9 +18,13 @@ const ProfitSharing = () => {
                     <h2 className="text-3xl md:text-5xl font-bold mb-6">
                         <span className="text-white">Transparent</span> <span className="text-premium-gold">Pricing</span>
                     </h2>
-                    <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                    <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-6">
                         Fair and transparent pricing model designed for mutual growth. No hidden charges.
                     </p>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors cursor-default">
+                        <AlertTriangle className="w-3 h-3 md:w-4 md:h-4 text-premium-gold flex-shrink-0" />
+                        <span className="text-[10px] md:text-sm text-gray-300 font-medium whitespace-nowrap overflow-hidden text-ellipsis">FiFTO is not a SEBI registered investment advisor</span>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
