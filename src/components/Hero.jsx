@@ -55,13 +55,14 @@ const Hero = () => {
                             <span className="absolute inset-0 z-0 select-none"
                                 aria-hidden="true"
                                 style={{
-                                    backgroundImage: 'linear-gradient(120deg, #FFD700 0%, #FFFF00 30%, #FFFFFF 50%, #FFFF00 70%, #FFD700 100%)',
+                                    backgroundImage: 'linear-gradient(120deg, #FFD700 0%, #FDB931 25%, #FFFF00 50%, #FDB931 75%, #FFD700 100%)',
                                     backgroundSize: '200% auto',
-                                    animation: 'shine 4s linear infinite',
+                                    animation: 'shine 3s linear infinite',
                                     WebkitBackgroundClip: 'text',
                                     backgroundClip: 'text',
                                     WebkitTextFillColor: 'transparent',
                                     WebkitTextStroke: '6px transparent',
+                                    filter: 'drop-shadow(0 0 2px rgba(255, 215, 0, 0.5))',
                                 }}
                             >
                                 {["Redefined", "for", "HNIs"].map((word, i) => (
@@ -72,7 +73,11 @@ const Hero = () => {
                             </span>
 
                             {/* Dark Fill Layer */}
-                            <span className="relative z-10 text-premium-dark">
+                            <span className="relative z-10 text-premium-dark"
+                                style={{
+                                    WebkitTextStroke: '1px #FFD700',
+                                }}
+                            >
                                 {["Redefined", "for", "HNIs"].map((word, i) => (
                                     <span key={i} className="inline-block mr-3 md:mr-4">
                                         {word}
