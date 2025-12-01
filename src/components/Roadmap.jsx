@@ -86,21 +86,21 @@ const Roadmap = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className={`glass-panel p-8 rounded-2xl border transition-all duration-300 hover:-translate-y-1 group ${feature.highlight ? 'border-emerald-500/50 shadow-[0_0_30px_-10px_rgba(16,185,129,0.3)]' : 'border-white/5 hover:border-premium-gold/30'}`}
+                            className={`glass-panel p-6 rounded-2xl border transition-all duration-300 hover:-translate-y-1 group ${feature.highlight ? 'border-emerald-500/50 shadow-[0_0_30px_-10px_rgba(16,185,129,0.3)]' : 'border-white/5 hover:border-premium-gold/30'}`}
                         >
-                            <div className={`mb-6 inline-block p-3 rounded-xl icon-container-3d transition-colors`}>
-                                <feature.icon className={`w-8 h-8 ${feature.highlight ? 'icon-3d-green' : 'icon-3d-gold'} transition-colors`} />
+                            <div className={`mb-4 inline-block p-2 rounded-xl icon-container-3d transition-colors`}>
+                                <feature.icon className={`w-6 h-6 ${feature.highlight ? 'icon-3d-green' : 'icon-3d-gold'} transition-colors`} />
                             </div>
 
-                            <h3 className="text-xl font-bold mb-3 text-white group-hover:text-premium-gold transition-colors">
+                            <h3 className="text-lg font-bold mb-2 text-white group-hover:text-premium-gold transition-colors">
                                 {feature.title}
                             </h3>
 
-                            <p className="text-gray-400 mb-6 leading-relaxed">
+                            <p className="text-sm text-gray-400 mb-4 leading-relaxed">
                                 {feature.description}
                             </p>
 
-                            <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wider border ${feature.statusColor}`}>
+                            <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold tracking-wider border ${feature.statusColor}`}>
                                 {feature.status}
                             </span>
                         </motion.div>

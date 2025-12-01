@@ -11,7 +11,7 @@ import PieChart from 'lucide-react/dist/esm/icons/pie-chart'; // Using PieChart 
 import Maximize2 from 'lucide-react/dist/esm/icons/maximize-2';
 import Minimize2 from 'lucide-react/dist/esm/icons/minimize-2';
 import PnLStats from './PnLStats';
-import CalendarHeatmap from './CalendarHeatmap';
+
 import { pnlData as data } from '../utils/pnlData';
 
 const CustomTooltip = ({ active, payload, label, viewMode, chartType }) => {
@@ -288,8 +288,7 @@ const PnLChart = () => {
                         </div>
                     </div>
                 </div>
-                {/* Calendar Heatmap Section */}
-                <CalendarHeatmap data={data} />
+
             </div>
         </section>
     );

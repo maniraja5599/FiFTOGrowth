@@ -9,30 +9,34 @@ import Target from 'lucide-react/dist/esm/icons/target';
 import BarChart3 from 'lucide-react/dist/esm/icons/bar-chart-3';
 import ArrowDownCircle from 'lucide-react/dist/esm/icons/arrow-down-circle';
 
-const StatCard = ({ title, value, subValue, icon: Icon, trend, iconColor = "gold" }) => {
-    const colorMap = {
-        gold: "icon-3d-gold",
-        green: "icon-3d-green",
-        red: "icon-3d-red",
-        blue: "icon-3d-blue"
-    };
-
+const DualStatCard = ({ title, leftData, rightData, icon: Icon }) => {
     return (
         <div className="p-6 bg-premium-card/30 backdrop-blur-sm border border-white/10 rounded-xl hover:bg-premium-card/50 transition-all duration-300 group">
-            <div className="flex items-start justify-between mb-4">
-                <div className={`p-3 rounded-xl icon-container-3d group-hover:border-white/20 transition-colors`}>
-                    <Icon className={`w-6 h-6 ${colorMap[iconColor] || colorMap.gold}`} />
+            <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 rounded-lg bg-premium-gold/10 text-premium-gold group-hover:bg-premium-gold/20 transition-colors">
+                    <Icon className="w-5 h-5" />
                 </div>
-                {trend && (
-                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${trend === 'up' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
-                        }`}>
-                        {trend === 'up' ? 'Positive' : 'Negative'}
-                    </span>
-                )}
+                <h3 className="text-white font-semibold text-lg">{title}</h3>
             </div>
-            <h3 className="text-gray-400 text-sm font-medium mb-1">{title}</h3>
-            <div className="text-2xl font-bold text-white mb-1">{value}</div>
-            {subValue && <div className="text-xs text-gray-500">{subValue}</div>}
+
+            <div className="grid grid-cols-2 gap-4 relative">
+                {/* Divider */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/10 transform -translate-x-1/2"></div>
+
+                {/* Left Side */}
+                <div className="text-center">
+                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">{leftData.label}</div>
+                    <div className={`text-xl font-bold ${leftData.color || 'text-white'}`}>{leftData.value}</div>
+                    {leftData.subValue && <div className="text-[10px] text-gray-500 mt-1">{leftData.subValue}</div>}
+                </div>
+
+                {/* Right Side */}
+                <div className="text-center">
+                    <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">{rightData.label}</div>
+                    <div className={`text-xl font-bold ${rightData.color || 'text-white'}`}>{rightData.value}</div>
+                    {rightData.subValue && <div className="text-[10px] text-gray-500 mt-1">{rightData.subValue}</div>}
+                </div>
+            </div>
         </div>
     );
 };
@@ -76,97 +80,110 @@ const PnLStats = ({ data }) => {
     const netPnL = data.reduce((acc, curr) => acc + curr.dailyPnL, 0);
     const totalROI = ((netPnL / 10000000) * 100).toFixed(2);
 
-    // Helper to format currency in Lakhs - REMOVED in favor of global formatter
-    // const formatCurrency = (value) => { ... }
-
     const startDate = data[0].date;
     const endDate = data[data.length - 1].date;
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-            <StatCard
-                title="Trading Period"
-                value={`${totalDays} Days`}
-                subValue={`${startDate} - ${endDate}`}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {/* Card 1: Return & Risk */}
+            <DualStatCard
+                title="Return & Risk"
                 icon={Activity}
-            />
-            <StatCard
-                title="Total ROI"
-                value={`${totalROI}%`}
-                subValue={`Return on ₹1Cr Capital`}
-                icon={Activity}
-                trend={Number(totalROI) > 0 ? 'up' : 'down'}
-            />
-            <StatCard
-                title="Win Rate"
-                value={`${winRate}%`}
-                subValue={`${winDays} Wins / ${lossDays} Losses`}
-                icon={Percent}
-                trend={Number(winRate) > 50 ? 'up' : 'down'}
-            />
-            <StatCard
-                title="Total Profit Days"
-                value={winDays}
-                subValue="Green Days"
-                icon={TrendingUp}
-                trend="up"
-            />
-            <StatCard
-                title="Total Loss Days"
-                value={lossDays}
-                subValue="Red Days"
-                icon={TrendingDown}
-                trend="down"
-            />
-            <StatCard
-                title="Profit Factor"
-                value={profitFactor}
-                subValue="Gross Wins vs Losses"
-                icon={Scale}
-                trend={Number(profitFactor) > 1.5 ? 'up' : 'down'}
-            />
-            <StatCard
-                title="Max Drawdown"
-                value={formatCurrency(maxDrawdown)}
-                subValue="Peak to Trough Decline"
-                icon={ArrowDownCircle}
-                trend="down"
+                leftData={{
+                    label: "Total ROI",
+                    value: `${totalROI}%`,
+                    color: Number(totalROI) > 0 ? "text-green-400" : "text-red-400",
+                    subValue: "On ₹1Cr Capital"
+                }}
+                rightData={{
+                    label: "Max Drawdown",
+                    value: formatCurrency(maxDrawdown),
+                    color: "text-red-400",
+                    subValue: "Peak to Trough"
+                }}
             />
 
-            <StatCard
-                title="Max Profit (Single Day)"
-                value={formatCurrency(maxProfit)}
-                subValue="Best Trading Day"
-                icon={TrendingUp}
-                trend="up"
+            {/* Card 2: Efficiency */}
+            <DualStatCard
+                title="Efficiency"
+                icon={Scale}
+                leftData={{
+                    label: "Win Rate",
+                    value: `${winRate}%`,
+                    color: Number(winRate) > 50 ? "text-green-400" : "text-yellow-400"
+                }}
+                rightData={{
+                    label: "Profit Factor",
+                    value: profitFactor,
+                    color: Number(profitFactor) > 1.5 ? "text-green-400" : "text-yellow-400"
+                }}
             />
-            <StatCard
-                title="Max Loss (Single Day)"
-                value={formatCurrency(maxLoss)}
-                subValue="Worst Trading Day"
-                icon={TrendingDown}
-                trend="down"
+
+            {/* Card 3: Days Analysis */}
+            <DualStatCard
+                title="Days Analysis"
+                icon={BarChart3}
+                leftData={{
+                    label: "Green Days",
+                    value: winDays,
+                    color: "text-green-400"
+                }}
+                rightData={{
+                    label: "Red Days",
+                    value: lossDays,
+                    color: "text-red-400"
+                }}
             />
-            <StatCard
-                title="Expectancy"
-                value={formatCurrency(Math.round(expectancy))}
-                subValue="Avg Daily Return"
+
+            {/* Card 4: Extreme Trades */}
+            <DualStatCard
+                title="Extreme Trades"
                 icon={Target}
-                trend={expectancy > 0 ? 'up' : 'down'}
+                leftData={{
+                    label: "Max Profit",
+                    value: formatCurrency(maxProfit),
+                    color: "text-green-400",
+                    subValue: "Single Day"
+                }}
+                rightData={{
+                    label: "Max Loss",
+                    value: formatCurrency(maxLoss),
+                    color: "text-red-400",
+                    subValue: "Single Day"
+                }}
             />
-            <StatCard
-                title="Average Win"
-                value={formatCurrency(Math.round(avgWin))}
-                subValue="Avg Profit on Green Days"
-                icon={BarChart3}
-                trend="up"
+
+            {/* Card 5: Average Trades */}
+            <DualStatCard
+                title="Average Trades"
+                icon={TrendingUp}
+                leftData={{
+                    label: "Avg Win",
+                    value: formatCurrency(Math.round(avgWin)),
+                    color: "text-green-400"
+                }}
+                rightData={{
+                    label: "Avg Loss",
+                    value: formatCurrency(Math.round(avgLoss)),
+                    color: "text-red-400"
+                }}
             />
-            <StatCard
-                title="Average Loss"
-                value={formatCurrency(Math.round(avgLoss))}
-                subValue="Avg Loss on Red Days"
-                icon={BarChart3}
-                trend="down"
+
+            {/* Card 6: Overview */}
+            <DualStatCard
+                title="Overview"
+                icon={Activity}
+                leftData={{
+                    label: "Expectancy",
+                    value: formatCurrency(Math.round(expectancy)),
+                    color: expectancy > 0 ? "text-green-400" : "text-red-400",
+                    subValue: "Daily Avg"
+                }}
+                rightData={{
+                    label: "Total Days",
+                    value: totalDays,
+                    subValue: "Trading Days"
+                }}
             />
         </div>
     );

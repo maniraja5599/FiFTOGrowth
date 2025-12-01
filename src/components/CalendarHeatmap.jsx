@@ -30,19 +30,19 @@ const CalendarHeatmap = ({ data }) => {
     const endDate = data.length > 0 ? data[data.length - 1].date : '';
 
     return (
-        <div className="glass-panel p-4 md:p-6 max-w-4xl mx-auto">
-            <h3 className="text-xl font-bold mb-6">
-                <span className="text-white">Consistency</span> <span className="text-premium-gold">Heatmap</span> <span className="text-sm font-normal text-gray-400 ml-2">({startDate} - {endDate})</span>
+        <div className="glass-panel p-4 max-w-3xl mx-auto">
+            <h3 className="text-lg font-bold mb-4">
+                <span className="text-white">Consistency</span> <span className="text-premium-gold">Heatmap</span> <span className="text-xs font-normal text-gray-400 ml-2">({startDate} - {endDate})</span>
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {Object.entries(months).map(([month, days]) => (
                     <div key={month}>
-                        <h4 className="text-sm font-medium text-gray-400 mb-3">{month}</h4>
-                        <div className="grid grid-cols-7 gap-0.5">
+                        <h4 className="text-xs font-medium text-gray-400 mb-2">{month}</h4>
+                        <div className="grid grid-cols-7 gap-[1px]">
                             {days.map((day, index) => (
                                 <div
                                     key={index}
-                                    className={`w-full aspect-square rounded-sm ${getColor(day.dailyPnL)} relative group cursor-pointer transition-all hover:scale-110 hover:z-10`}
+                                    className={`w-full aspect-square rounded-[1px] ${getColor(day.dailyPnL)} relative group cursor-pointer transition-all hover:scale-110 hover:z-10`}
                                 >
                                     {/* Tooltip */}
                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs p-2 rounded whitespace-nowrap z-20 border border-white/10 shadow-xl">
