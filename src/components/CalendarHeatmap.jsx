@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatCurrency } from '../utils/formatters';
 
 const CalendarHeatmap = ({ data }) => {
     // Helper to get color based on P&L
@@ -47,7 +48,7 @@ const CalendarHeatmap = ({ data }) => {
                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-black text-white text-xs p-2 rounded whitespace-nowrap z-20 border border-white/10 shadow-xl">
                                         <div className="font-bold">{day.date}</div>
                                         <div className={day.dailyPnL >= 0 ? 'text-green-400' : 'text-red-400'}>
-                                            {day.dailyPnL >= 0 ? '+' : ''}₹{day.dailyPnL.toLocaleString()}
+                                            {day.dailyPnL >= 0 ? '+' : ''}{formatCurrency(day.dailyPnL).replace('₹', '₹')}
                                         </div>
                                     </div>
                                 </div>

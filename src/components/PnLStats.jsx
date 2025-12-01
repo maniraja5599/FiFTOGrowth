@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatCurrency } from '../utils/formatters';
 import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
 import TrendingDown from 'lucide-react/dist/esm/icons/trending-down';
 import Activity from 'lucide-react/dist/esm/icons/activity';
@@ -75,14 +76,8 @@ const PnLStats = ({ data }) => {
     const netPnL = data.reduce((acc, curr) => acc + curr.dailyPnL, 0);
     const totalROI = ((netPnL / 10000000) * 100).toFixed(2);
 
-    // Helper to format currency in Lakhs
-    const formatCurrency = (value) => {
-        const absValue = Math.abs(value);
-        if (absValue >= 100000) {
-            return `₹${(value / 100000).toFixed(2)}L`;
-        }
-        return `₹${value.toLocaleString()}`;
-    };
+    // Helper to format currency in Lakhs - REMOVED in favor of global formatter
+    // const formatCurrency = (value) => { ... }
 
     const startDate = data[0].date;
     const endDate = data[data.length - 1].date;

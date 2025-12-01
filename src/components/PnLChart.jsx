@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { formatCurrency } from '../utils/formatters';
 import { BarChart, Bar, LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, ReferenceLine, Brush } from 'recharts';
 import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
 import ExternalLink from 'lucide-react/dist/esm/icons/external-link';
@@ -26,7 +27,7 @@ const CustomTooltip = ({ active, payload, label, viewMode, chartType }) => {
                         {isCumulative ? 'Cumulative P&L:' : viewMode === 'day' ? 'Daily P&L:' : viewMode === 'month' ? 'Monthly P&L:' : 'Quarterly P&L:'}
                     </span>
                     <span className={`font-mono font-bold text-sm ${value >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {value >= 0 ? '+' : ''}₹{value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {value >= 0 ? '+' : ''}{formatCurrency(value).replace('₹', '₹')}
                     </span>
                 </div>
             </div>
@@ -250,7 +251,7 @@ const PnLChart = () => {
                                                 tick={{ fill: '#888', fontSize: 10 }}
                                                 axisLine={false}
                                                 tickLine={false}
-                                                tickFormatter={(value) => `₹${(value / 100000).toFixed(2)}L`}
+                                                tickFormatter={formatCurrency}
                                             />
                                             <Tooltip content={<CustomTooltip viewMode={viewMode} chartType={chartType} />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }} />
                                             <ReferenceLine y={0} stroke="#666" />
@@ -280,7 +281,7 @@ const PnLChart = () => {
                                                 tick={{ fill: '#888', fontSize: 10 }}
                                                 axisLine={false}
                                                 tickLine={false}
-                                                tickFormatter={(value) => `₹${(value / 100000).toFixed(2)}L`}
+                                                tickFormatter={formatCurrency}
                                             />
                                             <Tooltip content={<CustomTooltip viewMode={viewMode} chartType={chartType} />} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
                                             <ReferenceLine y={0} stroke="#666" />
@@ -307,7 +308,7 @@ const PnLChart = () => {
                                                 tick={{ fill: '#888', fontSize: 10 }}
                                                 axisLine={false}
                                                 tickLine={false}
-                                                tickFormatter={(value) => `₹${(value / 100000).toFixed(2)}L`}
+                                                tickFormatter={formatCurrency}
                                             />
                                             <Tooltip content={<CustomTooltip viewMode={viewMode} chartType={chartType} />} cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }} />
                                             <ReferenceLine y={0} stroke="#666" />

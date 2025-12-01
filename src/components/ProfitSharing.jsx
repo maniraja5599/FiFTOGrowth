@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatCurrency } from '../utils/formatters';
 import CheckCircle from 'lucide-react/dist/esm/icons/check-circle';
 import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import Wallet from 'lucide-react/dist/esm/icons/wallet';
@@ -48,7 +49,7 @@ const ProfitSharing = () => {
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                         </a>
                                     </div>
-                                    <div className="text-premium-gold font-mono font-bold text-xl">₹5,000 <span className="text-xs text-gray-500 font-normal">/ month</span></div>
+                                    <div className="text-premium-gold font-mono font-bold text-xl">{formatCurrency(5000)} <span className="text-xs text-gray-500 font-normal">/ month</span></div>
                                 </div>
                             </div>
 
@@ -59,7 +60,7 @@ const ProfitSharing = () => {
                                 <div>
                                     <h4 className="text-lg font-semibold text-white">Trading Platform</h4>
 
-                                    <div className="text-premium-gold font-mono font-bold text-xl">₹5,000 <span className="text-xs text-gray-500 font-normal">/ month</span></div>
+                                    <div className="text-premium-gold font-mono font-bold text-xl">{formatCurrency(5000)} <span className="text-xs text-gray-500 font-normal">/ month</span></div>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +112,7 @@ const ProfitSharing = () => {
                             </h4>
                             <ul className="text-sm text-gray-400 space-y-1 list-disc list-inside">
                                 <li>Profit sharing is calculated on <strong>Net P&L</strong>.</li>
-                                <li>Brokerage is capped at maximum <strong>₹5 per order</strong>.</li>
+                                <li>Brokerage is capped at maximum <strong>{formatCurrency(5)} per order</strong>.</li>
                                 <li>Profit sharing amount is payable on or before the <strong>5th of every month</strong>.</li>
                             </ul>
                         </div>

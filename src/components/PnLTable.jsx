@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatCurrency } from '../utils/formatters';
 import { pnlData } from '../utils/pnlData';
 import ArrowUpRight from 'lucide-react/dist/esm/icons/arrow-up-right';
 import ArrowDownRight from 'lucide-react/dist/esm/icons/arrow-down-right';
@@ -91,7 +92,7 @@ const PnLTable = () => {
                                         <td className={`px-4 py-2.5 whitespace-nowrap text-xs font-bold text-right font-mono ${day.dailyPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                                             <div className="flex items-center justify-end gap-1.5">
                                                 {day.dailyPnL >= 0 ? <ArrowUpRight className="w-3.5 h-3.5 opacity-70" /> : <ArrowDownRight className="w-3.5 h-3.5 opacity-70" />}
-                                                {day.dailyPnL >= 0 ? '+' : ''}₹{day.dailyPnL.toLocaleString()}
+                                                {day.dailyPnL >= 0 ? '+' : ''}{formatCurrency(day.dailyPnL).replace('₹', '₹')}
                                             </div>
                                         </td>
                                         <td className={`px-4 py-2.5 whitespace-nowrap text-xs text-right font-mono ${Number(day.roi) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -101,7 +102,7 @@ const PnLTable = () => {
                                             {day.cumulativeRoi}%
                                         </td>
                                         <td className={`px-4 py-2.5 whitespace-nowrap text-xs font-bold text-right font-mono ${day.cumulativePnL >= 0 ? 'text-premium-gold' : 'text-red-400'}`}>
-                                            {day.cumulativePnL >= 0 ? '+' : ''}₹{day.cumulativePnL.toLocaleString()}
+                                            {day.cumulativePnL >= 0 ? '+' : ''}{formatCurrency(day.cumulativePnL).replace('₹', '₹')}
                                         </td>
                                     </tr>
                                 ))}
