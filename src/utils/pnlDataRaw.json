@@ -386,11 +386,27 @@
   "equityPnl": [],
   "commodityPnl": [],
   "currencyPnl": [],
-  "clientId": "FZ07651",
+  "clientId": "RlowNzY1MQ==",
   "capClientName": "SUNKULA PUSHPAVATHI ",
   "clientName": "SUNKULA PUSHPAVATHI ",
   "firstLetter": "S",
   "values": [
+    {
+      "date": "2025-12-02",
+      "value": 341863.2501,
+      "dayFnoValue": 341863.2501,
+      "dayEquityValue": 0,
+      "dayCommodityValue": 0,
+      "dayCurrncyValue": 0
+    },
+    {
+      "date": "2025-12-01",
+      "value": 38025.2375,
+      "dayFnoValue": 38025.2375,
+      "dayEquityValue": 0,
+      "dayCommodityValue": 0,
+      "dayCurrncyValue": 0
+    },
     {
       "date": "2025-11-28",
       "value": -27540.44,
@@ -2170,7 +2186,7 @@
   ],
   "dialog": false,
   "loading": false,
-  "id": "PO0e9bb3329bca40ad8b3edd96638994cc",
+  "id": "PO35ccca2cb0fa429ebe68669b7194c697",
   "togleOption": false,
   "showChart": false,
   "FileNFound": "detailsPage",

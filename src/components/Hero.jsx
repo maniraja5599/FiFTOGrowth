@@ -138,7 +138,7 @@ const Hero = () => {
                             </div>
                         </a>
                         <button
-                            onClick={() => window.open('https://verified.flattrade.in/pnl/PO0e9bb3329bca40ad8b3edd96638994cc', '_blank')}
+                            onClick={() => window.open('https://verified.flattrade.in/pnl/PO35ccca2cb0fa429ebe68669b7194c697', '_blank')}
                             className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white font-semibold text-lg rounded-xl flex items-center gap-3 transition-all hover:border-white/20 group"
                         >
                             View Verified P&L
