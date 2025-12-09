@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import Instagram from 'lucide-react/dist/esm/icons/instagram';
 
 
 
@@ -138,7 +139,7 @@ const Hero = () => {
                             </div>
                         </a>
                         <button
-                            onClick={() => window.open('https://verified.flattrade.in/pnl/PO35ccca2cb0fa429ebe68669b7194c697', '_blank')}
+                            onClick={() => window.open('https://wall.flattrade.in/pnl/PO0907280142c94f959156794ccda62c13', '_blank')}
                             className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white font-semibold text-lg rounded-xl flex items-center gap-3 transition-all hover:border-white/20 group"
                         >
                             View Verified P&L
@@ -147,6 +148,26 @@ const Hero = () => {
                             </div>
                         </button>
                     </div>
+
+                    {/* Owner Social Link */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8, duration: 0.6 }}
+                        className="mt-8 flex justify-center"
+                    >
+                        <a
+                            href="https://www.instagram.com/maniraja__/?hl=en"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm text-gray-400 hover:text-pink-400 transition-colors group"
+                        >
+                            <div className="p-1.5 rounded-full bg-white/5 group-hover:bg-pink-500/10 transition-colors">
+                                <Instagram className="w-4 h-4" />
+                            </div>
+                            <span>Connect with the Founder</span>
+                        </a>
+                    </motion.div>
 
 
                 </motion.div>
