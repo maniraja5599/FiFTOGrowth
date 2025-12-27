@@ -1,4 +1,5 @@
 import React from 'react';
+import { VERIFIED_PNL_URL } from '../config';
 import Mail from 'lucide-react/dist/esm/icons/mail';
 import Phone from 'lucide-react/dist/esm/icons/phone';
 import MapPin from 'lucide-react/dist/esm/icons/map-pin';
@@ -92,7 +93,7 @@ const Footer = () => {
                             <ul className="space-y-4 text-base text-gray-400">
                                 <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Home</a></li>
                                 <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Roadmap</a></li>
-                                <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Verified P&L</a></li>
+                                <li><a href={VERIFIED_PNL_URL} target="_blank" rel="noopener noreferrer" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Verified P&L</a></li>
                                 <li><a href="#" className="hover:text-premium-gold transition-colors duration-200 flex items-center gap-2 group"><span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-premium-gold transition-colors"></span>Strategies</a></li>
                             </ul>
                         </div>

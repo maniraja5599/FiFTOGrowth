@@ -4,6 +4,7 @@ import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
 import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
 import Instagram from 'lucide-react/dist/esm/icons/instagram';
+import { VERIFIED_PNL_URL } from '../config';
 
 
 
@@ -139,7 +140,7 @@ const Hero = () => {
                             </div>
                         </a>
                         <button
-                            onClick={() => window.open('https://wall.flattrade.in/pnl/PO0907280142c94f959156794ccda62c13', '_blank')}
+                            onClick={() => window.open(VERIFIED_PNL_URL, '_blank')}
                             className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white font-semibold text-lg rounded-xl flex items-center gap-3 transition-all hover:border-white/20 group"
                         >
                             View Verified P&L
