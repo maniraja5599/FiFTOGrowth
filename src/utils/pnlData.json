@@ -1926,5 +1926,29 @@
     "trades": 0,
     "roi": "0.22",
     "cumulativePnL": 6540208.706099997
+  },
+  {
+    "date": "Dec 29, 2025",
+    "rawDate": "2025-12-29",
+    "dailyPnL": 79130.4988,
+    "trades": 0,
+    "roi": "0.79",
+    "cumulativePnL": 6619339.204899997
+  },
+  {
+    "date": "Dec 30, 2025",
+    "rawDate": "2025-12-30",
+    "dailyPnL": 51653.7848,
+    "trades": 0,
+    "roi": "0.52",
+    "cumulativePnL": 6670992.989699997
+  },
+  {
+    "date": "Dec 31, 2025",
+    "rawDate": "2025-12-31",
+    "dailyPnL": -15252.25,
+    "trades": 0,
+    "roi": "-0.15",
+    "cumulativePnL": 6655740.739699997
   }
 ]

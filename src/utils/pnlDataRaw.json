@@ -18,9 +18,7 @@
   "valueholderEquity": "pt-6",
   "valueholderCurrency": "pt-6",
   "valueholderCommodity": "pt-6 ",
-  "currentStreakSeries": [
-    6.666666666666667
-  ],
+  "currentStreakSeries": [],
   "longestStreakSeries": [
     36.666666666666664
   ],
@@ -112,9 +110,9 @@
   "rowTo": 20,
   "search": "",
   "page": 1,
-  "pageCount": 211,
+  "pageCount": 214,
   "itemsPerPage": 20,
-  "overAllRecCount": 4214,
+  "overAllRecCount": 4270,
   "segmentRecLoader": false,
   "headers": [
     {
@@ -393,6 +391,30 @@
   "clientName": "SUNKULA PUSHPAVATHI ",
   "firstLetter": "S",
   "values": [
+    {
+      "date": "2025-12-31",
+      "value": -15252.25,
+      "dayFnoValue": -15252.25,
+      "dayEquityValue": 0,
+      "dayCommodityValue": 0,
+      "dayCurrncyValue": 0
+    },
+    {
+      "date": "2025-12-30",
+      "value": 51653.7848,
+      "dayFnoValue": 51653.7848,
+      "dayEquityValue": 0,
+      "dayCommodityValue": 0,
+      "dayCurrncyValue": 0
+    },
+    {
+      "date": "2025-12-29",
+      "value": 79130.4988,
+      "dayFnoValue": 79130.4988,
+      "dayEquityValue": 0,
+      "dayCommodityValue": 0,
+      "dayCurrncyValue": 0
+    },
     {
       "date": "2025-12-26",
       "value": 21601.75,
@@ -2324,7 +2346,7 @@
   ],
   "dialog": false,
   "loading": false,
-  "id": "04171ae307334a59a920969382d77a26",
+  "id": "PO549c8896286f484db6b71f387d434d9f",
   "togleOption": false,
   "showChart": false,
   "FileNFound": "detailsPage",
@@ -2338,16 +2360,40 @@
   "tableShow": true,
   "clientDetails": {
     "clientModifiedName": "SUNKULA PUSHPAVATHI ",
-    "pnlAmount": 6540208.706100007,
-    "brokerageAmt": 1333505.6,
+    "pnlAmount": 6655740.739700007,
+    "brokerageAmt": 1341885.4,
     "equity": -339525.2999000002,
-    "fno": 4720576.838000005,
+    "fno": 4836108.871600006,
     "currency": 0,
     "commodity": 2159157.1680000015,
-    "fromDate": "Dec 27, 2024",
-    "toDate": "Dec 27, 2025",
+    "fromDate": "Jan 01, 2025",
+    "toDate": "Dec 31, 2025",
     "pnlTable": "Y",
     "charts": [
+      {
+        "date": "2025-12-31",
+        "value": -15252.25,
+        "dayFnoValue": -15252.25,
+        "dayEquityValue": 0,
+        "dayCommodityValue": 0,
+        "dayCurrncyValue": 0
+      },
+      {
+        "date": "2025-12-30",
+        "value": 51653.7848,
+        "dayFnoValue": 51653.7848,
+        "dayEquityValue": 0,
+        "dayCommodityValue": 0,
+        "dayCurrncyValue": 0
+      },
+      {
+        "date": "2025-12-29",
+        "value": 79130.4988,
+        "dayFnoValue": 79130.4988,
+        "dayEquityValue": 0,
+        "dayCommodityValue": 0,
+        "dayCurrncyValue": 0
+      },
       {
         "date": "2025-12-26",
         "value": 21601.75,
@@ -4277,8 +4323,8 @@
         "dayCurrncyValue": 0
       }
     ],
-    "currentStreak": 2,
-    "currentStreakDate": "Dec 24, 2025",
+    "currentStreak": 0,
+    "currentStreakDate": "",
     "longestStreak": 11,
     "longestStreakFromDate": "Aug 14, 2025",
     "longestStreakToDate": "Aug 29, 2025",
@@ -4294,8 +4340,8 @@
   "StockReq": {
     "pageNo": 1,
     "clientId": "RlowNzY1MQ==",
-    "fromDate": "Dec 27, 2024",
-    "toDate": "Dec 27, 2025",
+    "fromDate": "Jan 01, 2025",
+    "toDate": "Dec 31, 2025",
     "segment": "FNO"
   },
   "stockLoader": false,
