@@ -7,16 +7,35 @@ export default {
   theme: {
     extend: {
       colors: {
+        fifto: {
+          dark: '#05070c',
+          card: '#0a0e17',
+          border: 'rgba(255, 255, 255, 0.08)',
+          green: {
+            DEFAULT: '#044b1c',
+            light: '#10b981',
+            glow: 'rgba(16, 185, 129, 0.25)',
+          },
+          crimson: {
+            DEFAULT: '#910608',
+            light: '#f43f5e',
+            glow: 'rgba(244, 63, 94, 0.25)',
+          },
+          gold: '#d4af37',
+        },
         premium: {
           gold: '#D4AF37',
           'gold-hover': '#C5A028',
-          dark: '#0A0F1C',
-          card: '#111827',
-          accent: '#1E293B',
+          dark: '#05070C',
+          card: '#0A0F1C',
+          accent: '#131C2E',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Outfit', 'Inter', 'sans-serif'],
+        display: ['Anton', 'sans-serif'],
+        outfit: ['Outfit', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       keyframes: {
         meteor: {
@@ -27,53 +46,19 @@ export default {
             opacity: "0",
           },
         },
-        'beam-vertical': {
-          '0%': { top: '-100%', opacity: '0' },
-          '10%': { opacity: '1' },
-          '90%': { opacity: '1' },
-          '100%': { top: '100%', opacity: '0' },
+        pulseGlow: {
+          "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+          "50%": { opacity: "0.8", transform: "scale(1.05)" },
         },
-        'beam-horizontal': {
-          '0%': { left: '-100%', opacity: '0' },
-          '10%': { opacity: '1' },
-          '90%': { opacity: '1' },
-          '100%': { left: '100%', opacity: '0' },
-        },
-        'gradient-x': {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center'
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center'
-          },
-        },
-        shimmer: {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' },
-        },
-        moveRight: {
-          '0%': { left: '0%', opacity: '0' },
-          '10%': { opacity: '1' },
-          '90%': { opacity: '1' },
-          '100%': { left: '100%', opacity: '0' },
-        },
-        moveLeft: {
-          '0%': { right: '0%', opacity: '0' },
-          '10%': { opacity: '1' },
-          '90%': { opacity: '1' },
-          '100%': { right: '100%', opacity: '0' },
+        scanline: {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(100%)" },
         }
       },
       animation: {
-        meteor: "meteor 5s linear infinite",
-        'beam-vertical': 'beam-vertical 4s infinite linear',
-        'beam-horizontal': 'beam-horizontal 5s infinite linear',
-        'gradient-x': 'gradient-x 3s ease infinite',
-        shimmer: 'shimmer 2s infinite linear',
-        moveRight: 'moveRight 3s infinite linear',
-        moveLeft: 'moveLeft 3s infinite linear',
+        meteor: "meteor 6s linear infinite",
+        pulseGlow: "pulseGlow 4s ease-in-out infinite",
+        scanline: "scanline 8s linear infinite",
       }
     },
   },

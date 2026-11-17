@@ -1,199 +1,137 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
-import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
-import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
-import Instagram from 'lucide-react/dist/esm/icons/instagram';
-import { VERIFIED_PNL_URL } from '../config';
-
-
+import React, { useState } from 'react';
+import { 
+  Terminal, 
+  ArrowRight, 
+  Zap, 
+  ShieldCheck, 
+  CheckCircle2, 
+  Copy, 
+  Check, 
+  Code2, 
+  Cpu, 
+  Sparkles,
+  Smartphone,
+  Gauge,
+  ArrowUpRight
+} from 'lucide-react';
 
 const Hero = () => {
-    return (
-        <div id="philosophy" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-premium-dark pt-20">
-            {/* Background Effects Removed - Moved to Global MeteorBackground */}
+  const [copied, setCopied] = useState(false);
 
-            {/* Dots moved inside content for better animation context */}
+  const copyCommand = () => {
+    navigator.clipboard.writeText('npx contextprune');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-            <div className="container mx-auto px-6 relative z-10 text-center">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
+  const metrics = [
+    { label: '0→1 MVP Launch', value: '7–14 Days', sub: 'Vibe Code → Production' },
+    { label: 'Quant Execution Latency', value: '< 10ms', sub: 'Binary Protobuf Stream' },
+    { label: 'AI Token Reduction', value: '82.6%', sub: 'Via ContextPrune MCP' },
+    { label: 'Native Android Sync', value: '100% Offline', sub: 'Kotlin · Compose · Room' },
+    { label: 'Cloud API Latency', value: '< 100ms', sub: 'PgBouncer + Redis L2' },
+  ];
 
+  return (
+    <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-grid-pattern">
+      {/* Background Radial Glows */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-gradient-to-tr from-emerald-600/15 via-teal-500/10 to-rose-600/15 blur-[120px] pointer-events-none rounded-full" />
+      <div className="absolute top-10 right-10 w-72 h-72 bg-emerald-500/10 blur-[90px] pointer-events-none rounded-full" />
+      <div className="absolute bottom-10 left-10 w-72 h-72 bg-rose-500/10 blur-[90px] pointer-events-none rounded-full" />
 
-                    <motion.h1
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight leading-tight"
-                        style={{ fontFamily: '"Outfit", sans-serif' }}
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            hidden: { opacity: 0 },
-                            visible: {
-                                opacity: 1,
-                                transition: {
-                                    staggerChildren: 0.1,
-                                    delayChildren: 0.2
-                                }
-                            }
-                        }}
-                    >
-                        {["Wealth", "Management"].map((word, i) => (
-                            <motion.span
-                                key={i}
-                                className="inline-block mr-3 md:mr-4 text-white drop-shadow-lg"
-                                variants={{
-                                    hidden: { opacity: 0, y: 20 },
-                                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-                                }}
-                            >
-                                {word}
-                            </motion.span>
-                        ))}
-                        <br className="hidden md:block" />
-                        <span className="relative inline-block">
-                            {/* Gradient Stroke Layer */}
-                            <span className="absolute inset-0 z-0 select-none"
-                                aria-hidden="true"
-                                style={{
-                                    backgroundImage: 'linear-gradient(120deg, #FFD700 0%, #FDB931 25%, #FFFF00 50%, #FDB931 75%, #FFD700 100%)',
-                                    backgroundSize: '200% auto',
-                                    animation: 'shine 3s linear infinite',
-                                    WebkitBackgroundClip: 'text',
-                                    backgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                    WebkitTextStroke: '6px transparent',
-                                    filter: 'drop-shadow(0 0 2px rgba(255, 215, 0, 0.5))',
-                                }}
-                            >
-                                {["Redefined", "for", "HNIs"].map((word, i) => (
-                                    <span key={i} className="inline-block mr-3 md:mr-4">
-                                        {word}
-                                    </span>
-                                ))}
-                            </span>
-
-                            {/* Dark Fill Layer */}
-                            <span className="relative z-10 text-premium-dark"
-                                style={{
-                                    WebkitTextStroke: '1px #FFD700',
-                                }}
-                            >
-                                {["Redefined", "for", "HNIs"].map((word, i) => (
-                                    <span key={i} className="inline-block mr-3 md:mr-4">
-                                        {word}
-                                    </span>
-                                ))}
-                            </span>
-
-                            <style jsx>{`
-                                @keyframes shine {
-                                    0% { background-position: 0% center; }
-                                    100% { background-position: 200% center; }
-                                }
-                            `}</style>
-                        </span>
-                    </motion.h1>
-
-                    {/* User Requested Background Dots - Optimized */}
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        {[...Array(5)].map((_, i) => {
-                            // Assign different animation speeds based on index
-                            const animClass = i % 3 === 0 ? 'animate-float-slow' : i % 3 === 1 ? 'animate-float-medium' : 'animate-float-fast';
-                            return (
-                                <motion.div
-                                    key={i}
-                                    className={`absolute mix-blend-screen filter ${i % 2 === 0 ? 'bg-green-500/20' : 'bg-red-500/20'} ${animClass}`}
-                                    style={{
-                                        width: Math.random() * 150 + 20 + 'px',
-                                        height: Math.random() * 150 + 20 + 'px',
-                                        top: Math.random() * 100 + '%',
-                                        left: Math.random() * 100 + '%',
-                                        filter: `blur(${Math.random() * 10 + 10}px)`,
-                                        borderRadius: '50%',
-                                    }}
-                                    animate={{
-                                        opacity: [0.2, 0.5, 0.2],
-                                    }}
-                                    transition={{
-                                        duration: Math.random() * 3 + 2,
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                    }}
-                                />
-                            );
-                        })}
-                    </div>
-
-                    <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed" style={{ fontFamily: '"Outfit", sans-serif' }}>
-                        Exclusive portfolio management for capital above <span className="text-white font-medium">₹1 Cr</span>.
-                        <br className="hidden md:block" />
-                        Consistent <span className="text-white font-medium">5-8%</span> monthly profits with a proven track record and verified P&L.
-                    </p>
-
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                        <a href="#contact" className="px-8 py-4 bg-gradient-to-r from-premium-gold to-yellow-600 hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] text-black font-bold text-lg rounded-xl flex items-center gap-3 transition-all transform hover:scale-105 group">
-                            Start Your Journey
-                            <div className="p-1 rounded-full bg-black/10 group-hover:bg-black/20 transition-colors">
-                                <ArrowRight className="w-5 h-5" />
-                            </div>
-                        </a>
-                        <button
-                            onClick={() => window.open(VERIFIED_PNL_URL, '_blank')}
-                            className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white font-semibold text-lg rounded-xl flex items-center gap-3 transition-all hover:border-white/20 group"
-                        >
-                            View Verified P&L
-                            <div className="p-1 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
-                                <TrendingUp className="w-5 h-5 text-blue-400" />
-                            </div>
-                        </button>
-                    </div>
-
-                    {/* Owner Social Link */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8, duration: 0.6 }}
-                        className="mt-8 flex justify-center"
-                    >
-                        <a
-                            href="https://www.instagram.com/maniraja__/?hl=en"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm text-gray-400 hover:text-pink-400 transition-colors group"
-                        >
-                            <div className="p-1.5 rounded-full bg-white/5 group-hover:bg-pink-500/10 transition-colors">
-                                <Instagram className="w-4 h-4" />
-                            </div>
-                            <span>Connect with the Founder</span>
-                        </a>
-                    </motion.div>
-
-
-                </motion.div>
-
-                {/* Stats Strip */}
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.8 }}
-                    className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto"
-                >
-                    {[
-                        { label: "Minimum Capital", value: "₹1 Cr+" },
-                        { label: "Profit Sharing", value: "Performance Based" },
-                        { label: "Transparency", value: "100% Live Tracking" },
-                    ].map((stat, index) => (
-                        <div key={index} className="glass-panel p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-colors group">
-                            <div className="text-2xl font-bold text-white mb-1 group-hover:text-premium-gold transition-colors" style={{ fontFamily: '"Outfit", sans-serif' }}>{stat.value}</div>
-                            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider">{stat.label}</div>
-                        </div>
-                    ))}
-                </motion.div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Top Operational Pill */}
+        <div className="flex justify-center mb-6">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-md shadow-inner text-xs font-mono text-slate-300">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="font-semibold text-white tracking-wide uppercase">FiFTO Systems Lab</span>
+            <span className="text-slate-500">|</span>
+            <span className="text-slate-400">Zero-AI Fluff · Pure Deterministic Systems</span>
+          </div>
         </div>
-    );
+
+        {/* Main Punchy Typography */}
+        <div className="text-center max-w-4xl mx-auto space-y-6">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08]">
+            We Don't Just Write Code. <br className="hidden sm:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-200 to-rose-400">
+              We Engineer Scalable, High-Dwell Production Systems.
+            </span>
+          </h1>
+
+          <p className="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
+            Bridging the fatal gap between vibe-coded prototypes (Cursor, Lovable, v0) and deterministic production reality. Delivering full-stack web platforms, native Android apps, sub-10ms quant pipelines, and autonomous AI infrastructure in 7–14 days.
+          </p>
+
+          {/* Action CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <a
+              href="https://wa.me/918300030123?text=Hi%20Mani%2C%20I%20have%20an%20MVP%2FSystem%20to%20build%20with%20FiFTO.%20Let%27s%20connect!"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-base text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 shadow-xl shadow-emerald-950/80 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3 border border-emerald-400/40"
+            >
+              <Zap className="w-5 h-5 text-emerald-200" />
+              <span>Start Your Build in 7–14 Days</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+
+            <a
+              href="#auditor"
+              className="w-full sm:w-auto px-7 py-4 rounded-xl font-bold text-base text-slate-200 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-emerald-500/40 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md"
+            >
+              <Gauge className="w-5 h-5 text-emerald-400" />
+              <span>Audit Your Prototype Stack</span>
+            </a>
+          </div>
+
+          {/* Interactive Open-Source MCP Quick Tag */}
+          <div className="pt-2 flex items-center justify-center">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-black/60 border border-white/10 text-xs font-mono text-slate-300 shadow-lg">
+              <span className="text-emerald-400 font-semibold">Open-Source Engine:</span>
+              <span className="text-slate-100">$ npx contextprune</span>
+              <button
+                onClick={copyCommand}
+                className="p-1.5 rounded-lg bg-white/[0.08] hover:bg-white/[0.15] text-slate-300 hover:text-white transition-colors"
+                title="Copy terminal command"
+              >
+                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              </button>
+              <span className="text-[11px] text-slate-400 border-l border-white/10 pl-3 hidden sm:inline">
+                Cuts AST LLM context bills by 82.6%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Hard Metrics Strip */}
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-3 lg:gap-4">
+          {metrics.map((m, idx) => (
+            <div 
+              key={m.label} 
+              className={`fifto-glass p-4 sm:p-5 rounded-2xl flex flex-col justify-between relative overflow-hidden group ${idx === 4 ? 'col-span-2 md:col-span-1' : ''}`}
+            >
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-emerald-500/40 via-teal-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span className="text-xs uppercase font-mono tracking-wider text-slate-400 mb-1">
+                {m.label}
+              </span>
+              <div className="text-2xl sm:text-3xl font-black font-display tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                {m.value}
+              </div>
+              <span className="text-xs text-slate-400 mt-2 font-medium">
+                {m.sub}
+              </span>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
 };
 
 export default Hero;
