@@ -1,149 +1,234 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ArrowUpRight, 
-  MessageSquare, 
-  Menu, 
-  X, 
-  Activity,
-  Layers,
-  Sparkles,
-  Terminal,
-  ShieldCheck
-} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Menu from 'lucide-react/dist/esm/icons/menu';
+import X from 'lucide-react/dist/esm/icons/x';
+import Brain from 'lucide-react/dist/esm/icons/brain';
+import TrendingUp from 'lucide-react/dist/esm/icons/trending-up';
+import Activity from 'lucide-react/dist/esm/icons/activity';
+import Percent from 'lucide-react/dist/esm/icons/percent';
+import FileText from 'lucide-react/dist/esm/icons/file-text';
+import Lock from 'lucide-react/dist/esm/icons/lock';
+import MessageCircle from 'lucide-react/dist/esm/icons/message-circle';
+import { VERIFIED_PNL_URL } from '../config';
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+    const navigate = useNavigate();
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const handleLoginClick = () => {
+        setIsMobileMenuOpen(false);
+        navigate('/login');
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  const navLinks = [
-    { name: 'Architecture Bento', href: '#bento' },
-    { name: 'Pillars', href: '#pillars' },
-    { name: '3D Auditor', href: '#auditor' },
-    { name: 'Proven Systems', href: '#systems' },
-    { name: 'Founder Manifesto', href: '#manifesto' },
-  ];
+    return (
+        <header className="relative z-50">
+            <nav className={`fixed transition-all duration-300 ${isScrolled
+                ? 'top-2 sm:top-4 left-1/2 -translate-x-1/2 w-[94%] sm:w-[90%] max-w-6xl rounded-2xl bg-premium-dark/90 backdrop-blur-xl border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] py-2 sm:py-3 px-4 sm:px-6'
+                : 'top-0 left-0 w-full bg-gradient-to-b from-black/80 via-black/40 to-transparent backdrop-blur-[2px] py-4 sm:py-6 px-4 sm:px-8'
+                }`}>
+                <div className="max-w-6xl mx-auto flex items-center justify-between">
+                    {/* Brand Logo */}
+                    <a href="/" className="flex flex-col items-start sm:items-center cursor-pointer group select-none">
+                        {/* Main Logo Text */}
+                        <div className="relative font-black text-3xl sm:text-4xl leading-none flex items-center" style={{
+                            fontFamily: '"Anton", sans-serif',
+                            letterSpacing: '0.08em'
+                        }}>
+                            <span style={{
+                                background: 'linear-gradient(to bottom, #15803d, #14532d)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent'
+                            }}>F</span>
+                            <span className="relative inline-block">
+                                <span style={{
+                                    background: 'linear-gradient(to bottom, #15803d, #14532d)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent'
+                                }}>i</span>
+                                {/* Red Dot */}
+                                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-600 rounded-full shadow-sm border border-red-400"></span>
+                            </span>
+                            <span style={{
+                                background: 'linear-gradient(to bottom, #15803d, #14532d)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent'
+                            }}>F</span>
+                            <span style={{
+                                background: 'linear-gradient(to bottom, #15803d, #14532d)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent'
+                            }}>T</span>
+                            <span style={{
+                                background: 'linear-gradient(to bottom, #ef4444, #b91c1c)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent'
+                            }}>O</span>
+                        </div>
 
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-4 transition-all duration-300">
-      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
-        scrolled 
-          ? 'bg-[#05080c]/85 backdrop-blur-2xl border-t border-l border-white/15 border-b border-black/80 shadow-[0_15px_35px_rgba(0,0,0,0.8)] py-2.5 px-5' 
-          : 'bg-black/30 backdrop-blur-md border border-white/10 py-3.5 px-6'
-      }`}>
-        <div className="flex items-center justify-between">
-          
-          {/* Brand Identity */}
-          <a href="#" className="flex items-center gap-3 group">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 via-[#030508] to-rose-500/20 p-0.5 border border-white/20 shadow-md group-hover:border-emerald-400 transition-colors overflow-hidden">
-                <img 
-                  src="/logo.png" 
-                  alt="FiFTO Logo" 
-                  className="w-full h-full object-cover rounded-[10px]"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#030508] animate-pulse" />
-            </div>
+                        {/* Animated Separator Line */}
+                        <div className="w-full flex items-center justify-center gap-1 my-0.5 overflow-hidden max-w-[140px] sm:max-w-[180px]">
+                            {/* Left Green Line */}
+                            <div className="relative h-[1px] w-full bg-gradient-to-r from-transparent via-green-600 to-green-500">
+                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-green-500 rounded-full shadow-[0_0_5px_1px_rgba(34,197,94,0.8)] animate-pulse"></div>
+                                <div className="absolute top-1/2 -translate-y-1/2 w-0.5 h-0.5 bg-white rounded-full animate-moveRight"></div>
+                            </div>
 
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="font-display tracking-wider text-2xl text-white font-black group-hover:text-emerald-400 transition-colors">
-                  FIFTO
-                </span>
-                <span className="text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
-                  Studio
-                </span>
-              </div>
-              <span className="text-[10px] font-outfit text-slate-400 font-medium tracking-tight">
-                <span className="text-emerald-400 font-semibold">Your Trusted</span> <span className="text-rose-400 font-semibold">Growth Partner</span>
-              </span>
-            </div>
-          </a>
+                            {/* Right Red Line */}
+                            <div className="relative h-[1px] w-full bg-gradient-to-l from-transparent via-red-600 to-red-500">
+                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1 bg-red-500 rounded-full shadow-[0_0_5px_1px_rgba(239,68,68,0.8)] animate-pulse"></div>
+                                <div className="absolute top-1/2 -translate-y-1/2 w-0.5 h-0.5 bg-white rounded-full animate-moveLeft"></div>
+                            </div>
+                        </div>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.02] border border-white/[0.06] rounded-full px-4 py-1.5 shadow-inner">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="px-3.5 py-1 text-xs font-medium text-slate-300 hover:text-white rounded-full hover:bg-white/[0.06] transition-all"
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
+                        {/* Tagline */}
+                        <div className="text-[8px] sm:text-[10px] md:text-xs font-semibold tracking-wide uppercase whitespace-nowrap">
+                            <span className="text-emerald-400">Your trusted partner in </span>
+                            <span className="text-red-400">financial growth</span>
+                        </div>
+                    </a>
 
-          {/* Right Action & WhatsApp Button */}
-          <div className="hidden sm:flex items-center gap-3">
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-white/10 text-[11px] font-mono text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              <span>Namakkal · TN</span>
-            </div>
+                    {/* Desktop Menu */}
+                    <div className="hidden lg:flex items-center gap-3 xl:gap-6">
+                        <a href="#philosophy" className="flex items-center gap-1.5 text-xs xl:text-sm font-medium text-gray-300 hover:text-white transition-colors whitespace-nowrap group">
+                            <Brain className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-premium-gold/70 group-hover:text-premium-gold transition-colors" />
+                            <span>Philosophy</span>
+                        </a>
+                        <a href="#performance" className="flex items-center gap-1.5 text-xs xl:text-sm font-medium text-gray-300 hover:text-white transition-colors whitespace-nowrap group">
+                            <TrendingUp className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-premium-gold/70 group-hover:text-premium-gold transition-colors" />
+                            <span>Performance</span>
+                        </a>
+                        <a href="#equity-curve" className="flex items-center gap-1.5 text-xs xl:text-sm font-medium text-gray-300 hover:text-white transition-colors whitespace-nowrap group">
+                            <Activity className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-premium-gold/70 group-hover:text-premium-gold transition-colors" />
+                            <span>Equity Curve</span>
+                        </a>
+                        <a href="#ledger" className="flex items-center gap-1.5 text-xs xl:text-sm font-medium text-gray-300 hover:text-white transition-colors whitespace-nowrap group">
+                            <FileText className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-premium-gold/70 group-hover:text-premium-gold transition-colors" />
+                            <span>Ledger</span>
+                        </a>
+                        <a href="#profit-sharing" className="flex items-center gap-1.5 text-xs xl:text-sm font-medium text-gray-300 hover:text-white transition-colors whitespace-nowrap group">
+                            <Percent className="w-3.5 h-3.5 xl:w-4 xl:h-4 text-premium-gold/70 group-hover:text-premium-gold transition-colors" />
+                            <span>Pricing</span>
+                        </a>
+                    </div>
 
-            <a
-              href="https://wa.me/918300030123?text=Hi%20Mani%2C%20I%20saw%20the%20FiFTO%20website%20and%20want%20to%20discuss%20an%20engineering%20project."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative group overflow-hidden px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 border-t border-l border-white/30 border-b-2 border-emerald-950 shadow-[0_4px_15px_rgba(16,185,129,0.3)] transition-all flex items-center gap-2"
-            >
-              <MessageSquare className="w-3.5 h-3.5 text-emerald-100" />
-              <span>Talk to Mani</span>
-              <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-          </div>
+                    {/* Right Desktop CTAs */}
+                    <div className="hidden lg:flex items-center gap-2.5">
+                        <a
+                            href={VERIFIED_PNL_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1.5 xl:px-3.5 xl:py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-semibold text-gray-200 hover:text-white transition-all flex items-center gap-1.5 whitespace-nowrap"
+                        >
+                            <TrendingUp className="w-3.5 h-3.5 text-blue-400" />
+                            <span>Verified P&L</span>
+                        </a>
+                        <button
+                            onClick={handleLoginClick}
+                            className="px-3 py-1.5 xl:px-4 xl:py-2 bg-gradient-to-r from-premium-gold to-yellow-600 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] text-black rounded-xl text-xs font-bold transition-all transform hover:scale-105 flex items-center gap-1.5 whitespace-nowrap"
+                        >
+                            <Lock className="w-3.5 h-3.5" />
+                            <span>Client Login</span>
+                        </button>
+                    </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden">
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-xl bg-white/[0.05] border border-white/10 text-slate-300 hover:text-white"
-              aria-label="Toggle Navigation"
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+                    {/* Mobile Menu Button */}
+                    <div className="flex items-center gap-2 lg:hidden">
+                        <button
+                            onClick={handleLoginClick}
+                            className="px-2.5 py-1.5 bg-white/10 border border-white/10 rounded-lg text-white text-[11px] font-semibold"
+                        >
+                            Login
+                        </button>
+                        <button
+                            className="text-white p-2 rounded-lg bg-white/5 border border-white/10 active:scale-95 transition-all"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            aria-label="Toggle Menu"
+                        >
+                            {isMobileMenuOpen ? <X className="w-5 h-5 text-premium-gold" /> : <Menu className="w-5 h-5" />}
+                        </button>
+                    </div>
+                </div>
 
-        </div>
+                {/* Mobile Menu Dropdown */}
+                {isMobileMenuOpen && (
+                    <div className="lg:hidden mt-3 p-4 bg-black/95 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] flex flex-col gap-2 pb-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                        <a
+                            href="#philosophy"
+                            className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-200 hover:bg-white/5 transition-colors text-sm font-medium"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <Brain className="w-4 h-4 text-premium-gold" />
+                            <span>Philosophy</span>
+                        </a>
+                        <a
+                            href="#performance"
+                            className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-200 hover:bg-white/5 transition-colors text-sm font-medium"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <TrendingUp className="w-4 h-4 text-premium-gold" />
+                            <span>Performance Metrics</span>
+                        </a>
+                        <a
+                            href="#equity-curve"
+                            className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-200 hover:bg-white/5 transition-colors text-sm font-medium"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <Activity className="w-4 h-4 text-premium-gold" />
+                            <span>Equity Curve</span>
+                        </a>
+                        <a
+                            href="#ledger"
+                            className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-200 hover:bg-white/5 transition-colors text-sm font-medium"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <FileText className="w-4 h-4 text-premium-gold" />
+                            <span>Daily Ledger</span>
+                        </a>
+                        <a
+                            href="#profit-sharing"
+                            className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-200 hover:bg-white/5 transition-colors text-sm font-medium"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <Percent className="w-4 h-4 text-premium-gold" />
+                            <span>Transparent Pricing</span>
+                        </a>
 
-        {/* Mobile Dropdown */}
-        {mobileOpen && (
-          <div className="lg:hidden mt-3 pt-3 border-t border-white/10 space-y-2 pb-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-white/[0.05] hover:text-emerald-400 transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-            <a
-              href="https://wa.me/918300030123?text=Hi%20Mani%2C%20I%20saw%20the%20FiFTO%20website%20and%20want%20to%20discuss%20an%20engineering%20project."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full mt-2 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-emerald-600 to-teal-600 flex items-center justify-center gap-2"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>Discuss on WhatsApp (+91 83000 30123)</span>
-            </a>
-          </div>
-        )}
-
-      </div>
-    </header>
-  );
+                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
+                            <a
+                                href={VERIFIED_PNL_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full py-2.5 bg-white/5 border border-white/10 rounded-xl text-center text-xs font-semibold text-white flex items-center justify-center gap-1.5"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                <TrendingUp className="w-3.5 h-3.5 text-blue-400" />
+                                <span>Verified P&L</span>
+                            </a>
+                            <a
+                                href="https://wa.me/918300030123?text=Hi%20Mani%20Raja,%20I%20am%20interested%20in%20FiFTO%20HNI%20Portfolio%20Management."
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-green-700 text-white rounded-xl text-center text-xs font-bold flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                <MessageCircle className="w-3.5 h-3.5" />
+                                <span>WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                )}
+            </nav>
+        </header>
+    );
 };
 
 export default Navbar;
