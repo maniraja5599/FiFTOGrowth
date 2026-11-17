@@ -4,81 +4,91 @@
 
 @layer base {
   body {
-    background-color: #05070c;
-    color: #e2e8f0;
+    background-color: #030508;
+    color: #f1f5f9;
     font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 }
 
-/* Luxury Engineering Glass */
-.fifto-glass {
-  background: rgba(13, 18, 30, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+/* Subtle Film Grain Noise (Land-book / Linear / Raycast aesthetic) */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
 }
 
-.fifto-glass-interactive {
-  background: rgba(13, 18, 30, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Awwwards Specular Glass */
+.awwwards-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 3px solid rgba(0, 0, 0, 0.8);
+  box-shadow: 
+    0 20px 50px -10px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.fifto-glass-interactive:hover {
-  border-color: rgba(16, 185, 129, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 30px -10px rgba(16, 185, 129, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+.awwwards-card:hover {
+  border-top-color: rgba(16, 185, 129, 0.5);
+  border-left-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 
+    0 30px 60px -15px rgba(16, 185, 129, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
 }
 
-/* Subtle Engineering Grid Background */
-.bg-grid-pattern {
-  background-size: 40px 40px;
+/* Luminous Glow Borders */
+.border-beam-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.border-beam-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    transparent,
+    rgba(16, 185, 129, 0.3),
+    transparent 30%
+  );
+  animation: radar-sweep 6s linear infinite;
+  pointer-events: none;
+}
+
+/* Subtle Engineering Grid */
+.bg-grid-subtle {
+  background-size: 48px 48px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
 }
 
-.bg-dot-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* Radial Dark Vignette */
+.radial-vignette {
+  background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
 }
 
-/* Brand Dual-Glow */
-.brand-green-text {
-  color: #10b981;
-}
-
-.brand-crimson-text {
-  color: #f43f5e;
-}
-
-/* Glow Elements */
-.glow-green {
-  box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.3);
-}
-
-.glow-crimson {
-  box-shadow: 0 0 40px -10px rgba(244, 63, 94, 0.3);
-}
-
-/* Custom Scrollbar */
+/* Fluid Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #05070c;
+  background: #030508;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
-  border-radius: 4px;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #10b981;
 }

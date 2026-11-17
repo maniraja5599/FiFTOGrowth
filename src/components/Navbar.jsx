@@ -1,52 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Terminal, 
-  Cpu, 
-  Smartphone, 
-  TrendingUp, 
-  ShieldCheck, 
+  ArrowUpRight, 
   MessageSquare, 
-  ArrowUpRight,
-  Menu,
-  X,
+  Menu, 
+  X, 
+  Activity,
   Layers,
-  Sparkles
+  Sparkles,
+  Terminal,
+  ShieldCheck
 } from 'lucide-react';
 
 const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
-    { name: 'Core Pillars', href: '#pillars' },
-    { name: 'Architecture Lab', href: '#architecture' },
-    { name: 'Prototype Auditor', href: '#auditor' },
+    { name: 'Architecture Bento', href: '#bento' },
+    { name: 'Pillars', href: '#pillars' },
+    { name: '3D Auditor', href: '#auditor' },
     { name: 'Proven Systems', href: '#systems' },
-    { name: 'Founder & Ethos', href: '#founder' },
+    { name: 'Founder Manifesto', href: '#manifesto' },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-[#05070c]/85 backdrop-blur-xl border-b border-white/[0.08]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 pt-4 transition-all duration-300">
+      <div className={`max-w-7xl mx-auto rounded-2xl transition-all duration-300 ${
+        scrolled 
+          ? 'bg-[#05080c]/85 backdrop-blur-2xl border-t border-l border-white/15 border-b border-black/80 shadow-[0_15px_35px_rgba(0,0,0,0.8)] py-2.5 px-5' 
+          : 'bg-black/30 backdrop-blur-md border border-white/10 py-3.5 px-6'
+      }`}>
+        <div className="flex items-center justify-between">
           
-          {/* Logo & Brand Tagline */}
-          <a href="#" className="flex items-center gap-3.5 group">
+          {/* Brand Identity */}
+          <a href="#" className="flex items-center gap-3 group">
             <div className="relative">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500/20 via-black to-rose-500/20 p-0.5 border border-white/10 group-hover:border-emerald-500/50 transition-colors shadow-lg shadow-black/50 overflow-hidden">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 via-[#030508] to-rose-500/20 p-0.5 border border-white/20 shadow-md group-hover:border-emerald-400 transition-colors overflow-hidden">
                 <img 
                   src="/logo.png" 
                   alt="FiFTO Logo" 
-                  className="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform"
+                  className="w-full h-full object-cover rounded-[10px]"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling.style.display = 'flex';
                   }}
                 />
-                <div className="hidden w-full h-full bg-emerald-950 items-center justify-center font-display text-white text-lg font-bold">
-                  F
-                </div>
               </div>
-              <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#05070c] animate-pulse" />
+              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#030508] animate-pulse" />
             </div>
 
             <div className="flex flex-col">
@@ -54,43 +61,43 @@ const Navbar = () => {
                 <span className="font-display tracking-wider text-2xl text-white font-black group-hover:text-emerald-400 transition-colors">
                   FIFTO
                 </span>
-                <span className="text-[10px] uppercase font-mono tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">
-                  Systems Studio
+                <span className="text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
+                  Studio
                 </span>
               </div>
-              <span className="text-[11px] font-outfit text-slate-400 font-medium tracking-tight">
-                <span className="text-emerald-400">Your Trusted</span> <span className="text-rose-400">Growth Partner</span>
+              <span className="text-[10px] font-outfit text-slate-400 font-medium tracking-tight">
+                <span className="text-emerald-400 font-semibold">Your Trusted</span> <span className="text-rose-400 font-semibold">Growth Partner</span>
               </span>
             </div>
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Desktop Nav Links */}
+          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.02] border border-white/[0.06] rounded-full px-4 py-1.5 shadow-inner">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-slate-300 hover:text-white transition-colors relative py-1 hover:after:w-full after:w-0 after:h-[2px] after:bg-gradient-to-r after:from-emerald-400 after:to-rose-400 after:absolute after:bottom-0 after:left-0 after:transition-all"
+                className="px-3.5 py-1 text-xs font-medium text-slate-300 hover:text-white rounded-full hover:bg-white/[0.06] transition-all"
               >
                 {link.name}
               </a>
             ))}
-          </div>
+          </nav>
 
-          {/* Right Action & WhatsApp CTA */}
+          {/* Right Action & WhatsApp Button */}
           <div className="hidden sm:flex items-center gap-3">
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-slate-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span>Namakkal · Tamil Nadu</span>
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-white/10 text-[11px] font-mono text-slate-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span>Namakkal · TN</span>
             </div>
 
             <a
               href="https://wa.me/918300030123?text=Hi%20Mani%2C%20I%20saw%20the%20FiFTO%20website%20and%20want%20to%20discuss%20an%20engineering%20project."
               target="_blank"
               rel="noopener noreferrer"
-              className="relative group overflow-hidden px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 shadow-lg shadow-emerald-950/60 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 border border-emerald-400/30"
+              className="relative group overflow-hidden px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 border-t border-l border-white/30 border-b-2 border-emerald-950 shadow-[0_4px_15px_rgba(16,185,129,0.3)] transition-all flex items-center gap-2"
             >
-              <MessageSquare className="w-4 h-4 text-emerald-100" />
+              <MessageSquare className="w-3.5 h-3.5 text-emerald-100" />
               <span>Talk to Mani</span>
               <ArrowUpRight className="w-3.5 h-3.5 opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
@@ -99,43 +106,43 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="flex lg:hidden">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-white/[0.05] border border-white/10 text-slate-300 hover:text-white focus:outline-none"
-              aria-label="Toggle menu"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 rounded-xl bg-white/[0.05] border border-white/10 text-slate-300 hover:text-white"
+              aria-label="Toggle Navigation"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#0a0e17] border-b border-white/10 px-4 pt-3 pb-6 space-y-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-200 hover:bg-white/[0.05] hover:text-emerald-400 transition-colors"
-            >
-              {link.name}
-            </a>
-          ))}
-          <div className="pt-2">
+        </div>
+
+        {/* Mobile Dropdown */}
+        {mobileOpen && (
+          <div className="lg:hidden mt-3 pt-3 border-t border-white/10 space-y-2 pb-2">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-white/[0.05] hover:text-emerald-400 transition-colors"
+              >
+                {link.name}
+              </a>
+            ))}
             <a
               href="https://wa.me/918300030123?text=Hi%20Mani%2C%20I%20saw%20the%20FiFTO%20website%20and%20want%20to%20discuss%20an%20engineering%20project."
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-emerald-600 to-teal-600"
+              className="w-full mt-2 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-emerald-600 to-teal-600 flex items-center justify-center gap-2"
             >
               <MessageSquare className="w-4 h-4" />
               <span>Discuss on WhatsApp (+91 83000 30123)</span>
             </a>
           </div>
-        </div>
-      )}
-    </nav>
+        )}
+
+      </div>
+    </header>
   );
 };
 
